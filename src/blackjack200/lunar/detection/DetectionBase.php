@@ -15,6 +15,7 @@ abstract class DetectionBase implements Detection {
 	/** @var mixed */
 	private $configuration;
 	private string $name;
+	//TODO Violation Level
 
 	/**
 	 * @param DetectionConfiguration $data

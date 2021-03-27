@@ -12,7 +12,7 @@ abstract class Processor implements Listener {
 	/** @var User */
 	private $user;
 
-	final public function __construct(User $user) {
+	public function __construct(User $user) {
 		$this->user = $user;
 	}
 
@@ -29,5 +29,9 @@ abstract class Processor implements Listener {
 
 	public function getUser() : User {
 		return $this->user;
+	}
+
+	public function check(...$data) : void {
+
 	}
 }

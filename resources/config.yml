@@ -1,5 +1,5 @@
 # Lunar Anticheat Configure File
-
+CPSTag: true
 ClientDataFaker:
   Enable: true
   Punishment: BAN
@@ -10,6 +10,13 @@ ClientDataFaker:
   DeviceModel:
     - "EZ4H"
     - "VMOS"
-EZ4H:
+NukerA:
   Enable: true
-  Punishment: BAN
+  Punishment: KICK
+  # Max Block Breaks in 20ms
+  MaxBlock: 3
+AutoClicker:
+  Enable: true
+  Punishment: KICK
+  # Max CPS
+  MaxCPS: 35

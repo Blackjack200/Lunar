@@ -8,14 +8,14 @@ use blackjack200\lunar\detection\DetectionBase;
 use pocketmine\network\mcpe\protocol\types\DeviceOS;
 
 class ClientDataFaker extends DetectionBase {
-	public function check() : void {
+	public function check(...$data) : void {
 		$deviceOS = $this->getUser()->clientData->getClientData()->DeviceOS;
 		$deviceModel = $this->getUser()->clientData->getClientData()->DeviceModel;
 		$pass = !in_array(
 				$deviceOS,
 				$this->getConfiguration()->getExtraData()->DeviceOS,
 				true) ||
-			!in_array(
+			in_array(
 				$deviceModel,
 				$this->getConfiguration()->getExtraData()->DeviceModel,
 				true);

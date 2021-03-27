@@ -17,7 +17,7 @@ interface Detection {
 	 * This method is trigger by DetectionTrigger
 	 * @see DetectionTrigger
 	 */
-	public function check() : void;
+	public function check(...$data) : void;
 
 	public function alert(string $message) : void;
 
