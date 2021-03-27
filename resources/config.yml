@@ -1,0 +1,9 @@
+# Lunar Anticheat Configure File
+
+ClientDataFaker:
+  Enable: true
+  Punishment: BAN
+  DeviceOS:
+    - 1
+    - 2
+    - 7
