@@ -4,8 +4,8 @@
 namespace blackjack200\lunar\detection;
 
 
-use blackjack200\lunar\configure\DetectionConfiguration;
-use blackjack200\lunar\configure\Punishment;
+use blackjack200\lunar\configuration\DetectionConfiguration;
+use blackjack200\lunar\configuration\Punishment;
 use blackjack200\lunar\user\User;
 use pocketmine\Server;
 

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace blackjack200\lunar\configure;
+namespace blackjack200\lunar\configuration;
 
 
 class Punishment {

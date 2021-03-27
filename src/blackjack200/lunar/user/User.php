@@ -2,7 +2,7 @@
 
 namespace blackjack200\lunar\user;
 
-use blackjack200\lunar\configure\DetectionConfiguration;
+use blackjack200\lunar\configuration\DetectionConfiguration;
 use blackjack200\lunar\detection\Detection;
 use blackjack200\lunar\detection\DetectionTrigger;
 use blackjack200\lunar\detection\packet\ClientDataFaker;

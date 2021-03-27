@@ -2,7 +2,7 @@
 
 namespace blackjack200\lunar;
 
-use blackjack200\lunar\configure\DetectionConfiguration;
+use blackjack200\lunar\configuration\DetectionConfiguration;
 use blackjack200\lunar\listener\DefaultListener;
 use pocketmine\plugin\PluginBase;
 
