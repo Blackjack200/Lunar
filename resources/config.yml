@@ -7,3 +7,9 @@ ClientDataFaker:
     - 1
     - 2
     - 7
+  DeviceModel:
+    - "EZ4H"
+    - "VMOS"
+EZ4H:
+  Enable: true
+  Punishment: BAN

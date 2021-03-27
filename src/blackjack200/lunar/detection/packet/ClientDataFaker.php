@@ -10,11 +10,18 @@ use pocketmine\network\mcpe\protocol\types\DeviceOS;
 class ClientDataFaker extends DetectionBase {
 	public function check() : void {
 		$deviceOS = $this->getUser()->clientData->getClientData()->DeviceOS;
-		$pass = !in_array($deviceOS,
-			$this->getConfiguration()->getExtraData()->DeviceOS);
+		$deviceModel = $this->getUser()->clientData->getClientData()->DeviceModel;
+		$pass = !in_array(
+				$deviceOS,
+				$this->getConfiguration()->getExtraData()->DeviceOS,
+				true) ||
+			!in_array(
+				$deviceModel,
+				$this->getConfiguration()->getExtraData()->DeviceModel,
+				true);
 		if ($deviceOS !== DeviceOS::WINDOWS_10 && isset($this->getUser()->clientData->getChainData()->extraData->titleId)) {
 			$titleId = $this->getUser()->clientData->getChainData()->extraData->titleId;
-			$pass = ($titleId === "896928775");
+			$pass = $pass || ($titleId === "896928775");
 		}
 		if ($pass) {
 			$this->fail("LoginData is incorrect");
