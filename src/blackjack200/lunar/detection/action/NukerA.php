@@ -16,10 +16,15 @@ class NukerA extends DetectionBase {
 		if ($pk instanceof InventoryTransactionPacket) {
 			$this->count++;
 			if ($this->count >= $this->getConfiguration()->getExtraData()->MaxBlock) {
-				$this->fail("COUNT={$this->count}");
+				$this->addVL(1);
+				if ($this->overflowVL()) {
+					$this->fail("COUNT={$this->count}");
+				}
+				return;
 			}
 		} else {
 			$this->count = 0;
 		}
+		$this->rewardVL($this->getConfiguration()->getReward());
 	}
 }

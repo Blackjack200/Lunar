@@ -11,6 +11,11 @@ use pocketmine\plugin\PluginBase;
 class Lunar extends PluginBase {
 	private static self $instance;
 	private array $configuration = [];
+	private string $prefix = '';
+
+	public function getPrefix() : string {
+		return $this->prefix;
+	}
 
 	public static function getInstance() : Lunar {
 		return self::$instance;
@@ -20,6 +25,7 @@ class Lunar extends PluginBase {
 		self::$instance = $this;
 		$this->getServer()->getPluginManager()->registerEvents(new DefaultListener(), $this);
 		$this->saveResource('config.yml');
+		$this->prefix = $this->getConfig()->get("Prefix");
 		$this->registerStandardDetectionConfiguration('ClientDataFaker');
 		$this->registerStandardDetectionConfiguration('NukerA');
 		$this->registerStandardDetectionConfiguration('AutoClicker');

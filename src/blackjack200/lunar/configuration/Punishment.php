@@ -14,11 +14,9 @@ class Punishment {
 				return self::BAN();
 			case 'kick':
 				return self::KICK();
-			case 'warn':
-			case 'warning':
+			case 'alert':
 				return self::WARN();
 			case 'ignore':
-			case 'none':
 				return self::IGNORE();
 		}
 		return self::KICK();

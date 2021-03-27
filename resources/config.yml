@@ -1,5 +1,7 @@
 # Lunar Anticheat Configure File
+Prefix: "§7[§gLunar§7]"
 CPSTag: true
+#Punishment(BAN, KICK, ALERT, IGNORE)
 ClientDataFaker:
   Enable: true
   Punishment: BAN
@@ -15,8 +17,12 @@ NukerA:
   Punishment: KICK
   # Max Block Breaks in 20ms
   MaxBlock: 3
+  MaxVL: 10
+  Reward: 0.988
 AutoClicker:
   Enable: true
   Punishment: KICK
   # Max CPS
   MaxCPS: 35
+  MaxVL: 10
+  Reward: 0.988
