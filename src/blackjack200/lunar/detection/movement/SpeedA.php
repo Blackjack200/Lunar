@@ -32,7 +32,8 @@ class SpeedA extends DetectionBase {
 			if ($diff > $this->maxDiff &&
 				$user->getMoveData()->timeSinceTeleport() >= 2 &&
 				$user->getMoveData()->timeSinceMotion() >= 2 &&
-				!$user->getPlayer()->isSpectator()
+				!$user->getPlayer()->isSpectator() &&
+				!$user->getPlayer()->isFlying()
 			) {
 				$this->addVL(1);
 				if ($this->overflowVL()) {
