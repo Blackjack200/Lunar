@@ -92,7 +92,7 @@ class DefaultListener implements Listener {
 		if ($player instanceof Player) {
 			$user = UserManager::get($player);
 			if ($user !== null) {
-				$user->getMoveData()->lastTeleport = microtime(true);
+				$user->getMovementInfo()->lastTeleport = microtime(true);
 			}
 		}
 	}
@@ -102,7 +102,7 @@ class DefaultListener implements Listener {
 		if ($player instanceof Player) {
 			$user = UserManager::get($player);
 			if ($user !== null) {
-				$user->getMoveData()->lastMotion = microtime(true);
+				$user->getMovementInfo()->lastMotion = microtime(true);
 			}
 		}
 	}

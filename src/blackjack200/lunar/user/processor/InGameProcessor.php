@@ -20,10 +20,8 @@ class InGameProcessor extends Processor {
 	}
 
 	public function processClient(DataPacket $packet) : void {
-		if ($packet instanceof InventoryTransactionPacket) {
-			if ($packet->trData instanceof UseItemOnEntityTransactionData) {
-				$this->addClick();
-			}
+		if (($packet instanceof InventoryTransactionPacket) && $packet->trData instanceof UseItemOnEntityTransactionData) {
+			$this->addClick();
 		}
 		if ($packet instanceof LevelSoundEventPacket && $packet->sound === LevelSoundEventPacket::SOUND_ATTACK_NODAMAGE) {
 			$this->addClick();

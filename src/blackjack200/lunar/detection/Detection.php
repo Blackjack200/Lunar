@@ -27,5 +27,7 @@ interface Detection {
 
 	public function destruct() : void;
 
+	public function close() : void;
+
 	public function getName() : string;
 }

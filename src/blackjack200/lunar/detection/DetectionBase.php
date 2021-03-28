@@ -13,14 +13,14 @@ use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
 abstract class DetectionBase implements Detection {
+	protected float $preVL = 0;
 	/** @var User */
 	private $user;
 	/** @var mixed */
 	private $configuration;
-	private string $name;
 	//TODO Violation Level
+	private string $name;
 	private float $VL = 0;
-	private float $preVL = 0;
 
 	/**
 	 * @param DetectionConfiguration $data
@@ -135,6 +135,10 @@ abstract class DetectionBase implements Detection {
 		// TODO: Implement debug() method.
 	}
 
+	final public function __destruct() {
+		$this->destruct();
+	}
+
 	public function destruct() : void {
 		$this->user = null;
 	}
@@ -144,6 +148,10 @@ abstract class DetectionBase implements Detection {
 	}
 
 	public function check(...$data) : void {
+
+	}
+
+	public function close() : void {
 
 	}
 }

@@ -61,8 +61,7 @@ class KillAura extends DetectionBase {
 		}
 	}
 
-	public function destruct() : void {
-		parent::destruct();
+	public function close() : void {
 		$this->slapper->close();
 	}
 }

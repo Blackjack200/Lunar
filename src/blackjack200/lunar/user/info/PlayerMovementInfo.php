@@ -4,12 +4,16 @@
 namespace blackjack200\lunar\user\info;
 
 
+use pocketmine\block\Block;
 use pocketmine\level\Location;
 use pocketmine\math\Vector3;
 
-class MovementInfo {
+class PlayerMovementInfo {
 	public bool $onGround = true;
+	/** @var Block[] */
+	public array $verticalBlocks = [];
 	public int $offGroundTick = 0;
+	public int $onGroundTick = 0;
 	public Vector3 $lastMoveDelta;
 	public Vector3 $moveDelta;
 	public Location $lastLocation;

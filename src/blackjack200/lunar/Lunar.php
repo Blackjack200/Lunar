@@ -35,6 +35,7 @@ class Lunar extends PluginBase {
 		$this->registerStandardDetectionConfiguration('KillAura', true);
 		$this->registerStandardDetectionConfiguration('MultiAura', false);
 		$this->registerStandardDetectionConfiguration('SpeedA', false);
+		$this->registerStandardDetectionConfiguration('SpeedC', false);
 		$this->getScheduler()->scheduleRepeatingTask(new ProcessorTickTrigger(), 1);
 		$this->getScheduler()->scheduleRepeatingTask(new ProcessorSecondTrigger(), 20);
 	}

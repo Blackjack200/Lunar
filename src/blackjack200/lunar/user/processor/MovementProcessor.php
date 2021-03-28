@@ -4,7 +4,7 @@
 namespace blackjack200\lunar\user\processor;
 
 
-use blackjack200\lunar\user\info\MovementInfo;
+use blackjack200\lunar\user\info\PlayerMovementInfo;
 use blackjack200\lunar\user\User;
 use blackjack200\lunar\utils\AABB;
 use pocketmine\math\Vector3;
@@ -22,46 +22,49 @@ class MovementProcessor extends Processor {
 			self::$emptyVector3 = new Vector3();
 		}
 		$this->verticalAABB = $this->getUser()->getPlayer()->getBoundingBox()->expandedCopy(0.1, 0.2, 0.1);
-		$this->getUser()->getMoveData()->lastLocation = $this->getUser()->getPlayer()->asLocation();
-		$this->getUser()->getMoveData()->location = $this->getUser()->getPlayer()->asLocation();
-		$this->getUser()->getMoveData()->moveDelta = new Vector3();
-		$this->getUser()->getMoveData()->lastMoveDelta = new Vector3();
+		$this->getUser()->getMovementInfo()->lastLocation = $this->getUser()->getPlayer()->asLocation();
+		$this->getUser()->getMovementInfo()->location = $this->getUser()->getPlayer()->asLocation();
+		$this->getUser()->getMovementInfo()->moveDelta = new Vector3();
+		$this->getUser()->getMovementInfo()->lastMoveDelta = new Vector3();
 	}
 
 	public function processClient(DataPacket $packet) : void {
 		if ($packet instanceof MovePlayerPacket) {
 			$user = $this->getUser();
-			$moveData = $user->getMoveData();
+			$movementInfo = $user->getMovementInfo();
 
-			$this->updateLocation($moveData);
+			$this->updateLocation($movementInfo);
 
-			$this->updateMoveDelta($moveData);
+			$this->updateMoveDelta($movementInfo);
 
-			if ($moveData->moveDelta->lengthSquared() > 0.001) {
-				$verticalBlocks = AABB::getCollisionBlocks($user->getPlayer()->getLevelNonNull(), $this->getUser()->getPlayer()->getBoundingBox()->expandedCopy(0.1, 0.2, 0.1));
-
+			if ($movementInfo->moveDelta->lengthSquared() > 0.001) {
+				$player = $user->getPlayer();
+				$verticalBlocks = AABB::getCollisionBlocks($player->getLevelNonNull(), $player->getBoundingBox()->expandedCopy(0.1, 0.2, 0.1));
+				$movementInfo->verticalBlocks = $verticalBlocks;
 				//$horizonBlocks = $this->getUser()->getPlayer()->getLevelNonNull()->getCollisionBlocks($this->getUser()->getPlayer()->getBoundingBox()->expandedCopy(0.2, -0.1, 0.2));
-				$moveData->onGround = count($verticalBlocks) !== 0;
+				$movementInfo->onGround = count($verticalBlocks) !== 0;
 			}
 		}
 	}
 
-	public function updateLocation(MovementInfo $moveData) : void {
-		$moveData->lastLocation = $moveData->location;
-		$moveData->location = $this->getUser()->getPlayer()->asLocation();
+	public function updateLocation(PlayerMovementInfo $movementInfo) : void {
+		$movementInfo->lastLocation = $movementInfo->location;
+		$movementInfo->location = $this->getUser()->getPlayer()->asLocation();
 	}
 
-	public function updateMoveDelta(MovementInfo $moveData) : void {
-		$moveData->lastMoveDelta = $moveData->moveDelta;
-		$moveData->moveDelta = $moveData->location->subtract($moveData->lastLocation)->asVector3();
+	public function updateMoveDelta(PlayerMovementInfo $movementInfo) : void {
+		$movementInfo->lastMoveDelta = $movementInfo->moveDelta;
+		$movementInfo->moveDelta = $movementInfo->location->subtract($movementInfo->lastLocation)->asVector3();
 	}
 
 	public function check(...$data) : void {
-		$moveData = $this->getUser()->getMoveData();
+		$moveData = $this->getUser()->getMovementInfo();
 		if (!$moveData->onGround) {
 			$moveData->offGroundTick++;
+			$moveData->onGroundTick = 0;
 		} else {
 			$moveData->offGroundTick = 0;
+			$moveData->onGroundTick++;
 		}
 	}
 }
