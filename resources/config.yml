@@ -27,7 +27,7 @@ AutoClicker:
   MaxVL: 10
   Reward: 0.988
 KillAura:
-  Enable: true
+  Enable: false
   MaxVL: 10
   Punishment: KICK
   AttackCooldown: 3
@@ -36,3 +36,8 @@ KillAura:
     Y:
       Min: -1
       Max: 3
+MultiAura:
+  Enable: true
+  Punishment: KICK
+  MaxVL: 10
+  MaxEntityHit: 5

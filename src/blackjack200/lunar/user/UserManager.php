@@ -19,7 +19,7 @@ final class UserManager {
 		unset(self::$users[spl_object_hash($player)]);
 	}
 
-	public static function getUser(Player $player) : ?User {
+	public static function get(Player $player) : ?User {
 		return self::$users[spl_object_hash($player)] ?? null;
 	}
 

@@ -6,6 +6,7 @@ use blackjack200\lunar\configuration\DetectionConfiguration;
 use blackjack200\lunar\detection\action\AutoClicker;
 use blackjack200\lunar\detection\action\NukerA;
 use blackjack200\lunar\detection\combat\KillAura;
+use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\Detection;
 use blackjack200\lunar\detection\DetectionTrigger;
 use blackjack200\lunar\detection\packet\ClientDataFaker;
@@ -33,6 +34,7 @@ class User implements DetectionTrigger {
 		$this->registerStandardDetection(NukerA::class, 'NukerA');
 		$this->registerStandardDetection(AutoClicker::class, 'AutoClicker');
 		$this->registerStandardDetection(KillAura::class, 'KillAura');
+		$this->registerStandardDetection(MultiAura::class, 'MultiAura');
 	}
 
 	/**
@@ -44,7 +46,7 @@ class User implements DetectionTrigger {
 			$this->detections[] = new $class(
 				$this,
 				$name,
-				$data
+				clone $data
 			);
 		}
 	}
