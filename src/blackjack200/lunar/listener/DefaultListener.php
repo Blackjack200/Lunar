@@ -2,9 +2,11 @@
 
 namespace blackjack200\lunar\listener;
 
+use blackjack200\lunar\detection\combat\KillAura;
 use blackjack200\lunar\LunarPlayer;
 use blackjack200\lunar\user\UserManager;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
@@ -15,16 +17,26 @@ class DefaultListener implements Listener {
 	/** @var LoginPacket[] */
 	private array $dirtyLoginPacket = [];
 
-	public function onPlayerJoin(PlayerPreLoginEvent $event) : void {
-		UserManager::register($event->getPlayer());
-		$hash = spl_object_hash($event->getPlayer());
-		foreach (UserManager::getUser($event->getPlayer())->getProcessors() as $processor) {
+	public function onPlayerPreJoin(PlayerPreLoginEvent $event) : void {
+
+
+	}
+
+	public function onPlayerJoin(PlayerJoinEvent $event) : void {
+		$player = $event->getPlayer();
+		UserManager::register($player);
+		$hash = spl_object_hash($player);
+		$user = UserManager::getUser($player);
+		foreach ($user->getProcessors() as $processor) {
 			$processor->processClient($this->dirtyLoginPacket[$hash]);
 		}
 		unset($this->dirtyLoginPacket[$hash]);
+		$user->trigger(KillAura::class, 1, null);
 	}
 
 	public function onPlayerQuit(PlayerQuitEvent $event) : void {
+		$user = UserManager::getUser($event->getPlayer());
+		$user->close();
 		UserManager::unregister($event->getPlayer());
 		unset($this->dirtyLoginPacket[spl_object_hash($event->getPlayer())]);
 	}

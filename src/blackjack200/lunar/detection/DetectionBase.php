@@ -86,7 +86,7 @@ abstract class DetectionBase implements Detection {
 		$this->getUser()->getPlayer()->sendMessage(sprintf("%s %s: %s", Lunar::getInstance()->getPrefix(), $this->name, $message));
 	}
 
-	protected function getUser() : User {
+	public function getUser() : User {
 		return $this->user;
 	}
 
@@ -110,7 +110,7 @@ abstract class DetectionBase implements Detection {
 		$this->getUser()->getPlayer()->kick(Lunar::getInstance()->getPrefix() . ' ' . $message, false);
 	}
 
-	protected function getConfiguration() : DetectionConfiguration {
+	public function getConfiguration() : DetectionConfiguration {
 		return $this->configuration;
 	}
 

@@ -5,6 +5,7 @@ namespace blackjack200\lunar\user;
 use blackjack200\lunar\configuration\DetectionConfiguration;
 use blackjack200\lunar\detection\action\AutoClicker;
 use blackjack200\lunar\detection\action\NukerA;
+use blackjack200\lunar\detection\combat\KillAura;
 use blackjack200\lunar\detection\Detection;
 use blackjack200\lunar\detection\DetectionTrigger;
 use blackjack200\lunar\detection\packet\ClientDataFaker;
@@ -31,6 +32,7 @@ class User implements DetectionTrigger {
 		$this->registerStandardDetection(ClientDataFaker::class, 'ClientDataFaker');
 		$this->registerStandardDetection(NukerA::class, 'NukerA');
 		$this->registerStandardDetection(AutoClicker::class, 'AutoClicker');
+		$this->registerStandardDetection(KillAura::class, 'KillAura');
 	}
 
 	/**
@@ -48,13 +50,7 @@ class User implements DetectionTrigger {
 	}
 
 	public function __destruct() {
-		foreach ($this->detections as $detection) {
-			$detection->destruct();
-		}
-
-		foreach ($this->processors as $processor) {
-			$processor->destruct();
-		}
+		$this->close();
 	}
 
 	public function trigger(string $class, ...$data) : void {
@@ -85,5 +81,15 @@ class User implements DetectionTrigger {
 
 	public function getPlayer() : Player {
 		return $this->player;
+	}
+
+	public function close() : void {
+		foreach ($this->detections as $detection) {
+			$detection->destruct();
+		}
+
+		foreach ($this->processors as $processor) {
+			$processor->destruct();
+		}
 	}
 }

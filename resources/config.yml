@@ -26,3 +26,13 @@ AutoClicker:
   MaxCPS: 35
   MaxVL: 10
   Reward: 0.988
+KillAura:
+  Enable: true
+  MaxVL: 10
+  Punishment: KICK
+  AttackCooldown: 3
+  Radius: 3
+  Random:
+    Y:
+      Min: -1
+      Max: 3

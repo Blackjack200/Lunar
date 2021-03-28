@@ -4,6 +4,8 @@
 namespace blackjack200\lunar\configuration;
 
 
+use stdClass;
+
 class DetectionConfiguration {
 	private int $punishment;
 	private int $maxVL;
@@ -11,13 +13,29 @@ class DetectionConfiguration {
 	private float $enable;
 	private object $extraData;
 
-	public function __construct(array $data) {
+	public function __construct(array $data, bool $recursiveObject) {
 		$this->punishment = Punishment::parsePunishment($data['Punishment']);
 		$this->enable = Boolean::stob($data['Enable']);
 		$this->maxVL = $data['MaxVL'] ?? -1;
 		$this->reward = $data['Reward'] ?? 1;
 		unset($data['Punishment'], $data['Enable'], $data['MaxVL'], $data['Reward']);
-		$this->extraData = (object) $data;
+		$this->extraData = $recursiveObject ? $this->convert($data) : (object) $data;
+	}
+
+	/**
+	 * @param mixed|object $val
+	 * @return mixed|object
+	 */
+	private function convert($val) {
+		$obj = new stdClass();
+		if (is_array($val)) {
+			foreach ($val as $key => $value) {
+				$obj->$key = $this->convert($value);
+			}
+		} else {
+			return $val;
+		}
+		return $obj;
 	}
 
 	public function getExtraData() : object {

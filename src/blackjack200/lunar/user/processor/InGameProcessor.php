@@ -44,7 +44,6 @@ class InGameProcessor extends Processor {
 	}
 
 	public function check(...$data) : void {
-		$this->getUser()->trigger(AutoClicker::class);
 		$this->getUser()->CPS = 0;
 	}
 }
