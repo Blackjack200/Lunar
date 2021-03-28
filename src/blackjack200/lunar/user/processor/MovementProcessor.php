@@ -42,7 +42,6 @@ class MovementProcessor extends Processor {
 
 				//$horizonBlocks = $this->getUser()->getPlayer()->getLevelNonNull()->getCollisionBlocks($this->getUser()->getPlayer()->getBoundingBox()->expandedCopy(0.2, -0.1, 0.2));
 				$moveData->onGround = count($verticalBlocks) !== 0;
-				var_dump($moveData->onGround);
 			}
 		}
 	}
