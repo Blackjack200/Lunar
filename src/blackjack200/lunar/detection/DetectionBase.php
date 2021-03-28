@@ -91,6 +91,7 @@ abstract class DetectionBase implements Detection {
 	}
 
 	public function fail(string $message) : void {
+		$this->log($message);
 		switch ($this->getConfiguration()->getPunishment()) {
 			case Punishment::BAN():
 				Server::getInstance()->getNameBans()->addBan($this->getUser()->getPlayer()->getName(), $message);
@@ -124,5 +125,12 @@ abstract class DetectionBase implements Detection {
 
 	public function getName() : string {
 		return $this->name;
+	}
+
+	/**
+	 * @param string $message
+	 */
+	public function log(string $message) : void {
+		Lunar::getInstance()->getLogger()->info("NAME={$this->getUser()->getPlayer()->getName()} D=" . static::class . ' ' . $message);
 	}
 }
