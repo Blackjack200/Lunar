@@ -1,6 +1,6 @@
 # Lunar
 
-Lunar is an anti-cheat(work in progress).
+Lunar is an good anti-cheat for PMMP(work in progress).
 
 ## Current Feature
 
