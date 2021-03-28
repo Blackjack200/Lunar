@@ -58,7 +58,7 @@ class DetectionConfiguration {
 		return $this->maxVL;
 	}
 
-	public function getReward() {
+	public function getReward() : float {
 		return $this->reward;
 	}
 }

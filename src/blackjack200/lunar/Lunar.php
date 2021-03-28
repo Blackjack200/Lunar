@@ -15,12 +15,12 @@ class Lunar extends PluginBase {
 	private array $configuration = [];
 	private string $prefix = '';
 
-	public function getPrefix() : string {
-		return $this->prefix;
-	}
-
 	public static function getInstance() : Lunar {
 		return self::$instance;
+	}
+
+	public function getPrefix() : string {
+		return $this->prefix;
 	}
 
 	public function onEnable() : void {
@@ -34,6 +34,7 @@ class Lunar extends PluginBase {
 		$this->registerStandardDetectionConfiguration('AutoClicker', false);
 		$this->registerStandardDetectionConfiguration('KillAura', true);
 		$this->registerStandardDetectionConfiguration('MultiAura', false);
+		$this->registerStandardDetectionConfiguration('SpeedA', false);
 		$this->getScheduler()->scheduleRepeatingTask(new ProcessorTickTrigger(), 1);
 		$this->getScheduler()->scheduleRepeatingTask(new ProcessorSecondTrigger(), 20);
 	}

@@ -2,11 +2,12 @@
 
 namespace blackjack200\lunar\listener;
 
-use blackjack200\lunar\detection\combat\KillAura;
 use blackjack200\lunar\detection\combat\MultiAura;
-use blackjack200\lunar\LunarPlayer;
+use blackjack200\lunar\detection\DetectionBase;
 use blackjack200\lunar\user\UserManager;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityMotionEvent;
+use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
@@ -21,20 +22,18 @@ class DefaultListener implements Listener {
 	private array $dirtyLoginPacket = [];
 
 	public function onPlayerPreJoin(PlayerPreLoginEvent $event) : void {
-
-
+		$player = $event->getPlayer();
+		UserManager::register($player);
 	}
 
 	public function onPlayerJoin(PlayerJoinEvent $event) : void {
 		$player = $event->getPlayer();
-		UserManager::register($player);
 		$hash = spl_object_hash($player);
 		$user = UserManager::get($player);
 		foreach ($user->getProcessors() as $processor) {
 			$processor->processClient($this->dirtyLoginPacket[$hash]);
 		}
 		unset($this->dirtyLoginPacket[$hash]);
-		$user->trigger(KillAura::class, 1, null);
 	}
 
 	public function onPlayerQuit(PlayerQuitEvent $event) : void {
@@ -47,8 +46,15 @@ class DefaultListener implements Listener {
 	public function onDataPacketSend(DataPacketSendEvent $event) : void {
 		$user = UserManager::get($event->getPlayer());
 		if ($user !== null) {
+			$packet = $event->getPacket();
 			foreach ($user->getProcessors() as $processor) {
-				$processor->processServerBond($event->getPacket());
+				$processor->processServerBond($packet);
+			}
+
+			foreach ($user->getDetections() as $detection) {
+				if ($detection instanceof DetectionBase) {
+					$detection->handleSend($packet);
+				}
 			}
 		}
 	}
@@ -63,6 +69,12 @@ class DefaultListener implements Listener {
 			foreach ($user->getProcessors() as $processor) {
 				$processor->processClient($packet);
 			}
+
+			foreach ($user->getDetections() as $detection) {
+				if ($detection instanceof DetectionBase) {
+					$detection->handleReceive($packet);
+				}
+			}
 		}
 	}
 
@@ -72,6 +84,26 @@ class DefaultListener implements Listener {
 
 		if ($damager instanceof Player && $victim instanceof Player) {
 			UserManager::get($damager)->trigger(MultiAura::class, $event);
+		}
+	}
+
+	public function onEntityTeleport(EntityTeleportEvent $event) : void {
+		$player = $event->getEntity();
+		if ($player instanceof Player) {
+			$user = UserManager::get($player);
+			if ($user !== null) {
+				$user->getMoveData()->lastTeleport = microtime(true);
+			}
+		}
+	}
+
+	public function onEntityMotion(EntityMotionEvent $event) : void {
+		$player = $event->getEntity();
+		if ($player instanceof Player) {
+			$user = UserManager::get($player);
+			if ($user !== null) {
+				$user->getMoveData()->lastMotion = microtime(true);
+			}
 		}
 	}
 }

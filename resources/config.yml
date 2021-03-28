@@ -1,5 +1,5 @@
 # Lunar Anticheat Configure File
-Prefix: "§7[§gLunar§7]"
+Prefix: "§7[§fLunar§7]"
 CPSTag: true
 #Punishment(BAN, KICK, ALERT, IGNORE)
 ClientDataFaker:
@@ -41,3 +41,10 @@ MultiAura:
   Punishment: KICK
   MaxVL: 10
   MaxEntityHit: 5
+# Movement
+SpeedA:
+  Enable: true
+  Punishment: KICK
+  MaxVL: 10
+  Diff: 0.000001
+  Reward: 0.988

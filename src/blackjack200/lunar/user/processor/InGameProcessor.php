@@ -4,15 +4,12 @@
 namespace blackjack200\lunar\user\processor;
 
 
-use blackjack200\lunar\detection\action\AutoClicker;
-use blackjack200\lunar\detection\action\NukerA;
 use blackjack200\lunar\Lunar;
 use blackjack200\lunar\user\User;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\UseItemOnEntityTransactionData;
-use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
 
 class InGameProcessor extends Processor {
 	private bool $tag;
@@ -24,9 +21,6 @@ class InGameProcessor extends Processor {
 
 	public function processClient(DataPacket $packet) : void {
 		if ($packet instanceof InventoryTransactionPacket) {
-			if ($packet->trData instanceof UseItemTransactionData && $packet->trData->getActionType() === UseItemTransactionData::ACTION_BREAK_BLOCK) {
-				$this->getUser()->trigger(NukerA::class, $packet);
-			}
 			if ($packet->trData instanceof UseItemOnEntityTransactionData) {
 				$this->addClick();
 			}

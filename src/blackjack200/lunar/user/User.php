@@ -9,32 +9,39 @@ use blackjack200\lunar\detection\combat\KillAura;
 use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\Detection;
 use blackjack200\lunar\detection\DetectionTrigger;
+use blackjack200\lunar\detection\movement\SpeedA;
 use blackjack200\lunar\detection\packet\ClientDataFaker;
 use blackjack200\lunar\Lunar;
+use blackjack200\lunar\user\info\MovementInfo;
 use blackjack200\lunar\user\processor\InGameProcessor;
 use blackjack200\lunar\user\processor\LoginProcessor;
+use blackjack200\lunar\user\processor\MovementProcessor;
 use blackjack200\lunar\user\processor\Processor;
 use pocketmine\Player;
 
 class User implements DetectionTrigger {
 	public ClientData $clientData;
+	public int $CPS = 0;
 	private Player $player;
 	/** @var Detection[] */
 	private array $detections = [];
 	/** @var Processor[] */
 	private array $processors = [];
-	public int $CPS = 0;
+	private MovementInfo $moveData;
 
 	public function __construct(Player $player) {
 		$this->player = $player;
+		$this->moveData = new MovementInfo();
 		$this->processors[] = new LoginProcessor($this);
 		$this->processors[] = new InGameProcessor($this);
+		$this->processors[] = new MovementProcessor($this);
 		//TODO This shouldn't be hardcoded
 		$this->registerStandardDetection(ClientDataFaker::class, 'ClientDataFaker');
 		$this->registerStandardDetection(NukerA::class, 'NukerA');
 		$this->registerStandardDetection(AutoClicker::class, 'AutoClicker');
 		$this->registerStandardDetection(KillAura::class, 'KillAura');
 		$this->registerStandardDetection(MultiAura::class, 'MultiAura');
+		$this->registerStandardDetection(SpeedA::class, 'SpeedA');
 	}
 
 	/**
@@ -53,6 +60,16 @@ class User implements DetectionTrigger {
 
 	public function __destruct() {
 		$this->close();
+	}
+
+	public function close() : void {
+		foreach ($this->detections as $detection) {
+			$detection->destruct();
+		}
+
+		foreach ($this->processors as $processor) {
+			$processor->destruct();
+		}
 	}
 
 	public function trigger(string $class, ...$data) : void {
@@ -85,13 +102,7 @@ class User implements DetectionTrigger {
 		return $this->player;
 	}
 
-	public function close() : void {
-		foreach ($this->detections as $detection) {
-			$detection->destruct();
-		}
-
-		foreach ($this->processors as $processor) {
-			$processor->destruct();
-		}
+	public function getMoveData() : MovementInfo {
+		return $this->moveData;
 	}
 }
