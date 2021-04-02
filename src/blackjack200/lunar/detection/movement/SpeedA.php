@@ -36,7 +36,7 @@ class SpeedA extends DetectionBase {
 				!$user->getPlayer()->isSpectator() &&
 				!$user->getPlayer()->isFlying()
 			) {
-				if ($this->preVL++ > 2) {
+				if ($this->preVL++ > 6) {
 					$this->addVL(1);
 					$this->preVL = 0;
 				}
