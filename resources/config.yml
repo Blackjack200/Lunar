@@ -47,7 +47,7 @@ SpeedA:
   Punishment: KICK
   MaxVL: 10
   Diff: 0.000000000001
-  Reward: 0.988
+  Reward: 0.888
 SpeedC:
   Enable: true
   Punishment: KICK
