@@ -10,13 +10,13 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\Player;
 
 class MultiAura extends DetectionBase {
-	/** @var array[] */
-	protected $queue;
+	protected float $time;
+	protected array $targets = [];
 	protected $max;
 
 	public function __construct(User $user, string $name, $data) {
 		parent::__construct($user, $name, $data);
-		$this->queue = ["time" => microtime(true), "targets" => []];
+		$this->time = microtime(true);
 		$this->max = $this->getConfiguration()->getExtraData()->MaxEntityHit;
 	}
 
@@ -32,21 +32,22 @@ class MultiAura extends DetectionBase {
 			return;
 		}
 
-		if (!in_array(spl_object_hash($victim), $this->queue['targets'], true)) {
-			$this->queue[spl_object_hash($damager)]['targets'][] = spl_object_hash($victim);
+		if (!in_array(spl_object_hash($victim), $this->targets, true)) {
+			$this->targets[] = spl_object_hash($victim);
 		}
 
-		if (count($this->queue['targets']) >= $this->max && ($this->queue['time'] + 0.20) >= microtime(true)) {
-			$inTime = microtime(true) - ($this->queue['time']);
+		if (count($this->targets) >= $this->max && ($this->time + 0.20) >= microtime(true)) {
+			$inTime = microtime(true) - ($this->time);
 			$this->addVL(1);
-			$this->alert(sprintf('AE=%s T=%s', count($this->queue['targets']), $inTime));
+			$this->alert(sprintf('AE=%s T=%s', count($this->targets), $inTime));
 			if ($this->overflowVL()) {
 				$this->fail('MultiAura Detected');
 			}
 		}
 
-		if (($this->queue['time'] + 0.25) <= microtime(true)) {
-			$this->queue[spl_object_hash($damager)] = ['time' => microtime(true), 'targets' => []];
+		if (($this->time + 0.25) <= microtime(true)) {
+			$this->time = microtime(true);
+			$this->targets = [];
 		}
 	}
 }
