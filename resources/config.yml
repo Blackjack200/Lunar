@@ -65,3 +65,9 @@ FlyB:
   Punishment: KICK
   MaxVL: 10
   Reward: 0.85
+
+# Network
+BadPacketA:
+  Enable: true
+  Punishment: KICK
+  MaxVL: 5

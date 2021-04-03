@@ -13,6 +13,7 @@ use blackjack200\lunar\detection\movement\FlyA;
 use blackjack200\lunar\detection\movement\FlyB;
 use blackjack200\lunar\detection\movement\SpeedA;
 use blackjack200\lunar\detection\movement\SpeedC;
+use blackjack200\lunar\detection\packet\BadPacketA;
 use blackjack200\lunar\detection\packet\ClientDataFaker;
 use blackjack200\lunar\Lunar;
 use blackjack200\lunar\user\info\PlayerActionInfo;
@@ -57,6 +58,7 @@ class User implements DetectionTrigger {
 		$this->registerStandardDetection(SpeedC::class, 'SpeedC');
 		$this->registerStandardDetection(FlyA::class, 'FlyA');
 		$this->registerStandardDetection(FlyB::class, 'FlyB');
+		$this->registerStandardDetection(BadPacketA::class, 'BadPacketA');
 	}
 
 	/**

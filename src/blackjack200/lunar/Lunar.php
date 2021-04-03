@@ -40,6 +40,7 @@ class Lunar extends PluginBase {
 			$this->registerStandardDetectionConfiguration('SpeedC', false);
 			$this->registerStandardDetectionConfiguration('FlyA', false);
 			$this->registerStandardDetectionConfiguration('FlyB', false);
+			$this->registerStandardDetectionConfiguration('BadPacketA', false);
 		} catch (Throwable $e) {
 			$this->getLogger()->warning('Configuration Error');
 			$this->getServer()->getPluginManager()->disablePlugin($this);
