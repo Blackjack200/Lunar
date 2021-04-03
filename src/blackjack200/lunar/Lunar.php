@@ -41,7 +41,8 @@ class Lunar extends PluginBase {
 			$this->registerStandardDetectionConfiguration('FlyA', false);
 			$this->registerStandardDetectionConfiguration('FlyB', false);
 		} catch (Throwable $e) {
-			$this->getLogger()->warning('Configuration error');
+			$this->getLogger()->warning('Configuration Error');
+			$this->getServer()->getPluginManager()->disablePlugin($this);
 		}
 		$this->getScheduler()->scheduleRepeatingTask(new ProcessorTickTrigger(), 1);
 		$this->getScheduler()->scheduleRepeatingTask(new ProcessorSecondTrigger(), 20);
