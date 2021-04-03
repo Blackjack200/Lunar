@@ -17,7 +17,7 @@ class FlyB extends DetectionBase {
 
 	public function check(...$data) : void {
 		$info = $this->getUser()->getMovementInfo();
-		if ($info->offGroundTick > 5 &&
+		if ($info->offGroundTick > 15 &&
 			$info->timeSinceTeleport() > 0.5
 		) {
 			$this->addVL(1);
