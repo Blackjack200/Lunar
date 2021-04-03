@@ -8,7 +8,9 @@ use blackjack200\lunar\user\info\PlayerMovementInfo;
 use blackjack200\lunar\user\User;
 use blackjack200\lunar\utils\AABB;
 use pocketmine\block\Block;
+use pocketmine\block\Door;
 use pocketmine\block\Liquid;
+use pocketmine\block\Trapdoor;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
@@ -55,7 +57,9 @@ class MovementProcessor extends Processor {
 					if (
 						$id === Block::SLIME_BLOCK ||
 						$id === Block::COBWEB ||
-						$block instanceof Liquid
+						$block instanceof Liquid ||
+						$block instanceof Door ||
+						$block instanceof Trapdoor
 					) {
 						$info->checkFly = false;
 						break;

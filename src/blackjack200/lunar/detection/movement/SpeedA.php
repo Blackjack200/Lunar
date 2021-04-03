@@ -29,11 +29,13 @@ class SpeedA extends DetectionBase {
 			$curt = hypot($curtMD->x, $curtMD->z);
 
 			//reference: https://github.com/GladUrBad/Medusa/blob/7be8d34ae0470f0655b59e213d7619b98a3f43ff/Impl/src/main/java/com/gladurbad/medusa/check/impl/movement/speed/SpeedA.java#L25
-			$diff = $curt - ($last * 0.91 + ($user->getPlayer()->isSprinting() ? 0.0263 : 0.02));
-			if ($diff > $this->maxDiff &&
+			$predicted = $last * 0.91 + ($user->getPlayer()->isSprinting() ? 0.0263 : 0.02);
+			$diff = $curt - $predicted;
+			if ($predicted > 0.075 &&
+				$diff > $this->maxDiff &&
 				$user->getMovementInfo()->timeSinceTeleport() >= 0.25 &&
 				$user->getMovementInfo()->timeSinceMotion() >= 0.5 &&
-				!$user->getPlayer()->isSpectator() &&
+				!$user->getPlayer()->isCreative(true) &&
 				!$user->getPlayer()->isFlying()
 			) {
 				if ($this->preVL++ > 6) {

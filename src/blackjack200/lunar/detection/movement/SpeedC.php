@@ -28,7 +28,7 @@ class SpeedC extends DetectionBase {
 			if ($deltaXZ > $maxSpeed &&
 				$user->getMovementInfo()->timeSinceTeleport() >= 0.25 &&
 				$user->getMovementInfo()->timeSinceMotion() >= 0.5 &&
-				!$user->getPlayer()->isSpectator() &&
+				!$user->getPlayer()->isCreative(true) &&
 				!$user->getPlayer()->isFlying()
 			) {
 				foreach ($m->verticalBlocks as $block) {
