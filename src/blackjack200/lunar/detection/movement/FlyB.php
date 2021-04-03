@@ -17,9 +17,13 @@ class FlyB extends DetectionBase {
 
 	public function check(...$data) : void {
 		$info = $this->getUser()->getMovementInfo();
-		if ($info->offGroundTick > 15 &&
+		if ($info->offGroundTick > 5 &&
+			!$info->onGround &&
+			!$info->lastOnGround &&
+			$this->preVL++ > 2 &&
 			$info->timeSinceTeleport() > 0.5
 		) {
+			$this->preVL = 0;
 			$this->addVL(1);
 			if ($this->overflowVL()) {
 				$this->fail("off={$info->offGroundTick}");

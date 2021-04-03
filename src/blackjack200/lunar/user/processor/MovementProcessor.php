@@ -33,21 +33,22 @@ class MovementProcessor extends Processor {
 	public function processClient(DataPacket $packet) : void {
 		if ($packet instanceof MovePlayerPacket) {
 			$user = $this->getUser();
-			$movementInfo = $user->getMovementInfo();
+			$info = $user->getMovementInfo();
 
-			$this->updateLocation($movementInfo);
+			$this->updateLocation($info);
 
-			$this->updateMoveDelta($movementInfo);
+			$this->updateMoveDelta($info);
 
-			if ($movementInfo->moveDelta->lengthSquared() > 0.009) {
+			if ($info->moveDelta->lengthSquared() > 0.009) {
 				$player = $user->getPlayer();
 				$verticalBlocks = AABB::getCollisionBlocks($player->getLevelNonNull(), $player->getBoundingBox()->expandedCopy(0.1, 0.2, 0.1));
-				$movementInfo->verticalBlocks = $verticalBlocks;
+				$info->verticalBlocks = $verticalBlocks;
 				//$horizonBlocks = $this->getUser()->getPlayer()->getLevelNonNull()->getCollisionBlocks($this->getUser()->getPlayer()->getBoundingBox()->expandedCopy(0.2, -0.1, 0.2));
-				$movementInfo->onGround = count($verticalBlocks) !== 0;
-				$movementInfo->inVoid = $player->getY() < 0;
+				$info->lastOnGround = $info->onGround;
+				$info->onGround = count($verticalBlocks) !== 0;
+				$info->inVoid = $player->getY() < 0;
 
-				$movementInfo->checkFly = !$player->isImmobile();
+				$info->checkFly = !$player->isImmobile();
 
 				foreach ($verticalBlocks as $block) {
 					$id = $block->getId();
@@ -56,7 +57,7 @@ class MovementProcessor extends Processor {
 						$id === Block::COBWEB ||
 						$block instanceof Liquid
 					) {
-						$movementInfo->checkFly = false;
+						$info->checkFly = false;
 						break;
 					}
 				}
