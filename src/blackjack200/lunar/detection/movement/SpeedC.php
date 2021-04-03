@@ -27,7 +27,7 @@ class SpeedC extends DetectionBase {
 			$maxSpeed = $this->getSpeed(0.4);
 			if ($deltaXZ > $maxSpeed &&
 				$user->getMovementInfo()->timeSinceTeleport() >= 0.25 &&
-				$user->getMovementInfo()->timeSinceMotion() >= 0.5 &&
+				$user->getMovementInfo()->timeSinceMotion() >= 0.75 &&
 				!$user->getPlayer()->isCreative(true) &&
 				!$user->getPlayer()->isFlying()
 			) {
