@@ -54,3 +54,14 @@ SpeedC:
   MaxVL: 10
   Diff: 0.000000000001
   Reward: 0.1
+FlyA:
+  Enable: true
+  Punishment: KICK
+  MaxVL: 10
+  Diff: 0.001
+  Reward: 0.666
+FlyB:
+  Enable: true
+  Punishment: KICK
+  MaxVL: 10
+  Reward: 0.85

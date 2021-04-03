@@ -7,6 +7,8 @@ namespace blackjack200\lunar\user\processor;
 use blackjack200\lunar\user\info\PlayerMovementInfo;
 use blackjack200\lunar\user\User;
 use blackjack200\lunar\utils\AABB;
+use pocketmine\block\Block;
+use pocketmine\block\Liquid;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
@@ -37,12 +39,27 @@ class MovementProcessor extends Processor {
 
 			$this->updateMoveDelta($movementInfo);
 
-			if ($movementInfo->moveDelta->lengthSquared() > 0.001) {
+			if ($movementInfo->moveDelta->lengthSquared() > 0.009) {
 				$player = $user->getPlayer();
 				$verticalBlocks = AABB::getCollisionBlocks($player->getLevelNonNull(), $player->getBoundingBox()->expandedCopy(0.1, 0.2, 0.1));
 				$movementInfo->verticalBlocks = $verticalBlocks;
 				//$horizonBlocks = $this->getUser()->getPlayer()->getLevelNonNull()->getCollisionBlocks($this->getUser()->getPlayer()->getBoundingBox()->expandedCopy(0.2, -0.1, 0.2));
 				$movementInfo->onGround = count($verticalBlocks) !== 0;
+				$movementInfo->inVoid = $player->getY() < 0;
+
+				$movementInfo->checkFly = !$player->isImmobile();
+
+				foreach ($verticalBlocks as $block) {
+					$id = $block->getId();
+					if (
+						$id === Block::SLIME_BLOCK ||
+						$id === Block::COBWEB ||
+						$block instanceof Liquid
+					) {
+						$movementInfo->checkFly = false;
+						break;
+					}
+				}
 			}
 		}
 	}

@@ -4,12 +4,14 @@ namespace blackjack200\lunar\listener;
 
 use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\DetectionBase;
+use blackjack200\lunar\detection\movement\FlyB;
 use blackjack200\lunar\user\UserManager;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityMotionEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerJumpEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
@@ -105,5 +107,9 @@ class DefaultListener implements Listener {
 				$user->getMovementInfo()->lastMotion = microtime(true);
 			}
 		}
+	}
+
+	public function onPlayerJump(PlayerJumpEvent $event) : void {
+		UserManager::get($event->getPlayer())->trigger(FlyB::class);
 	}
 }

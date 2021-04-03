@@ -10,6 +10,8 @@ use pocketmine\math\Vector3;
 
 class PlayerMovementInfo {
 	public bool $onGround = true;
+	public bool $inVoid = false;
+	public bool $checkFly = true;
 	/** @var Block[] */
 	public array $verticalBlocks = [];
 	public int $offGroundTick = 0;

@@ -9,6 +9,8 @@ use blackjack200\lunar\detection\combat\KillAura;
 use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\Detection;
 use blackjack200\lunar\detection\DetectionTrigger;
+use blackjack200\lunar\detection\movement\FlyA;
+use blackjack200\lunar\detection\movement\FlyB;
 use blackjack200\lunar\detection\movement\SpeedA;
 use blackjack200\lunar\detection\movement\SpeedC;
 use blackjack200\lunar\detection\packet\ClientDataFaker;
@@ -32,9 +34,11 @@ class User implements DetectionTrigger {
 	private array $processors = [];
 	private PlayerMovementInfo $moveData;
 	private PlayerActionInfo $actionInfo;
+	private float $joinTime;
 
 	public function __construct(Player $player) {
 		$this->player = $player;
+		$this->joinTime = microtime(true);
 		$this->moveData = new PlayerMovementInfo();
 		$this->actionInfo = new PlayerActionInfo();
 		$this->processors[] = new LoginProcessor($this);
@@ -44,11 +48,15 @@ class User implements DetectionTrigger {
 		//TODO This shouldn't be hardcoded
 		$this->registerStandardDetection(ClientDataFaker::class, 'ClientDataFaker');
 		$this->registerStandardDetection(NukerA::class, 'NukerA');
+
 		$this->registerStandardDetection(AutoClicker::class, 'AutoClicker');
 		$this->registerStandardDetection(KillAura::class, 'KillAura');
 		$this->registerStandardDetection(MultiAura::class, 'MultiAura');
+
 		$this->registerStandardDetection(SpeedA::class, 'SpeedA');
 		$this->registerStandardDetection(SpeedC::class, 'SpeedC');
+		$this->registerStandardDetection(FlyA::class, 'FlyA');
+		$this->registerStandardDetection(FlyB::class, 'FlyB');
 	}
 
 	/**
@@ -121,5 +129,9 @@ class User implements DetectionTrigger {
 
 	public function getActionInfo() : PlayerActionInfo {
 		return $this->actionInfo;
+	}
+
+	public function timeSinceJoin() : float {
+		return microtime(true) - $this->joinTime;
 	}
 }

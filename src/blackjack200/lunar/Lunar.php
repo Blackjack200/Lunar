@@ -9,6 +9,7 @@ use blackjack200\lunar\task\ProcessorSecondTrigger;
 use blackjack200\lunar\task\ProcessorTickTrigger;
 use pocketmine\entity\Entity;
 use pocketmine\plugin\PluginBase;
+use Throwable;
 
 class Lunar extends PluginBase {
 	private static self $instance;
@@ -29,13 +30,19 @@ class Lunar extends PluginBase {
 		$this->saveResource('config.yml');
 		$this->prefix = $this->getConfig()->get("Prefix");
 		Entity::registerEntity(Slapper::class, true, ['lunar_slapper']);
-		$this->registerStandardDetectionConfiguration('ClientDataFaker', false);
-		$this->registerStandardDetectionConfiguration('NukerA', false);
-		$this->registerStandardDetectionConfiguration('AutoClicker', false);
-		$this->registerStandardDetectionConfiguration('KillAura', true);
-		$this->registerStandardDetectionConfiguration('MultiAura', false);
-		$this->registerStandardDetectionConfiguration('SpeedA', false);
-		$this->registerStandardDetectionConfiguration('SpeedC', false);
+		try {
+			$this->registerStandardDetectionConfiguration('ClientDataFaker', false);
+			$this->registerStandardDetectionConfiguration('NukerA', false);
+			$this->registerStandardDetectionConfiguration('AutoClicker', false);
+			$this->registerStandardDetectionConfiguration('KillAura', true);
+			$this->registerStandardDetectionConfiguration('MultiAura', false);
+			$this->registerStandardDetectionConfiguration('SpeedA', false);
+			$this->registerStandardDetectionConfiguration('SpeedC', false);
+			$this->registerStandardDetectionConfiguration('FlyA', false);
+			$this->registerStandardDetectionConfiguration('FlyB', false);
+		} catch (Throwable $e) {
+			$this->getLogger()->warning('Configuration error');
+		}
 		$this->getScheduler()->scheduleRepeatingTask(new ProcessorTickTrigger(), 1);
 		$this->getScheduler()->scheduleRepeatingTask(new ProcessorSecondTrigger(), 20);
 	}

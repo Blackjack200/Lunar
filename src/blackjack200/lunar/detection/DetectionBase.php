@@ -9,6 +9,7 @@ use blackjack200\lunar\configuration\Punishment;
 use blackjack200\lunar\Lunar;
 use blackjack200\lunar\user\User;
 use pocketmine\network\mcpe\protocol\DataPacket;
+use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
@@ -91,6 +92,12 @@ abstract class DetectionBase implements Detection {
 	}
 
 	public function fail(string $message) : void {
+		Lunar::getInstance()->getScheduler()->scheduleTask(new ClosureTask(function (int $tick) use ($message) : void {
+			$this->failImpl($message);
+		}));
+	}
+
+	public function failImpl(string $message) : void {
 		$this->log($message);
 		switch ($this->getConfiguration()->getPunishment()) {
 			case Punishment::BAN():
