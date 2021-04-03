@@ -122,7 +122,11 @@ abstract class DetectionBase implements Detection {
 	}
 
 	public function kick(string $message) : void {
-		$this->getUser()->getPlayer()->kick(Lunar::getInstance()->getPrefix() . ' ' . $message, false);
+		$this->getUser()->getPlayer()->kick(Lunar::getInstance()->getPrefix() . ' ' . $this->getName() . $message, false);
+	}
+
+	public function getName() : string {
+		return $this->name;
 	}
 
 	public function reset() : void {
@@ -148,10 +152,6 @@ abstract class DetectionBase implements Detection {
 
 	public function destruct() : void {
 		$this->user = null;
-	}
-
-	public function getName() : string {
-		return $this->name;
 	}
 
 	public function check(...$data) : void {
