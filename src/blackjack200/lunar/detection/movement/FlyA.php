@@ -6,6 +6,7 @@ namespace blackjack200\lunar\detection\movement;
 
 use blackjack200\lunar\detection\DetectionBase;
 use blackjack200\lunar\user\User;
+use pocketmine\entity\Effect;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 
@@ -22,23 +23,25 @@ class FlyA extends DetectionBase {
 	public function handleReceive(DataPacket $packet) : void {
 		if ($packet instanceof MovePlayerPacket) {
 			$user = $this->getUser();
-			$movementInfo = $user->getMovementInfo();
+			$info = $user->getMovementInfo();
+			$player = $user->getPlayer();
 			if (
-				$movementInfo->offGroundTick > 5 &&
-				!$movementInfo->inVoid &&
-				$movementInfo->checkFly &&
-				$movementInfo->timeSinceTeleport() > 2 &&
+				$info->offGroundTick > 5 &&
+				!$info->inVoid &&
+				$info->checkFly &&
+				$info->timeSinceTeleport() > 2 &&
 				$user->timeSinceJoin() > 5 &&
-				!$user->getPlayer()->isFlying()
+				!$player->isFlying()
 			) {
 				//https://github.com/Tecnio/AntiHaxerman/blob/master/src/main/java/me/tecnio/antihaxerman/check/impl/movement/flight/FlightA.java
-				$deltaY = $movementInfo->moveDelta->y;
-				$lastDeltaY = $movementInfo->lastMoveDelta->y;
+				$deltaY = $info->moveDelta->y;
+				$lastDeltaY = $info->lastMoveDelta->y;
 				$prediction = ($lastDeltaY - 0.08) * 0.9800000190734863;
 				$fixed = abs($prediction) < 0.005 ? 0 : $prediction;
 				$difference = abs($deltaY - $fixed);
-				$limit = $movementInfo->timeSinceMotion() > 0.25 ? 0.001 : $user->getPlayer()->getMotion()->y + 0.451;
-				if ($difference > $limit) {
+				$limit = $info->timeSinceMotion() > 0.25 ? 0.001 : $player->getMotion()->y + 0.451;
+				$airTicksLimit = 8 + $this->getJumpEffectLevel();
+				if ($difference > $limit && $info->offGroundTick > $airTicksLimit) {
 					if ($this->preVL++ > 5) {
 						$this->addVL(1);
 						if ($this->overflowVL()) {
@@ -51,5 +54,14 @@ class FlyA extends DetectionBase {
 				}
 			}
 		}
+	}
+
+	public function getJumpEffectLevel() : int {
+		$level = 0;
+		$effect = $this->getUser()->getPlayer()->getEffect(Effect::JUMP);
+		if ($effect !== null) {
+			$level = $effect->getEffectLevel();
+		}
+		return $level;
 	}
 }
