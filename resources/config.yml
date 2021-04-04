@@ -15,14 +15,14 @@ ClientDataFaker:
 # Action
 NukerA:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   # Max Block Breaks in 20ms
   MaxBlock: 3
   MaxVL: 10
   Reward: 0.988
 AutoClicker:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   # Max CPS
   MaxCPS: 35
   MaxVL: 10
@@ -31,7 +31,7 @@ AutoClicker:
 KillAura:
   Enable: false
   MaxVL: 10
-  Punishment: KICK
+  Punishment: ALERT
   AttackCooldown: 3
   Radius: 3
   Random:
@@ -40,42 +40,48 @@ KillAura:
       Max: 3
 MultiAura:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   MaxVL: 10
   MaxEntityHit: 5
 
 # Movement
 SpeedA:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   MaxVL: 10
   Diff: 0.000000000001
   Reward: 0.888
 SpeedC:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   MaxVL: 10
   Diff: 0.000000000001
   Reward: 0.1
 FlyA:
   Enable: true
-  Punishment: KICK
-  MaxVL: 10
+  Punishment: ALERT
+  MaxVL: 40
   Diff: 0.001
-  Reward: 0.666
+  Reward: 0.888
 FlyB:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   MaxVL: 10
   Reward: 0.85
 FlyD:
-  Enable: false
-  Punishment: KICK
+  Enable: true
+  Punishment: ALERT
   MaxVL: 10
-  Reward: 0.99
+  Reward: 0.88
+FlyE:
+  Enable: true
+  Punishment: ALERT
+  MaxVL: 40
+  Reward: 0.88
+  Diff: 0.01
 
 # Network
 BadPacketA:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   MaxVL: 5

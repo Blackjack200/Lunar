@@ -16,11 +16,13 @@ class DetectionListCommand extends Command {
 	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args) {
-		$str = "§r§7Detections:\n";
-		foreach (StandardDetectionRegistry::getConfigurations() as $name => $configuration) {
-			$str .= sprintf(" §r§f%s §7ENABLE=§f%s\n", $name, Boolean::btos($configuration->isEnable()));
-		}
+		if ($this->testPermission($sender)) {
+			$str = "§r§7Detections:\n";
+			foreach (StandardDetectionRegistry::getConfigurations() as $name => $configuration) {
+				$str .= sprintf(" §r§f%s §7ENABLE=§f%s\n", $name, Boolean::btos($configuration->isEnable()));
+			}
 
-		$sender->sendMessage(rtrim($str));
+			$sender->sendMessage(rtrim($str));
+		}
 	}
 }

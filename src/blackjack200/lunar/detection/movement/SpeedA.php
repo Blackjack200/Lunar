@@ -22,7 +22,7 @@ class SpeedA extends DetectionBase {
 
 	public function handleReceive(DataPacket $packet) : void {
 		$user = $this->getUser();
-		if ($packet instanceof MovePlayerPacket && $user->getMovementInfo()->offGroundTick > 2) {
+		if ($packet instanceof MovePlayerPacket && $user->getMovementInfo()->inAirTick > 2) {
 			$lastMD = $user->getMovementInfo()->lastMoveDelta;
 			$curtMD = $user->getMovementInfo()->moveDelta;
 			$last = hypot($lastMD->x, $lastMD->z);

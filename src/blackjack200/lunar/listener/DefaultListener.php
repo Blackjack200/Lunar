@@ -7,6 +7,7 @@ use blackjack200\lunar\detection\DetectionBase;
 use blackjack200\lunar\detection\movement\FlyB;
 use blackjack200\lunar\user\UserManager;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityMotionEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\Listener;
@@ -111,5 +112,12 @@ class DefaultListener implements Listener {
 
 	public function onPlayerJump(PlayerJumpEvent $event) : void {
 		UserManager::get($event->getPlayer())->trigger(FlyB::class);
+	}
+
+	public function onPlayerDamage(EntityDamageEvent $event) : void {
+		$player = $event->getEntity();
+		if ($player instanceof Player) {
+			UserManager::get($player)->lastHurt = microtime(true);
+		}
 	}
 }

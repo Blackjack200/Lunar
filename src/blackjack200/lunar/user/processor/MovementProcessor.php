@@ -9,7 +9,6 @@ use blackjack200\lunar\user\User;
 use blackjack200\lunar\utils\AABB;
 use pocketmine\block\Block;
 use pocketmine\block\Door;
-use pocketmine\block\Liquid;
 use pocketmine\block\Trapdoor;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\DataPacket;
@@ -48,20 +47,21 @@ class MovementProcessor extends Processor {
 				//$horizonBlocks = $this->getUser()->getPlayer()->getLevelNonNull()->getCollisionBlocks($this->getUser()->getPlayer()->getBoundingBox()->expandedCopy(0.2, -0.1, 0.2));
 				$info->lastOnGround = $info->onGround;
 				$info->onGround = count($verticalBlocks) !== 0;
-				$info->inVoid = $player->getY() < 0;
-
+				$info->inVoid = $player->getY() < -15;
 				$info->checkFly = !$player->isImmobile();
-
+				//$this->getUser()->getPlayer()->sendPopup('on=' . Boolean::btos($info->onGround) . ' tick=' . $info->inAirTick);
 				foreach ($verticalBlocks as $block) {
 					$id = $block->getId();
 					if (
 						$id === Block::SLIME_BLOCK ||
 						$id === Block::COBWEB ||
-						$block instanceof Liquid ||
 						$block instanceof Door ||
-						$block instanceof Trapdoor
+						$block instanceof Trapdoor ||
+						$block->canClimb() ||
+						$block->canBeFlowedInto()
 					) {
 						$info->checkFly = false;
+						$info->onGround = true;
 						break;
 					}
 				}
@@ -82,10 +82,10 @@ class MovementProcessor extends Processor {
 	public function check(...$data) : void {
 		$moveData = $this->getUser()->getMovementInfo();
 		if (!$moveData->onGround) {
-			$moveData->offGroundTick++;
+			$moveData->inAirTick++;
 			$moveData->onGroundTick = 0;
 		} else {
-			$moveData->offGroundTick = 0;
+			$moveData->inAirTick = 0;
 			$moveData->onGroundTick++;
 		}
 	}

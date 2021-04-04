@@ -17,9 +17,10 @@ use pocketmine\Player;
 class User implements DetectionTrigger {
 	public ClientData $clientData;
 	public int $CPS = 0;
+	public float $lastHurt;
 	private Player $player;
 	/** @var Detection[] */
-	private array $detections = [];
+	private array $detections;
 	/** @var Processor[] */
 	private array $processors = [];
 	private PlayerMovementInfo $moveData;
@@ -29,6 +30,7 @@ class User implements DetectionTrigger {
 	public function __construct(Player $player) {
 		$this->player = $player;
 		$this->joinTime = microtime(true);
+		$this->lastHurt = microtime(true);
 		$this->moveData = new PlayerMovementInfo();
 		$this->actionInfo = new PlayerActionInfo();
 		$this->processors[] = new LoginProcessor($this);
@@ -37,6 +39,10 @@ class User implements DetectionTrigger {
 		$this->processors[] = new PlayerActionProcessor($this);
 
 		$this->detections = StandardDetectionRegistry::getDetections($this);
+	}
+
+	public function timeSinceHurt() : float {
+		return microtime(true) - $this->lastHurt;
 	}
 
 	public function __destruct() {
@@ -99,5 +105,14 @@ class User implements DetectionTrigger {
 
 	public function timeSinceJoin() : float {
 		return microtime(true) - $this->joinTime;
+	}
+
+	public function getEffectLevel(int $id) : int {
+		$level = 0;
+		$effect = $this->player->getEffect($id);
+		if ($effect !== null) {
+			$level = $effect->getEffectLevel();
+		}
+		return $level;
 	}
 }

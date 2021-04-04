@@ -13,6 +13,7 @@ use blackjack200\lunar\detection\DetectionBase;
 use blackjack200\lunar\detection\movement\FlyA;
 use blackjack200\lunar\detection\movement\FlyB;
 use blackjack200\lunar\detection\movement\FlyD;
+use blackjack200\lunar\detection\movement\FlyE;
 use blackjack200\lunar\detection\movement\SpeedA;
 use blackjack200\lunar\detection\movement\SpeedC;
 use blackjack200\lunar\detection\packet\BadPacketA;
@@ -40,6 +41,7 @@ final class StandardDetectionRegistry {
 			'FlyA' => FlyA::class,
 			'FlyB' => FlyB::class,
 			'FlyD' => FlyD::class,
+			'FlyE' => FlyE::class,
 		];
 
 		foreach (self::$detections as $name => $class) {

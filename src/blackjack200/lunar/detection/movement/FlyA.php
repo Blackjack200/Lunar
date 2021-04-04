@@ -26,7 +26,7 @@ class FlyA extends DetectionBase {
 			$info = $user->getMovementInfo();
 			$player = $user->getPlayer();
 			if (
-				$info->offGroundTick > 5 &&
+				$info->inAirTick > 5 &&
 				!$info->inVoid &&
 				$info->checkFly &&
 				$info->timeSinceTeleport() > 2 &&
@@ -41,28 +41,18 @@ class FlyA extends DetectionBase {
 				$fixed = abs($prediction) < 0.005 ? 0 : $prediction;
 				$difference = abs($deltaY - $fixed);
 				$limit = $info->timeSinceMotion() > 0.25 ? 0.001 : $player->getMotion()->y + 0.451;
-				$airTicksLimit = $this->maxDiff + 8 + $this->getJumpEffectLevel();
-				if ($difference > $limit && $info->offGroundTick > $airTicksLimit) {
+				$airTicksLimit = $this->maxDiff + 8 + $user->getEffectLevel(Effect::JUMP);
+				if ($difference > $limit && $info->inAirTick > $airTicksLimit) {
 					if ($this->preVL++ > 5) {
 						$this->addVL(1);
 						if ($this->overflowVL()) {
 							$this->fail("diff=$difference limit=$limit");
 						}
-						$this->preVL = 0;
 					}
 				} else {
 					$this->rewardPreVL($this->reward);
 				}
 			}
 		}
-	}
-
-	public function getJumpEffectLevel() : int {
-		$level = 0;
-		$effect = $this->getUser()->getPlayer()->getEffect(Effect::JUMP);
-		if ($effect !== null) {
-			$level = $effect->getEffectLevel();
-		}
-		return $level;
 	}
 }

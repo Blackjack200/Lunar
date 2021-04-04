@@ -15,7 +15,7 @@ class PlayerMovementInfo {
 	public bool $checkFly = true;
 	/** @var Block[] */
 	public array $verticalBlocks = [];
-	public int $offGroundTick = 0;
+	public int $inAirTick = 0;
 	public int $onGroundTick = 0;
 	public Vector3 $lastMoveDelta;
 	public Vector3 $moveDelta;

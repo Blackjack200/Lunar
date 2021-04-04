@@ -66,8 +66,11 @@ abstract class DetectionBase implements Detection {
 	}
 
 	/** @param numeric $VL */
-	public function addVL($VL, bool $silent = false) : void {
+	public function addVL($VL, ?string $message = null, bool $silent = false) : void {
 		$this->VL += $VL;
+		if ($message !== null) {
+			$this->alert($message);
+		}
 		if (!$silent) {
 			$this->alert("VL={$this->VL}");
 		}
