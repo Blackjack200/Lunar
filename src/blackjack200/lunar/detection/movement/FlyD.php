@@ -28,6 +28,7 @@ class FlyD extends DetectionBase {
 				!$info->inVoid &&
 				$info->checkFly &&
 				$info->timeSinceTeleport() > 2 &&
+				$info->timeSinceMotion() > 0.5 &&
 				$user->timeSinceJoin() > 5 &&
 				!$player->isFlying()
 			) {
