@@ -1,7 +1,7 @@
 # Lunar Anticheat Configure File
 Prefix: "§7[§fLunar§7]"
 CPSTag: true
-#Punishment(BAN, KICK, ALERT, IGNORE)
+# Punishment(BAN, KICK, ALERT, IGNORE)
 ClientDataFaker:
   Enable: true
   Punishment: BAN
@@ -12,6 +12,7 @@ ClientDataFaker:
   DeviceModel:
     - "EZ4H"
     - "VMOS"
+# Action
 NukerA:
   Enable: true
   Punishment: KICK
@@ -26,6 +27,7 @@ AutoClicker:
   MaxCPS: 35
   MaxVL: 10
   Reward: 0.988
+# Combat
 KillAura:
   Enable: false
   MaxVL: 10
@@ -41,6 +43,7 @@ MultiAura:
   Punishment: KICK
   MaxVL: 10
   MaxEntityHit: 5
+
 # Movement
 SpeedA:
   Enable: true

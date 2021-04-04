@@ -2,21 +2,9 @@
 
 namespace blackjack200\lunar\user;
 
-use blackjack200\lunar\configuration\DetectionConfiguration;
-use blackjack200\lunar\detection\action\AutoClicker;
-use blackjack200\lunar\detection\action\NukerA;
-use blackjack200\lunar\detection\combat\KillAura;
-use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\Detection;
 use blackjack200\lunar\detection\DetectionTrigger;
-use blackjack200\lunar\detection\movement\FlyA;
-use blackjack200\lunar\detection\movement\FlyB;
-use blackjack200\lunar\detection\movement\FlyD;
-use blackjack200\lunar\detection\movement\SpeedA;
-use blackjack200\lunar\detection\movement\SpeedC;
-use blackjack200\lunar\detection\packet\BadPacketA;
-use blackjack200\lunar\detection\packet\ClientDataFaker;
-use blackjack200\lunar\Lunar;
+use blackjack200\lunar\StandardDetectionRegistry;
 use blackjack200\lunar\user\info\PlayerActionInfo;
 use blackjack200\lunar\user\info\PlayerMovementInfo;
 use blackjack200\lunar\user\processor\InGameProcessor;
@@ -47,34 +35,8 @@ class User implements DetectionTrigger {
 		$this->processors[] = new InGameProcessor($this);
 		$this->processors[] = new MovementProcessor($this);
 		$this->processors[] = new PlayerActionProcessor($this);
-		//TODO This shouldn't be hardcoded
-		$this->registerStandardDetection(ClientDataFaker::class, 'ClientDataFaker');
-		$this->registerStandardDetection(NukerA::class, 'NukerA');
 
-		$this->registerStandardDetection(AutoClicker::class, 'AutoClicker');
-		$this->registerStandardDetection(KillAura::class, 'KillAura');
-		$this->registerStandardDetection(MultiAura::class, 'MultiAura');
-
-		$this->registerStandardDetection(SpeedA::class, 'SpeedA');
-		$this->registerStandardDetection(SpeedC::class, 'SpeedC');
-		$this->registerStandardDetection(FlyA::class, 'FlyA');
-		$this->registerStandardDetection(FlyB::class, 'FlyB');
-		$this->registerStandardDetection(FlyD::class, 'FlyD');
-		$this->registerStandardDetection(BadPacketA::class, 'BadPacketA');
-	}
-
-	/**
-	 * @param class-string<Detection> $class
-	 */
-	private function registerStandardDetection(string $class, string $name) : void {
-		$data = Lunar::getInstance()->getConfiguration()[$name];
-		if ($data instanceof DetectionConfiguration && $data->isEnable()) {
-			$this->detections[] = new $class(
-				$this,
-				$name,
-				clone $data
-			);
-		}
+		$this->detections = StandardDetectionRegistry::getDetections($this);
 	}
 
 	public function __destruct() {

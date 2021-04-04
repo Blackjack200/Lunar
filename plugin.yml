@@ -3,3 +3,10 @@ version: 0.0.1
 api: 3.0.0
 author: Misaka
 main: blackjack200\lunar\Lunar
+
+permissions:
+  lunar:
+    children:
+      lunar.list:
+        description: List Lunar Anticheat Detections
+        default: op
