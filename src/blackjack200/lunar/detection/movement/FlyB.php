@@ -20,7 +20,8 @@ class FlyB extends DetectionBase {
 		if ($info->offGroundTick > 5 &&
 			!$info->onGround &&
 			!$info->lastOnGround &&
-			$this->preVL++ > 2 &&
+			$this->preVL++ > 1 &&
+			$info->checkFly &&
 			$info->timeSinceTeleport() > 0.5
 		) {
 			$this->preVL = 0;
@@ -29,7 +30,7 @@ class FlyB extends DetectionBase {
 				$this->fail("off={$info->offGroundTick}");
 			}
 		} else {
-			$this->rewardVL($this->reward);
+			$this->rewardPreVL($this->reward);
 		}
 	}
 }
