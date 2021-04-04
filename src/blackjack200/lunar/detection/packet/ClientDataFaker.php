@@ -11,6 +11,11 @@ class ClientDataFaker extends DetectionBase {
 	public function check(...$data) : void {
 		$deviceOS = $this->getUser()->clientData->getClientData()->DeviceOS;
 		$deviceModel = $this->getUser()->clientData->getClientData()->DeviceModel;
+
+		if ($deviceOS === DeviceOS::ANDROID && trim($deviceModel) === '') {
+			$deviceOS = 20;
+		}
+
 		$pass = !in_array(
 				$deviceOS,
 				$this->getConfiguration()->getExtraData()->DeviceOS,
@@ -19,12 +24,13 @@ class ClientDataFaker extends DetectionBase {
 				$deviceModel,
 				$this->getConfiguration()->getExtraData()->DeviceModel,
 				true);
+
 		if ($deviceOS !== DeviceOS::WINDOWS_10 && isset($this->getUser()->clientData->getChainData()->extraData->titleId)) {
 			$titleId = $this->getUser()->clientData->getChainData()->extraData->titleId;
-			$pass = $pass || ($titleId === "896928775");
+			$pass = $pass || ($titleId === '896928775');
 		}
 		if ($pass) {
-			$this->fail("LoginData is incorrect");
+			$this->fail('LoginData is incorrect');
 		}
 	}
 }
