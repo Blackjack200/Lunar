@@ -18,7 +18,6 @@ use blackjack200\lunar\detection\movement\SpeedC;
 use blackjack200\lunar\detection\packet\BadPacketA;
 use blackjack200\lunar\detection\packet\ClientDataFaker;
 use blackjack200\lunar\user\User;
-use Exception;
 
 final class StandardDetectionRegistry {
 	/** @var DetectionConfiguration[] */
@@ -41,16 +40,18 @@ final class StandardDetectionRegistry {
 			'FlyA' => FlyA::class,
 			'FlyB' => FlyB::class,
 			'FlyD' => FlyD::class,
-			'BadPacketA' => BadPacketA::class
 		];
 
 		foreach (self::$detections as $name => $class) {
-			self::registerStandardDetectionConfiguration($name);
+			self::registerStandardDetectionConfiguration($name, false);
 		}
+
+		self::$detections['BadPacketA'] = BadPacketA::class;
+		self::registerStandardDetectionConfiguration('BadPacketA', true);
 	}
 
-	private static function registerStandardDetectionConfiguration(string $name) : void {
-		self::$configurations[$name] = new DetectionConfiguration(Lunar::getInstance()->getConfig()->get($name), true);
+	private static function registerStandardDetectionConfiguration(string $name, bool $object) : void {
+		self::$configurations[$name] = new DetectionConfiguration(Lunar::getInstance()->getConfig()->get($name), $object);
 	}
 
 	public static function getConfigurations() : array {
@@ -59,21 +60,22 @@ final class StandardDetectionRegistry {
 
 	/**
 	 * @return DetectionBase[]
-	 * @throws Exception
 	 */
 	public static function getDetections(User $user) : array {
 		$detections = [];
 		foreach (self::$detections as $name => $class) {
-			$detections[] = self::createDetection($user, $class, $class);
+			$detection = self::createDetection($user, $name, $class);
+			if ($detection !== null) {
+				$detections[] = $detection;
+			}
 		}
 		return $detections;
 	}
 
 	/**
 	 * @param class-string<DetectionBase> $class
-	 * @throws Exception
 	 */
-	private static function createDetection(User $user, string $name, string $class) : DetectionBase {
+	private static function createDetection(User $user, string $name, string $class) : ?DetectionBase {
 		$data = self::$configurations[$name];
 		if ($data instanceof DetectionConfiguration && $data->isEnable()) {
 			return new $class(
@@ -82,6 +84,6 @@ final class StandardDetectionRegistry {
 				clone $data
 			);
 		}
-		throw new Exception('Detection not exist');
+		return null;
 	}
 }
