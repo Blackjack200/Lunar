@@ -77,11 +77,19 @@ abstract class DetectionBase implements Detection {
 	}
 
 	public function alert(string $message) : void {
-		$this->getUser()->getPlayer()->sendMessage(sprintf("%s %s: %s", Lunar::getInstance()->getPrefix(), $this->name, $message));
+		$this->getUser()->getPlayer()->sendMessage($this->formatMessage($message));
 	}
 
 	public function getUser() : User {
 		return $this->user;
+	}
+
+	/**
+	 * @param string $message
+	 * @return string
+	 */
+	protected function formatMessage(string $message) : string {
+		return sprintf("%s %s: %s", Lunar::getInstance()->getPrefix(), $this->name, $message);
 	}
 
 	/** @param numeric $val */
@@ -108,7 +116,7 @@ abstract class DetectionBase implements Detection {
 				$this->kick($message);
 				break;
 			case Punishment::WARN():
-				$this->alert(TextFormat::RED . TextFormat::BOLD . $message);
+				$this->alertTitle(TextFormat::RED . TextFormat::BOLD . $message);
 				$this->reset();
 				break;
 			case Punishment::KICK():
@@ -130,6 +138,10 @@ abstract class DetectionBase implements Detection {
 
 	public function getName() : string {
 		return $this->name;
+	}
+
+	public function alertTitle(string $message) : void {
+		$this->getUser()->getPlayer()->sendTitle('§g', $this->formatMessage($message), 2, 3, 5);
 	}
 
 	public function reset() : void {
