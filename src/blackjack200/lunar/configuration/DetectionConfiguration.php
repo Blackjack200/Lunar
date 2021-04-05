@@ -10,7 +10,7 @@ class DetectionConfiguration {
 	private int $punishment;
 	private int $maxVL;
 	private float $reward;
-	private float $enable;
+	private bool $enable;
 	private object $extraData;
 
 	public function __construct(array $data, bool $recursiveObject) {
