@@ -38,12 +38,12 @@ class FlyA extends DetectionBase {
 				$deltaY = $info->moveDelta->y;
 				$lastDeltaY = $info->lastMoveDelta->y;
 				$prediction = ($lastDeltaY - 0.08) * 0.9800000190734863;
-				$fixed = abs($prediction) < 0.005 ? 0 : $prediction;
+				$fixed = abs($prediction) < 0.005 ? -0.08 * 0.9800000190734863 : $prediction;
 				$difference = abs($deltaY - $fixed);
 				$limit = $info->timeSinceMotion() > 0.25 ? 0.001 : $player->getMotion()->y + 0.451;
 				$airTicksLimit = $this->maxDiff + 8 + $user->getEffectLevel(Effect::JUMP);
 				if ($difference > $limit && $info->inAirTick > $airTicksLimit) {
-					if ($this->preVL++ > 5) {
+					if ($this->preVL++ > 3) {
 						$this->addVL(1);
 						if ($this->overflowVL()) {
 							$this->fail("diff=$difference limit=$limit");
