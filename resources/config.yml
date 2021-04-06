@@ -22,7 +22,7 @@ NukerA:
   Reward: 0.988
 AutoClicker:
   Enable: true
-  Punishment: BAN
+  Punishment: KICK
   # Max CPS
   MaxCPS: 35
   MaxVL: 10
