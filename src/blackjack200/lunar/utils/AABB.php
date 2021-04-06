@@ -38,13 +38,12 @@ class AABB {
 	}
 
 	public static function fromBlock(Block $block) : AxisAlignedBB {
-		return $block->getBoundingBox() ??
-			new AxisAlignedBB($block->getX(),
-				$block->getY(),
-				$block->getZ(),
-				$block->getX() + 1,
-				$block->getY() + 1,
-				$block->getZ() + 1
-			);
+		return new AxisAlignedBB($block->getX(),
+			$block->getY(),
+			$block->getZ(),
+			$block->getX() + 1,
+			$block->getY() + 1,
+			$block->getZ() + 1
+		);
 	}
 }
