@@ -27,7 +27,7 @@ class PlayerMovementInfo {
 	public PositionStack $stack;
 
 	public function __construct() {
-		$this->stack = new PositionStack(256);
+		$this->stack = new PositionStack(4);
 	}
 
 	public function timeSinceTeleport() : float {
