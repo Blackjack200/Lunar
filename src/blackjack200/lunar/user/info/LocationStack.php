@@ -7,7 +7,7 @@ namespace blackjack200\lunar\user\info;
 use pocketmine\level\Location;
 use SplFixedArray;
 
-final class PositionStack {
+final class LocationStack {
 	/** @var SplFixedArray<Location> */
 	private SplFixedArray $data;
 	private int $size;

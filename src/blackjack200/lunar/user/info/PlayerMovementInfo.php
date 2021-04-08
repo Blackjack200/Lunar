@@ -4,7 +4,6 @@
 namespace blackjack200\lunar\user\info;
 
 
-use pocketmine\block\Block;
 use pocketmine\level\Location;
 use pocketmine\math\Vector3;
 
@@ -13,8 +12,6 @@ class PlayerMovementInfo {
 	public bool $onGround = true;
 	public bool $inVoid = false;
 	public bool $checkFly = true;
-	/** @var Block[] */
-	public array $verticalBlocks = [];
 	public int $inAirTick = 0;
 	public bool $onIce = false;
 	public int $onGroundTick = 0;
@@ -24,10 +21,10 @@ class PlayerMovementInfo {
 	public Location $location;
 	public float $lastTeleport = 0;
 	public float $lastMotion = 0;
-	public PositionStack $stack;
+	public LocationStack $stack;
 
 	public function __construct() {
-		$this->stack = new PositionStack(4);
+		$this->stack = new LocationStack(4);
 	}
 
 	public function timeSinceTeleport() : float {
