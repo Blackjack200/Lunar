@@ -1,7 +1,7 @@
 # Lunar Anticheat Configure File
 Prefix: "§7[§fLunar§7]"
 CPSTag: true
-# Punishment(BAN, KICK, ALERT, IGNORE)
+# Punishment(BAN, KICK, ALERT, IGNORE, SUPPRESS)
 ClientDataFaker:
   Enable: true
   Punishment: BAN
@@ -16,6 +16,7 @@ ClientDataFaker:
 NukerA:
   Enable: true
   Punishment: KICK
+  Suppress: true
   # Max Block Breaks in 20ms
   MaxBlock: 3
   MaxVL: 10
@@ -48,34 +49,34 @@ MultiAura:
 SpeedA:
   Enable: true
   Punishment: KICK
+  Suppress: true
   MaxVL: 10
   Diff: 0.000000000001
   Reward: 0.888
 SpeedC:
   Enable: true
   Punishment: KICK
+  Suppress: true
   MaxVL: 10
   Diff: 0.000000000001
   Reward: 0.1
 FlyA:
   Enable: true
   Punishment: KICK
+  Suppress: true
   MaxVL: 40
   Diff: 0.001
   Reward: 0.888
 FlyB:
   Enable: true
   Punishment: KICK
+  Suppress: true
   MaxVL: 10
   Reward: 0.85
-FlyD:
-  Enable: false
-  Punishment: KICK
-  MaxVL: 10
-  Reward: 0.88
 FlyE:
   Enable: true
   Punishment: KICK
+  Suppress: true
   MaxVL: 40
   Reward: 0.88
   Diff: 0.01

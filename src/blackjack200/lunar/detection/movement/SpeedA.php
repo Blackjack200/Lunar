@@ -40,11 +40,13 @@ class SpeedA extends DetectionBase {
 			) {
 				if ($this->preVL++ > 6) {
 					$this->addVL(1);
+					$this->suppress();
 					$this->preVL = 0;
+					if ($this->overflowVL()) {
+						$this->fail(sprintf('DIFF=%.5f', $diff));
+					}
 				}
-				if ($this->overflowVL()) {
-					$this->fail(sprintf('DIFF=%.5f', $diff));
-				}
+
 			} else {
 				$this->rewardPreVL($this->reward);
 			}

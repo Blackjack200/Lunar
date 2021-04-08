@@ -12,7 +12,6 @@ use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\DetectionBase;
 use blackjack200\lunar\detection\movement\FlyA;
 use blackjack200\lunar\detection\movement\FlyB;
-use blackjack200\lunar\detection\movement\FlyD;
 use blackjack200\lunar\detection\movement\FlyE;
 use blackjack200\lunar\detection\movement\SpeedA;
 use blackjack200\lunar\detection\movement\SpeedC;
@@ -40,7 +39,6 @@ final class StandardDetectionRegistry {
 			'SpeedC' => SpeedC::class,
 			'FlyA' => FlyA::class,
 			'FlyB' => FlyB::class,
-			'FlyD' => FlyD::class,
 			'FlyE' => FlyE::class,
 		];
 

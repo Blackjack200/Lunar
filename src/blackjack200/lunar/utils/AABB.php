@@ -4,37 +4,33 @@
 namespace blackjack200\lunar\utils;
 
 
+use Generator;
 use pocketmine\block\Block;
 use pocketmine\level\Level;
 use pocketmine\math\AxisAlignedBB;
 
 class AABB {
 	/**
-	 * @return Block[]
+	 * @return Generator<Block>
 	 */
-	public static function getCollisionBlocks(Level $level, AxisAlignedBB $bb, bool $targetFirst = false) : array {
-		$minX = (int) floor($bb->minX - 1);
-		$minY = (int) floor($bb->minY - 1);
-		$minZ = (int) floor($bb->minZ - 1);
-		$maxX = (int) floor($bb->maxX + 1);
-		$maxY = (int) floor($bb->maxY + 1);
-		$maxZ = (int) floor($bb->maxZ + 1);
-
-		$collides = [];
+	public static function getCollisionBlocks(Level $level, AxisAlignedBB $bb, bool $targetFirst = false) : Generator {
+		$minX = (int) ceil($bb->minX - 1);
+		$minY = (int) ceil($bb->minY - 1);
+		$minZ = (int) ceil($bb->minZ - 1);
+		$maxX = (int) ceil($bb->maxX + 1);
+		$maxY = (int) ceil($bb->maxY + 1);
+		$maxZ = (int) ceil($bb->maxZ + 1);
 
 		for ($z = $minZ; $z <= $maxZ; ++$z) {
 			for ($x = $minX; $x <= $maxX; ++$x) {
 				for ($y = $minY; $y <= $maxY; ++$y) {
 					$block = $level->getBlockAt($x, $y, $z);
-					$b = self::fromBlock($block);
-					if (!$block->canPassThrough() && $b->intersectsWith($bb)) {
-						$collides[] = $block;
+					if (!$block->canPassThrough() && self::fromBlock($block)->intersectsWith($bb)) {
+						yield $block;
 					}
 				}
 			}
 		}
-
-		return $collides;
 	}
 
 	public static function fromBlock(Block $block) : AxisAlignedBB {

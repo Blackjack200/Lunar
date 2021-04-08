@@ -41,6 +41,7 @@ class FlyE extends DetectionBase {
 
 				if ($difference < $this->maxDiff && $this->preVL++ > 4) {
 					$this->addVL(1);
+					$this->suppress();
 					if ($this->overflowVL()) {
 						$this->fail("diff=$difference");
 					}

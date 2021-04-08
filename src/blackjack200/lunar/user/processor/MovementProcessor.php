@@ -10,11 +10,13 @@ use blackjack200\lunar\utils\AABB;
 use pocketmine\block\Block;
 use pocketmine\block\Door;
 use pocketmine\block\Trapdoor;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 
 class MovementProcessor extends Processor {
+	private const ICE = [ItemIds::ICE, ItemIds::PACKED_ICE, ItemIds::FROSTED_ICE];
 	/** @var Vector3 */
 	private static $emptyVector3;
 	protected $verticalAABB;
@@ -35,23 +37,30 @@ class MovementProcessor extends Processor {
 		if ($packet instanceof MovePlayerPacket) {
 			$user = $this->getUser();
 			$info = $user->getMovementInfo();
+			$player = $user->getPlayer();
 
 			$this->updateLocation($info);
 
 			$this->updateMoveDelta($info);
 
 			if ($info->moveDelta->lengthSquared() > 0.009) {
-				$player = $user->getPlayer();
+				$info->stack->push($player->asLocation());
 				$verticalBlocks = AABB::getCollisionBlocks($player->getLevelNonNull(), $player->getBoundingBox()->expandedCopy(0.1, 0.2, 0.1));
-				$info->verticalBlocks = $verticalBlocks;
-				//$horizonBlocks = $this->getUser()->getPlayer()->getLevelNonNull()->getCollisionBlocks($this->getUser()->getPlayer()->getBoundingBox()->expandedCopy(0.2, -0.1, 0.2));
 				$info->lastOnGround = $info->onGround;
-				$info->onGround = count($verticalBlocks) !== 0;
+				$info->onGround = false;
 				$info->inVoid = $player->getY() < -15;
 				$info->checkFly = !$player->isImmobile();
 				//$this->getUser()->getPlayer()->sendPopup('on=' . Boolean::btos($info->onGround) . ' tick=' . $info->inAirTick);
 				foreach ($verticalBlocks as $block) {
+					if (!$info->onGround) {
+						$info->onGround = true;
+					}
 					$id = $block->getId();
+					if (in_array($id, self::ICE, true)) {
+						$info->onIce = true;
+						continue;
+					}
+
 					if (
 						$id === Block::SLIME_BLOCK ||
 						$id === Block::COBWEB ||

@@ -12,13 +12,15 @@ class DetectionConfiguration {
 	private float $reward;
 	private bool $enable;
 	private object $extraData;
+	private bool $suppress;
 
 	public function __construct(array $data, bool $recursiveObject) {
 		$this->punishment = Punishment::parsePunishment($data['Punishment']);
 		$this->enable = $data['Enable'];
 		$this->maxVL = $data['MaxVL'] ?? -1;
 		$this->reward = $data['Reward'] ?? 1;
-		unset($data['Punishment'], $data['Enable'], $data['MaxVL'], $data['Reward']);
+		$this->suppress = $data['Suppress'] ?? false;
+		unset($data['Punishment'], $data['Enable'], $data['MaxVL'], $data['Reward'], $data['Suppress']);
 		$this->extraData = $recursiveObject ? $this->convert($data) : (object) $data;
 	}
 
@@ -60,5 +62,9 @@ class DetectionConfiguration {
 
 	public function getReward() : float {
 		return $this->reward;
+	}
+
+	public function isSuppress() : bool {
+		return $this->suppress;
 	}
 }

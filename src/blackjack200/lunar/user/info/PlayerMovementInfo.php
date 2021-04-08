@@ -16,6 +16,7 @@ class PlayerMovementInfo {
 	/** @var Block[] */
 	public array $verticalBlocks = [];
 	public int $inAirTick = 0;
+	public bool $onIce = false;
 	public int $onGroundTick = 0;
 	public Vector3 $lastMoveDelta;
 	public Vector3 $moveDelta;
@@ -23,6 +24,11 @@ class PlayerMovementInfo {
 	public Location $location;
 	public float $lastTeleport = 0;
 	public float $lastMotion = 0;
+	public PositionStack $stack;
+
+	public function __construct() {
+		$this->stack = new PositionStack(256);
+	}
 
 	public function timeSinceTeleport() : float {
 		return microtime(true) - $this->lastTeleport;

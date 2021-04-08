@@ -45,6 +45,7 @@ class FlyA extends DetectionBase {
 				if ($difference > $limit && $info->inAirTick > $airTicksLimit) {
 					if ($this->preVL++ > 3) {
 						$this->addVL(1);
+						$this->suppress();
 						if ($this->overflowVL()) {
 							$this->fail("diff=$difference limit=$limit");
 						}

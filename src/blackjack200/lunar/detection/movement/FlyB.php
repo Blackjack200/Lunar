@@ -25,6 +25,7 @@ class FlyB extends DetectionBase {
 			$info->timeSinceTeleport() > 0.5
 		) {
 			$this->addVL(1);
+			$this->suppress();
 			if ($this->overflowVL()) {
 				$this->fail("off={$info->inAirTick}");
 			}

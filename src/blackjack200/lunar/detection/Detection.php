@@ -21,6 +21,8 @@ interface Detection {
 
 	public function alert(string $message) : void;
 
+	public function suppress() : void;
+
 	public function fail(string $message) : void;
 
 	public function debug(string $message) : void;

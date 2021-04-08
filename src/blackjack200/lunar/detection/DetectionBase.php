@@ -176,4 +176,14 @@ abstract class DetectionBase implements Detection {
 	public function close() : void {
 
 	}
+
+	public function suppress() : void {
+		if ($this->configuration->isSuppress()) {
+			$user = $this->getUser();
+			$pos = $user->getMovementInfo()->stack->pop();
+			if ($pos !== null) {
+				$user->getPlayer()->teleport($pos);
+			}
+		}
+	}
 }
