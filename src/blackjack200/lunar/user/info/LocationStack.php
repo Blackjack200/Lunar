@@ -5,13 +5,12 @@ namespace blackjack200\lunar\user\info;
 
 
 use pocketmine\level\Location;
-use SplFixedArray;
 
 final class LocationStack {
-	/** @var SplFixedArray<Location> */
-	private SplFixedArray $data;
+	/** @var Location[] */
+	private array $data;
 	private int $size;
-	private int $curt = 0;
+	private int $curt;
 
 	public function __construct(int $size) {
 		$this->size = $size;
@@ -19,24 +18,22 @@ final class LocationStack {
 	}
 
 	public function reset() : void {
-		$this->data = new SplFixedArray($this->size);
+		$this->data = [];
 		$this->curt = 0;
 	}
 
 	public function pop() : ?Location {
-		$curt = &$this->curt;
-		$ret = $this->data[$curt];
-		$this->data[$curt] = null;
-		if ($this->curt > 0) {
-			$curt--;
+		if ($this->curt - 1 > 0) {
+			$this->curt--;
 		}
-		return $ret;
+		return array_pop($this->data);
 	}
 
 	public function push(Location $location) : void {
-		if ($this->curt + 1 > $this->size) {
+		if (count($this->data) > $this->size) {
 			$this->reset();
 		}
-		$this->data[$this->curt++] = $location;
+		$this->data[] = $location;
+		$this->curt++;
 	}
 }

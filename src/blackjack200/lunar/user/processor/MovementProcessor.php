@@ -47,7 +47,7 @@ class MovementProcessor extends Processor {
 				$info->stack->push($player->asLocation());
 				$verticalBlocks = AABB::getCollisionBlocks($player->getLevelNonNull(), $player->getBoundingBox()->expandedCopy(0.1, 0.2, 0.1));
 				$info->lastOnGround = $info->onGround;
-				$info->onGround = false;
+				$info->onGround = $player->isOnGround();
 				$info->inVoid = $player->getY() < -15;
 				$info->checkFly = !$player->isImmobile();
 				//$this->getUser()->getPlayer()->sendPopup('on=' . Boolean::btos($info->onGround) . ' tick=' . $info->inAirTick);
