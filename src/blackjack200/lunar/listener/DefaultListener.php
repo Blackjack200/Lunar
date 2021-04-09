@@ -51,7 +51,7 @@ class DefaultListener implements Listener {
 		if ($user !== null) {
 			$packet = $event->getPacket();
 			foreach ($user->getProcessors() as $processor) {
-				$processor->processServerBond($packet);
+				$processor->processServer($packet);
 			}
 
 			foreach ($user->getDetections() as $detection) {

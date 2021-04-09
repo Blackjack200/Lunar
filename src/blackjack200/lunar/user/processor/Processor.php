@@ -16,7 +16,7 @@ abstract class Processor implements Listener {
 		$this->user = $user;
 	}
 
-	public function processServerBond(DataPacket $packet) : void {
+	public function processServer(DataPacket $packet) : void {
 	}
 
 	public function processClient(DataPacket $packet) : void {

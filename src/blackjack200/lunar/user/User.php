@@ -5,11 +5,13 @@ namespace blackjack200\lunar\user;
 use blackjack200\lunar\detection\Detection;
 use blackjack200\lunar\detection\DetectionTrigger;
 use blackjack200\lunar\StandardDetectionRegistry;
+use blackjack200\lunar\user\info\LatencyInfo;
 use blackjack200\lunar\user\info\PlayerActionInfo;
 use blackjack200\lunar\user\info\PlayerMovementInfo;
 use blackjack200\lunar\user\processor\InGameProcessor;
 use blackjack200\lunar\user\processor\LoginProcessor;
 use blackjack200\lunar\user\processor\MovementProcessor;
+use blackjack200\lunar\user\processor\NetworkLatencyProcessor;
 use blackjack200\lunar\user\processor\PlayerActionProcessor;
 use blackjack200\lunar\user\processor\Processor;
 use pocketmine\Player;
@@ -25,6 +27,7 @@ class User implements DetectionTrigger {
 	private array $processors = [];
 	private PlayerMovementInfo $moveData;
 	private PlayerActionInfo $actionInfo;
+	private LatencyInfo $latencyInfo;
 	private float $joinTime;
 
 	public function __construct(Player $player) {
@@ -33,10 +36,12 @@ class User implements DetectionTrigger {
 		$this->lastHurt = microtime(true);
 		$this->moveData = new PlayerMovementInfo();
 		$this->actionInfo = new PlayerActionInfo();
+		$this->latencyInfo = new LatencyInfo();
 		$this->processors[] = new LoginProcessor($this);
 		$this->processors[] = new InGameProcessor($this);
 		$this->processors[] = new MovementProcessor($this);
 		$this->processors[] = new PlayerActionProcessor($this);
+		$this->processors[] = new NetworkLatencyProcessor($this);
 
 		$this->detections = StandardDetectionRegistry::getDetections($this);
 	}
@@ -114,5 +119,9 @@ class User implements DetectionTrigger {
 			$level = $effect->getEffectLevel();
 		}
 		return $level;
+	}
+
+	public function getLatencyInfo() : LatencyInfo {
+		return $this->latencyInfo;
 	}
 }
