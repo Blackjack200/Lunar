@@ -149,11 +149,11 @@ abstract class DetectionBase implements Detection {
 		$this->setPreVL(0);
 	}
 
-	public function handleReceive(DataPacket $packet) : void {
+	public function handleClient(DataPacket $packet) : void {
 
 	}
 
-	public function handleSend(DataPacket $packet) : void {
+	public function handleServer(DataPacket $packet) : void {
 
 	}
 

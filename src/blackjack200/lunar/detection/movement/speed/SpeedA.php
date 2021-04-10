@@ -20,7 +20,7 @@ class SpeedA extends DetectionBase {
 		$this->reward = $this->getConfiguration()->getReward();
 	}
 
-	public function handleReceive(DataPacket $packet) : void {
+	public function handleClient(DataPacket $packet) : void {
 		$user = $this->getUser();
 		if ($packet instanceof MovePlayerPacket && $user->getMovementInfo()->inAirTick > 2) {
 			$lastMD = $user->getMovementInfo()->lastMoveDelta;

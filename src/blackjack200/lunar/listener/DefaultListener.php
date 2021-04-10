@@ -56,7 +56,7 @@ class DefaultListener implements Listener {
 
 			foreach ($user->getDetections() as $detection) {
 				if ($detection instanceof DetectionBase) {
-					$detection->handleSend($packet);
+					$detection->handleServer($packet);
 				}
 			}
 		}
@@ -75,7 +75,7 @@ class DefaultListener implements Listener {
 
 			foreach ($user->getDetections() as $detection) {
 				if ($detection instanceof DetectionBase) {
-					$detection->handleReceive($packet);
+					$detection->handleClient($packet);
 				}
 			}
 		}

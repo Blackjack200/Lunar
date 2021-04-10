@@ -19,7 +19,7 @@ class FlyE extends DetectionBase {
 		$this->reward = $this->getConfiguration()->getReward();
 	}
 
-	public function handleReceive(DataPacket $packet) : void {
+	public function handleClient(DataPacket $packet) : void {
 		if ($packet instanceof MovePlayerPacket) {
 			$user = $this->getUser();
 			$info = $user->getMovementInfo();

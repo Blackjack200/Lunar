@@ -9,7 +9,9 @@ use blackjack200\lunar\user\User;
 use blackjack200\lunar\utils\AABB;
 use pocketmine\block\Block;
 use pocketmine\block\Door;
+use pocketmine\block\Ladder;
 use pocketmine\block\Trapdoor;
+use pocketmine\block\Vine;
 use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\DataPacket;
@@ -43,8 +45,11 @@ class MovementProcessor extends Processor {
 
 			$this->updateMoveDelta($info);
 
-			if ($info->moveDelta->lengthSquared() > 0.009) {
-				$info->stack->push($player->asLocation());
+			$dist = $info->moveDelta->lengthSquared();
+			if ($dist > 0.009) {
+				if ($dist > 2) {
+					$info->stack->push($player->asLocation());
+				}
 				$verticalBlocks = AABB::getCollisionBlocks($player->getLevelNonNull(), $player->getBoundingBox()->expandedCopy(0.1, 0.2, 0.1));
 				$info->lastOnGround = $info->onGround;
 				$info->onGround = $player->isOnGround();
@@ -66,6 +71,8 @@ class MovementProcessor extends Processor {
 						$id === Block::COBWEB ||
 						$block instanceof Door ||
 						$block instanceof Trapdoor ||
+						$block instanceof Vine ||
+						$block instanceof Ladder ||
 						$block->canClimb() ||
 						$block->canBeFlowedInto()
 					) {

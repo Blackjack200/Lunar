@@ -19,7 +19,7 @@ class NukerA extends DetectionBase {
 		$this->maxBlock = $this->getConfiguration()->getExtraData()->MaxBlock;
 	}
 
-	public function handleReceive(DataPacket $packet) : void {
+	public function handleClient(DataPacket $packet) : void {
 		if (($packet instanceof InventoryTransactionPacket) &&
 			$packet->trData instanceof UseItemTransactionData &&
 			$packet->trData->getActionType() === UseItemTransactionData::ACTION_BREAK_BLOCK

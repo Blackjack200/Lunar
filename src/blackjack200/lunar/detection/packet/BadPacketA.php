@@ -10,7 +10,7 @@ use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\UseItemOnEntityTransactionData;
 
 class BadPacketA extends DetectionBase {
-	public function handleReceive(DataPacket $packet) : void {
+	public function handleClient(DataPacket $packet) : void {
 		if (
 			$packet instanceof InventoryTransactionPacket &&
 			$packet->trData instanceof UseItemOnEntityTransactionData &&

@@ -46,6 +46,7 @@ MultiAura:
   MaxEntityHit: 5
 
 # Movement
+#  Speed
 SpeedA:
   Enable: true
   Punishment: KICK
@@ -60,6 +61,7 @@ SpeedC:
   MaxVL: 10
   Diff: 0.000000000001
   Reward: 0.1
+#  Fly
 FlyA:
   Enable: false
   Punishment: KICK
@@ -80,6 +82,23 @@ FlyE:
   MaxVL: 40
   Reward: 0.88
   Diff: 0.01
+#  Motion
+MotionA:
+  Enable: true
+  Punishment: KICK
+  MaxVL: 5
+MotionC:
+  Enable: true
+  Punishment: KICK
+  MaxVL: 5
+MotionD:
+  Enable: true
+  Punishment: KICK
+  MaxVL: 5
+MotionE:
+  Enable: true
+  Punishment: KICK
+  MaxVL: 5
 
 # Network
 BadPacketA:
