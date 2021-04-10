@@ -1,7 +1,7 @@
 <?php
 
 
-namespace blackjack200\lunar\detection\movement;
+namespace blackjack200\lunar\detection\movement\fly;
 
 
 use blackjack200\lunar\detection\DetectionBase;

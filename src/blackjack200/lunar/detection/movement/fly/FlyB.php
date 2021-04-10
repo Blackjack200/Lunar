@@ -1,7 +1,7 @@
 <?php
 
 
-namespace blackjack200\lunar\detection\movement;
+namespace blackjack200\lunar\detection\movement\fly;
 
 
 use blackjack200\lunar\detection\DetectionBase;
@@ -17,7 +17,7 @@ class FlyB extends DetectionBase {
 
 	public function check(...$data) : void {
 		$info = $this->getUser()->getMovementInfo();
-		if ($info->inAirTick > 5 &&
+		if ($info->inAirTick > 10 &&
 			!$info->onGround &&
 			!$info->lastOnGround &&
 			$this->preVL++ > 2 &&
