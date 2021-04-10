@@ -35,6 +35,7 @@ class AABB {
 
 	public static function fromBlock(Block $block) : AxisAlignedBB {
 		return $block->getBoundingBox() ??
+			UnknownBlockAABBList::get($block->getId(), $block->getDamage()) ??
 			new AxisAlignedBB($block->getX(),
 				$block->getY(),
 				$block->getZ(),

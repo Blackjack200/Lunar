@@ -7,6 +7,7 @@ use blackjack200\lunar\detection\combat\Slapper;
 use blackjack200\lunar\listener\DefaultListener;
 use blackjack200\lunar\task\ProcessorSecondTrigger;
 use blackjack200\lunar\task\ProcessorTickTrigger;
+use blackjack200\lunar\utils\UnknownBlockAABBList;
 use pocketmine\entity\Entity;
 use pocketmine\plugin\PluginBase;
 use Throwable;
@@ -25,6 +26,7 @@ class Lunar extends PluginBase {
 
 	public function onEnable() : void {
 		self::$instance = $this;
+		UnknownBlockAABBList::registerDefaults();
 		$this->getServer()->getPluginManager()->registerEvents(new DefaultListener(), $this);
 		$this->saveResource('config.yml');
 		$this->prefix = $this->getConfig()->get("Prefix");
