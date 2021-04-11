@@ -28,13 +28,15 @@ class Lunar extends PluginBase {
 		self::$instance = $this;
 		UnknownBlockAABBList::registerDefaults();
 		$this->getServer()->getPluginManager()->registerEvents(new DefaultListener(), $this);
-		$this->saveResource('config.yml', true);
+		$this->saveResource('config.yml', $this->getConfig()->get('Replace'));
+		$this->reloadConfig();
 		$this->prefix = $this->getConfig()->get("Prefix");
 		Entity::registerEntity(Slapper::class, true, ['lunar_slapper']);
 		try {
 			StandardDetectionRegistry::initConfig();
 		} catch (Throwable $e) {
-			$this->getLogger()->warning('Configuration Error');
+			$this->getLogger()->logException($e);
+			$this->getLogger()->warning('Error when Configuration');
 			$this->getServer()->getPluginManager()->disablePlugin($this);
 			return;
 		}

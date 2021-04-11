@@ -1,5 +1,6 @@
 # Lunar Anticheat Configure File
 Prefix: "§7[§fLunar§7]"
+Replace: true
 CPSTag: true
 # Punishment(BAN, KICK, ALERT, IGNORE, SUPPRESS)
 ClientDataFaker:
