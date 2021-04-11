@@ -15,7 +15,7 @@ use blackjack200\lunar\user\processor\Processor;
 use pocketmine\Player;
 
 class User implements DetectionTrigger {
-	public ClientData $clientData;
+	public LoginData $loginData;
 	public int $CPS = 0;
 	public float $lastHurt;
 	private Player $player;

@@ -9,8 +9,11 @@ use pocketmine\network\mcpe\protocol\types\DeviceOS;
 
 class ClientDataFaker extends DetectionBase {
 	public function check(...$data) : void {
-		$deviceOS = $this->getUser()->clientData->getClientData()->DeviceOS;
-		$deviceModel = $this->getUser()->clientData->getClientData()->DeviceModel;
+		$loginData = $this->getUser()->loginData;
+		var_dump($this->getUser()->loginData);
+		$clientData = $loginData->getClientData();
+		$deviceOS = $clientData->DeviceOS;
+		$deviceModel = $clientData->DeviceModel;
 
 		if ($deviceOS === DeviceOS::ANDROID && trim($deviceModel) === '') {
 			$deviceOS = 20;
@@ -25,12 +28,25 @@ class ClientDataFaker extends DetectionBase {
 				$this->getConfiguration()->getExtraData()->DeviceModel,
 				true);
 
-		if ($deviceOS !== DeviceOS::WINDOWS_10 && isset($this->getUser()->clientData->getChainData()->extraData->titleId)) {
-			$titleId = $this->getUser()->clientData->getChainData()->extraData->titleId;
-			$pass = $pass || ($titleId === '896928775');
+		$chainData = $loginData->getChainData();
+		if (isset($chainData->extraData->titleId)) {
+			$titleId = $chainData->extraData->titleId;
+			switch ($deviceOS) {
+				case DeviceOS::WINDOWS_10:
+					$pass = ($titleId !== '896928775');
+					break;
+				case DeviceOS::ANDROID:
+				case DeviceOS::IOS:
+				case 20:
+					$pass = ($titleId !== '1739947436');
+					break;
+				case DeviceOS::NINTENDO:
+					$pass = ($titleId !== '2047319603');
+					break;
+			}
 		}
 		if ($pass) {
-			$this->fail('LoginData is incorrect');
+			$this->fail('LoginData is incorrect data=' . $deviceOS . ' ' . $deviceModel);
 		}
 	}
 }

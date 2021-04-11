@@ -21,23 +21,7 @@ class DetectionConfiguration {
 		$this->reward = $data['Reward'] ?? 1;
 		$this->suppress = $data['Suppress'] ?? false;
 		unset($data['Punishment'], $data['Enable'], $data['MaxVL'], $data['Reward'], $data['Suppress']);
-		$this->extraData = $recursiveObject ? $this->convert($data) : (object) $data;
-	}
-
-	/**
-	 * @param mixed|object $val
-	 * @return mixed|object
-	 */
-	private function convert($val) {
-		$obj = new stdClass();
-		if (is_array($val)) {
-			foreach ($val as $key => $value) {
-				$obj->$key = $this->convert($value);
-			}
-		} else {
-			return $val;
-		}
-		return $obj;
+		$this->extraData = $recursiveObject ? Objects::convert($data) : (object) $data;
 	}
 
 	public function getExtraData() : object {
