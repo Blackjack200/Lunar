@@ -35,9 +35,11 @@ class ClientDataFaker extends DetectionBase {
 					$pass = ($titleId !== '896928775');
 					break;
 				case DeviceOS::ANDROID:
-				case DeviceOS::IOS:
 				case 20:
 					$pass = ($titleId !== '1739947436');
+					break;
+				case DeviceOS::IOS:
+					$pass = ($titleId !== '1810924247');
 					break;
 				case DeviceOS::NINTENDO:
 					$pass = ($titleId !== '2047319603');
