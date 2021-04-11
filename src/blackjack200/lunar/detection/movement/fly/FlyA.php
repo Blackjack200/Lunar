@@ -26,7 +26,7 @@ class FlyA extends DetectionBase {
 			$info = $user->getMovementInfo();
 			$player = $user->getPlayer();
 			if (
-				$info->inAirTick > 5 &&
+				$info->inAirTick > 10 &&
 				!$info->inVoid &&
 				$info->checkFly &&
 				$info->timeSinceTeleport() > 2 &&
@@ -50,8 +50,9 @@ class FlyA extends DetectionBase {
 							$this->fail("diff=$difference limit=$limit");
 						}
 					}
-				} else {
-					$this->rewardPreVL($this->reward);
+				} elseif ($info->inAirTick > 5) {
+					$this->rewardPreVL(0.8);
+					$this->rewardVL($this->reward);
 				}
 			}
 		}
