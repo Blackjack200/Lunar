@@ -28,7 +28,7 @@ class Lunar extends PluginBase {
 		self::$instance = $this;
 		UnknownBlockAABBList::registerDefaults();
 		$this->getServer()->getPluginManager()->registerEvents(new DefaultListener(), $this);
-		$this->saveResource('config.yml');
+		$this->saveResource('config.yml', true);
 		$this->prefix = $this->getConfig()->get("Prefix");
 		Entity::registerEntity(Slapper::class, true, ['lunar_slapper']);
 		try {

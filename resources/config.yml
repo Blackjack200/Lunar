@@ -83,10 +83,6 @@ FlyE:
   Reward: 0.88
   Diff: 0.01
 #  Motion
-MotionA:
-  Enable: true
-  Punishment: KICK
-  MaxVL: 5
 MotionC:
   Enable: true
   Punishment: KICK

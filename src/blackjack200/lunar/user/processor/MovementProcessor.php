@@ -55,7 +55,6 @@ class MovementProcessor extends Processor {
 				$info->onGround = $player->isOnGround();
 				$info->inVoid = $player->getY() < -15;
 				$info->checkFly = !$player->isImmobile();
-				//$this->getUser()->getPlayer()->sendPopup('on=' . Boolean::btos($info->onGround) . ' tick=' . $info->inAirTick);
 				foreach ($verticalBlocks as $block) {
 					if (!$info->onGround) {
 						$info->onGround = true;
@@ -81,6 +80,7 @@ class MovementProcessor extends Processor {
 						break;
 					}
 				}
+				//$this->getUser()->getPlayer()->sendPopup('check='.Boolean::btos($info->checkFly).'on=' . Boolean::btos($info->onGround) . ' tick=' . $info->inAirTick);
 			}
 		}
 	}
