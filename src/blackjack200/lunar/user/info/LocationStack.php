@@ -4,21 +4,24 @@
 namespace blackjack200\lunar\user\info;
 
 
+use Ds\Stack;
 use pocketmine\level\Location;
 
 final class LocationStack {
-	/** @var Location[] */
-	private array $data;
+	/** @var Stack<Location> */
+	private Stack $stack;
 	private int $size;
 	private int $curt;
 
 	public function __construct(int $size) {
 		$this->size = $size;
+		$this->stack = new Stack();
+		$this->stack->allocate($size);
 		$this->reset();
 	}
 
 	public function reset() : void {
-		$this->data = [];
+		$this->stack->clear();
 		$this->curt = 0;
 	}
 
@@ -26,14 +29,14 @@ final class LocationStack {
 		if ($this->curt - 1 > 0) {
 			$this->curt--;
 		}
-		return array_pop($this->data);
+		return $this->stack->pop();
 	}
 
 	public function push(Location $location) : void {
-		if (count($this->data) > $this->size) {
+		if (count($this->stack) > $this->size) {
 			$this->reset();
 		}
-		$this->data[] = $location;
+		$this->stack->push($location);
 		$this->curt++;
 	}
 }
