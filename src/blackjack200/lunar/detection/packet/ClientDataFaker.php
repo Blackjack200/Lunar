@@ -45,7 +45,7 @@ class ClientDataFaker extends DetectionBase {
 			}
 		}
 		if ($pass) {
-			$this->fail('LoginData is incorrect data=' . $deviceOS . ' ' . $deviceModel);
+			$this->fail('LoginData is incorrect id=' . ($titleId ?? 'unknown') . 'data=' . $deviceOS . ' ' . $deviceModel);
 		}
 	}
 }
