@@ -10,7 +10,6 @@ use pocketmine\network\mcpe\protocol\types\DeviceOS;
 class ClientDataFaker extends DetectionBase {
 	public function check(...$data) : void {
 		$loginData = $this->getUser()->loginData;
-		var_dump($this->getUser()->loginData);
 		$clientData = $loginData->getClientData();
 		$deviceOS = $clientData->DeviceOS;
 		$deviceModel = $clientData->DeviceModel;
