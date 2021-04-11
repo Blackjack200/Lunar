@@ -30,7 +30,7 @@ class Lunar extends PluginBase {
 		$this->getServer()->getPluginManager()->registerEvents(new DefaultListener(), $this);
 		$this->saveResource('config.yml', $this->getConfig()->get('Replace'));
 		$this->reloadConfig();
-		$this->prefix = $this->getConfig()->get("Prefix");
+		$this->prefix = $this->getConfig()->get('Prefix', true);
 		Entity::registerEntity(Slapper::class, true, ['lunar_slapper']);
 		try {
 			StandardDetectionRegistry::initConfig();

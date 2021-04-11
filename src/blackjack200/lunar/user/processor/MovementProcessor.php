@@ -21,14 +21,13 @@ class MovementProcessor extends Processor {
 	private const ICE = [ItemIds::ICE, ItemIds::PACKED_ICE, ItemIds::FROSTED_ICE];
 	/** @var Vector3 */
 	private static $emptyVector3;
-	protected $verticalAABB;
+	protected int $buffer = 0;
 
 	public function __construct(User $user) {
 		parent::__construct($user);
 		if (self::$emptyVector3 === null) {
 			self::$emptyVector3 = new Vector3();
 		}
-		$this->verticalAABB = $this->getUser()->getPlayer()->getBoundingBox()->expandedCopy(0.1, 0.2, 0.1);
 		$this->getUser()->getMovementInfo()->lastLocation = $this->getUser()->getPlayer()->asLocation();
 		$this->getUser()->getMovementInfo()->location = $this->getUser()->getPlayer()->asLocation();
 		$this->getUser()->getMovementInfo()->moveDelta = new Vector3();
@@ -46,8 +45,10 @@ class MovementProcessor extends Processor {
 			$this->updateMoveDelta($info);
 
 			$dist = $info->moveDelta->lengthSquared();
-			if ($dist > 0.009) {
-				if ($dist > 2) {
+			if ($dist > 0.003) {
+				if ($dist > 0.0042 && $this->buffer++ > 20) {
+					$this->buffer = 0;
+					//$player->sendMessage("record" . random_int(1, 114514));
 					$info->stack->push($player->asLocation());
 				}
 				$verticalBlocks = AABB::getCollisionBlocks($player->getLevelNonNull(), $player->getBoundingBox()->expandedCopy(0.1, 0.2, 0.1));
@@ -80,7 +81,7 @@ class MovementProcessor extends Processor {
 						break;
 					}
 				}
-				//$this->getUser()->getPlayer()->sendPopup('check='.Boolean::btos($info->checkFly).'on=' . Boolean::btos($info->onGround) . ' tick=' . $info->inAirTick);
+				//$this->getUser()->getPlayer()->sendPopup('check=' . Boolean::btos($info->checkFly) . ' on=' . Boolean::btos($info->onGround) . ' tick=' . $info->inAirTick);
 			}
 		}
 	}
