@@ -24,8 +24,8 @@ class MotionA extends DetectionBase {
 				$deltaY = $info->moveDelta->y;
 				$lastY = $info->lastLocation->y;
 
-				$deltaModulo = (float) $deltaY % 0.015625 === 0.0;
-				$lastGround = (float) $lastY % 0.015625 === 0.0;
+				$deltaModulo = ((float) ($deltaY % 0.015625)) === 0.0;
+				$lastGround = ((float) ($lastY % 0.015625)) === 0.0;
 
 				$step = $deltaModulo && $lastGround;
 

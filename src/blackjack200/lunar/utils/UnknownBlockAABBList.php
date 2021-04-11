@@ -8,7 +8,7 @@ use pocketmine\math\AxisAlignedBB as AABB;
 
 //MockingBird
 final class UnknownBlockAABBList {
-
+	/** @var AABB[] */
 	private static $list = [];
 
 	public static function registerDefaults() : void {

@@ -1,0 +1,7 @@
+{
+    "name": "blackjack200/lunar",
+    "type": "project",
+    "require": {
+        "phpstan/phpstan": "^0.12.83"
+    }
+}

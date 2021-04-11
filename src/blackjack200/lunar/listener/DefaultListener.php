@@ -4,7 +4,7 @@ namespace blackjack200\lunar\listener;
 
 use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\DetectionBase;
-use blackjack200\lunar\detection\movement\FlyB;
+use blackjack200\lunar\detection\movement\fly\FlyB;
 use blackjack200\lunar\user\UserManager;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;

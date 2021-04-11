@@ -15,15 +15,15 @@ use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 
 class KillAura extends DetectionBase {
 	protected float $radius;
-	protected float $min;
-	protected float $max;
+	protected int $min;
+	protected int $max;
 	protected Slapper $slapper;
 
 	public function __construct(User $user, string $name, $data) {
 		parent::__construct($user, $name, $data);
 		$this->radius = (float) $this->getConfiguration()->getExtraData()->Radius;
-		$this->min = (float) $this->getConfiguration()->getExtraData()->Random->Y->Min;
-		$this->max = (float) $this->getConfiguration()->getExtraData()->Random->Y->Max;
+		$this->min = (int) $this->getConfiguration()->getExtraData()->Random->Y->Min;
+		$this->max = (int) $this->getConfiguration()->getExtraData()->Random->Y->Max;
 
 		$player = $this->getUser()->getPlayer();
 		$tag = Entity::createBaseNBT($player);
