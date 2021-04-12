@@ -1,7 +1,7 @@
 # Lunar
 
-Lunar is an anti-cheat(work in progress).
+AntiCheat for PocketMine-MP API 3.0.0
 
-## Current Feature
+Used in production but very deprecated(unknown issue).
 
-- EditionFaker
+[Discord](https://discord.gg/g9a8TrZu34)
