@@ -2,7 +2,7 @@
 Prefix: "§7[§fLunar§7]"
 Replace: true
 CPSTag: true
-# Punishment(BAN, KICK, ALERT, IGNORE, SUPPRESS)
+# Punishment(BAN, KICK, ALERT, IGNORE)
 ClientDataFaker:
   Enable: true
   Punishment: BAN
@@ -81,6 +81,11 @@ FlyE:
   MaxVL: 40
   Reward: 0.88
   Diff: 0.01
+# GroundSpoof
+GroundSpoofA:
+  Enable: true
+  Punishment: ALERT
+  MaxVL: 5
 
 # Network
 BadPacketA:
