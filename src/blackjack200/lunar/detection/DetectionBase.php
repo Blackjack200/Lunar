@@ -43,7 +43,7 @@ abstract class DetectionBase implements Detection {
 	}
 
 	public function overflowVL() : bool {
-		return $this->getConfiguration()->hasMaxVL() ? $this->VL >= $this->getConfiguration()->getMaxVL() : false;
+		return $this->getConfiguration()->hasMaxVL() && $this->VL >= $this->getConfiguration()->getMaxVL();
 	}
 
 	public function getConfiguration() : DetectionConfiguration {
@@ -129,15 +129,15 @@ abstract class DetectionBase implements Detection {
 	 * @param string $message
 	 */
 	public function log(string $message) : void {
-		Lunar::getInstance()->getLogger()->info("NAME={$this->getUser()->getPlayer()->getName()} D=" . static::class . ' ' . $message);
-	}
-
-	public function kick(string $message) : void {
-		$this->getUser()->getPlayer()->kick(Lunar::getInstance()->getPrefix() . ' ' . $this->getName() . ' ' . $message, false);
+		Lunar::getInstance()->getLogger()->info("NAME={$this->getUser()->getPlayer()->getName()} D=" . $this->getName() . ' ' . $message);
 	}
 
 	public function getName() : string {
 		return $this->name;
+	}
+
+	public function kick(string $message) : void {
+		$this->getUser()->getPlayer()->kick(Lunar::getInstance()->getPrefix() . ' ' . $this->getName() . ' ' . $message, false);
 	}
 
 	public function alertTitle(string $message) : void {
@@ -177,12 +177,13 @@ abstract class DetectionBase implements Detection {
 
 	}
 
-	public function suppress() : void {
+	public function revertMovement() : void {
 		if ($this->configuration->isSuppress()) {
 			$user = $this->getUser();
-			$pos = $user->getMovementInfo()->stack->pop();
+			$pos = $user->getMovementInfo()->locationHistory->pop();
 			if ($pos !== null) {
-				$user->getPlayer()->teleport($pos);
+				$player = $user->getPlayer();
+				$player->teleport($pos, $player->getYaw(), $player->getPitch());
 			}
 		}
 	}

@@ -45,11 +45,10 @@ class MovementProcessor extends Processor {
 			$this->updateMoveDelta($info);
 
 			$dist = $info->moveDelta->lengthSquared();
-			if ($dist > 0.003) {
-				if ($dist > 0.0042 && $this->buffer++ > 20) {
+			if ($dist > 0.002) {
+				if ($this->buffer++ > 4) {
 					$this->buffer = 0;
-					//$player->sendMessage("record" . random_int(1, 114514));
-					$info->stack->push($player->asLocation());
+					$info->locationHistory->push($player->asLocation());
 				}
 				$verticalBlocks = AABB::getCollisionBlocks($player->getLevelNonNull(), $player->getBoundingBox()->expandedCopy(0.1, 0.2, 0.1));
 				$info->lastOnGround = $info->onGround;

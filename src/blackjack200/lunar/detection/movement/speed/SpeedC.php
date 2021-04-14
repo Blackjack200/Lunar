@@ -36,10 +36,10 @@ class SpeedC extends DetectionBase {
 				!$user->getPlayer()->isCreative(true) &&
 				!$user->getPlayer()->isFlying()
 			) {
-				if (++$this->preVL > 3) {
+				if ($this->preVL++ > 2) {
 					$this->addVL(1);
 					$this->preVL = 0;
-					$this->suppress();
+					$this->revertMovement();
 					if ($this->overflowVL()) {
 						$this->fail("A=$deltaXZ E=$maxSpeed");
 					}

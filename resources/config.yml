@@ -81,12 +81,11 @@ FlyE:
   MaxVL: 40
   Reward: 0.88
   Diff: 0.01
-# GroundSpoof
-GroundSpoofA:
-  Enable: true
-  Punishment: ALERT
-  MaxVL: 5
 
+MotionA:
+  Enable: true
+  Punishment: KICK
+  MaxVL: 10
 # Network
 BadPacketA:
   Enable: true

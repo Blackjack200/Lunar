@@ -21,10 +21,11 @@ class PlayerMovementInfo {
 	public Location $location;
 	public float $lastTeleport = 0;
 	public float $lastMotion = 0;
-	public LocationStack $stack;
+	public float $lastJump = 0;
+	public LocationHistory $locationHistory;
 
 	public function __construct() {
-		$this->stack = new LocationStack(4);
+		$this->locationHistory = new LocationHistory(64);
 	}
 
 	public function timeSinceTeleport() : float {
@@ -33,5 +34,9 @@ class PlayerMovementInfo {
 
 	public function timeSinceMotion() : float {
 		return microtime(true) - $this->lastMotion;
+	}
+
+	public function timeSinceJump() : float {
+		return microtime(true) - $this->lastJump;
 	}
 }

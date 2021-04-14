@@ -5,32 +5,21 @@ namespace blackjack200\lunar\detection\movement\fly;
 
 
 use blackjack200\lunar\detection\DetectionBase;
-use blackjack200\lunar\user\User;
+use pocketmine\network\mcpe\protocol\DataPacket;
+use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 
 class FlyB extends DetectionBase {
-	private float $reward;
-
-	public function __construct(User $user, string $name, $data) {
-		parent::__construct($user, $name, $data);
-		$this->reward = $this->getConfiguration()->getReward();
-	}
-
-	public function check(...$data) : void {
+	public function handleClient(DataPacket $packet) : void {
 		$info = $this->getUser()->getMovementInfo();
-		if ($info->inAirTick > 10 &&
-			!$info->onGround &&
-			!$info->lastOnGround &&
-			$this->preVL++ > 2 &&
-			$info->checkFly &&
-			$info->timeSinceTeleport() > 0.5
+		if ($packet instanceof PlayerActionPacket &&
+			$packet->action === PlayerActionPacket::ACTION_JUMP &&
+			!$info->onGround
 		) {
 			$this->addVL(1);
-			$this->suppress();
+			$this->revertMovement();
 			if ($this->overflowVL()) {
 				$this->fail("off={$info->inAirTick}");
 			}
-		} else {
-			$this->rewardPreVL($this->reward);
 		}
 	}
 }
