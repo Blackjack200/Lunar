@@ -83,7 +83,7 @@ FlyE:
   Diff: 0.01
 
 MotionA:
-  Enable: true
+  Enable: false
   Punishment: KICK
   MaxVL: 10
 # Network

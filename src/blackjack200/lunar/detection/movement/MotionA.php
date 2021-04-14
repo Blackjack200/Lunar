@@ -19,7 +19,11 @@ class MotionA extends DetectionBase {
 		//     b
 		// a**2 + b**2 = c**2
 		$info = $this->getUser()->getMovementInfo();
-		if ($packet instanceof MovePlayerPacket) {
+		if (
+			$packet instanceof MovePlayerPacket &&
+			$info->timeSinceJump() < 0.25 &&
+			$info->timeSinceTeleport() > 1
+		) {
 			$lastDelta = clone $info->lastMoveDelta;
 			$player = $this->getUser()->getPlayer();
 			$lastXZ = hypot($lastDelta->x, $lastDelta->z);
