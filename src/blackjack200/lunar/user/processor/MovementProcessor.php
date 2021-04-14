@@ -55,7 +55,7 @@ class MovementProcessor extends Processor {
 				$info->lastOnGround = $info->onGround;
 				$info->onGround = $player->isOnGround();
 				$info->inVoid = $player->getY() < -15;
-				$info->checkFly = !$player->isImmobile() || !$player->hasEffect(Effect::LEVITATION);
+				$info->checkFly = !$player->isImmobile() && !$player->hasEffect(Effect::LEVITATION);
 				foreach ($verticalBlocks as $block) {
 					if (!$info->onGround) {
 						$info->onGround = true;
