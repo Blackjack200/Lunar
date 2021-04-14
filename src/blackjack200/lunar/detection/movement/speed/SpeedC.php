@@ -45,7 +45,7 @@ class SpeedC extends DetectionBase {
 					}
 				}
 			} elseif ($deltaXZ > 0) {
-				$this->rewardPreVL($this->reward);
+				$this->preVL *= $this->reward;
 			}
 		}
 	}

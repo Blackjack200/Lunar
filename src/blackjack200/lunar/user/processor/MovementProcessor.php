@@ -12,6 +12,7 @@ use pocketmine\block\Door;
 use pocketmine\block\Ladder;
 use pocketmine\block\Trapdoor;
 use pocketmine\block\Vine;
+use pocketmine\entity\Effect;
 use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\DataPacket;
@@ -54,7 +55,7 @@ class MovementProcessor extends Processor {
 				$info->lastOnGround = $info->onGround;
 				$info->onGround = $player->isOnGround();
 				$info->inVoid = $player->getY() < -15;
-				$info->checkFly = !$player->isImmobile();
+				$info->checkFly = !$player->isImmobile() || !$player->hasEffect(Effect::LEVITATION);
 				foreach ($verticalBlocks as $block) {
 					if (!$info->onGround) {
 						$info->onGround = true;

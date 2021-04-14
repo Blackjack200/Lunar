@@ -37,6 +37,6 @@ class NukerA extends DetectionBase {
 
 	public function check(...$data) : void {
 		$this->count = 0;
-		$this->rewardVL($this->getConfiguration()->getReward());
+		$this->VL *= $this->getConfiguration()->getReward();
 	}
 }

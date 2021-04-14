@@ -46,7 +46,7 @@ class FlyE extends DetectionBase {
 						$this->fail("diff=$difference");
 					}
 				} else {
-					$this->rewardPreVL($this->reward);
+					$this->preVL *= $this->reward;
 				}
 			}
 		}

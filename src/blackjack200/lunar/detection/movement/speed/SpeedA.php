@@ -50,7 +50,7 @@ class SpeedA extends DetectionBase {
 				}
 
 			} else {
-				$this->rewardPreVL($this->reward);
+				$this->preVL *= $this->reward;
 			}
 		}
 	}

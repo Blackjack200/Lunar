@@ -15,13 +15,12 @@ use pocketmine\utils\TextFormat;
 
 abstract class DetectionBase implements Detection {
 	protected float $preVL = 0;
+	protected float $VL = 0;
 	/** @var User */
 	private $user;
 	/** @var mixed */
 	private $configuration;
-	//TODO Violation Level
 	private string $name;
-	private float $VL = 0;
 
 	/**
 	 * @param DetectionConfiguration $data
@@ -32,37 +31,12 @@ abstract class DetectionBase implements Detection {
 		$this->configuration = $data;
 	}
 
-	/** @return numeric */
-	public function getVL() {
-		return $this->VL;
-	}
-
-	/** @param numeric $VL */
-	public function setVL($VL) : void {
-		$this->VL = $VL;
-	}
-
 	public function overflowVL() : bool {
 		return $this->getConfiguration()->hasMaxVL() && $this->VL >= $this->getConfiguration()->getMaxVL();
 	}
 
-	public function getConfiguration() : DetectionConfiguration {
+	final public function getConfiguration() : DetectionConfiguration {
 		return $this->configuration;
-	}
-
-	/** @return numeric */
-	public function getPreVL() {
-		return $this->preVL;
-	}
-
-	/** @param numeric $preVL */
-	public function setPreVL($preVL) : void {
-		$this->preVL = $preVL;
-	}
-
-	/** @param numeric $preVL */
-	public function addPreVL($preVL) : void {
-		$this->preVL += $preVL;
 	}
 
 	/** @param numeric $VL */
@@ -80,7 +54,7 @@ abstract class DetectionBase implements Detection {
 		$this->getUser()->getPlayer()->sendMessage($this->formatMessage($message));
 	}
 
-	public function getUser() : User {
+	final public function getUser() : User {
 		return $this->user;
 	}
 
@@ -88,18 +62,8 @@ abstract class DetectionBase implements Detection {
 	 * @param string $message
 	 * @return string
 	 */
-	protected function formatMessage(string $message) : string {
+	final protected function formatMessage(string $message) : string {
 		return sprintf("%s %s: %s", Lunar::getInstance()->getPrefix(), $this->name, $message);
-	}
-
-	/** @param numeric $val */
-	public function rewardPreVL($val) : void {
-		$this->preVL *= $val;
-	}
-
-	/** @param numeric $val */
-	public function rewardVL($val) : void {
-		$this->VL *= $val;
 	}
 
 	public function fail(string $message) : void {
@@ -108,7 +72,7 @@ abstract class DetectionBase implements Detection {
 		}));
 	}
 
-	public function failImpl(string $message) : void {
+	final protected function failImpl(string $message) : void {
 		$this->log($message);
 		switch ($this->getConfiguration()->getPunishment()) {
 			case Punishment::BAN():
@@ -129,15 +93,13 @@ abstract class DetectionBase implements Detection {
 	 * @param string $message
 	 */
 	public function log(string $message) : void {
-		Lunar::getInstance()->getLogger()->info("NAME={$this->getUser()->getPlayer()->getName()} D=" . $this->getName() . ' ' . $message);
-	}
-
-	public function getName() : string {
-		return $this->name;
+		$fmt = sprintf('[%s] NAME=%s DETECTION=%s MSG=%s', time(), $this->getUser()->getPlayer()->getName(), $this->name, $message);
+		Lunar::getInstance()->getLogger()->info($fmt);
+		Lunar::getInstance()->getDetectionLogger()->write($fmt);
 	}
 
 	public function kick(string $message) : void {
-		$this->getUser()->getPlayer()->kick(Lunar::getInstance()->getPrefix() . ' ' . $this->getName() . ' ' . $message, false);
+		$this->getUser()->getPlayer()->kick($this->formatMessage($message), false);
 	}
 
 	public function alertTitle(string $message) : void {
@@ -145,8 +107,12 @@ abstract class DetectionBase implements Detection {
 	}
 
 	public function reset() : void {
-		$this->setVL(0);
-		$this->setPreVL(0);
+		$this->VL = 0;
+		$this->preVL = 0;
+	}
+
+	final public function getName() : string {
+		return $this->name;
 	}
 
 	public function handleClient(DataPacket $packet) : void {
@@ -158,7 +124,7 @@ abstract class DetectionBase implements Detection {
 	}
 
 	public function debug(string $message) : void {
-		// TODO: Implement debug() method.
+
 	}
 
 	final public function __destruct() {

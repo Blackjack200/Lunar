@@ -23,7 +23,7 @@ class AutoClicker extends DetectionBase {
 				$this->fail("CPS={$CPS}");
 			}
 		} else {
-			$this->rewardVL($this->getConfiguration()->getReward());
+			$this->VL *= $this->getConfiguration()->getReward();
 		}
 	}
 }

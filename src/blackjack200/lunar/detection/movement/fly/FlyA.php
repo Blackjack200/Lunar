@@ -51,8 +51,8 @@ class FlyA extends DetectionBase {
 						}
 					}
 				} elseif ($info->inAirTick > 5) {
-					$this->rewardPreVL(0.8);
-					$this->rewardVL($this->reward);
+					$this->preVL *= $this->reward;
+					$this->VL *= $this->reward;
 				}
 			}
 		}

@@ -16,6 +16,7 @@ class Lunar extends PluginBase {
 	/** @var self */
 	private static $instance;
 	private string $prefix = '';
+	private DetectionLogger $detectionLogger;
 
 	public static function getInstance() : Lunar {
 		return self::$instance;
@@ -51,5 +52,15 @@ class Lunar extends PluginBase {
 
 		$command = new DetectionListCommand();
 		$this->getServer()->getCommandMap()->register($command->getName(), $command);
+		$this->detectionLogger = new DetectionLogger($this->getDataFolder() . 'detections.log');
+		$this->detectionLogger->start();
+	}
+
+	public function getDetectionLogger() : DetectionLogger {
+		return $this->detectionLogger;
+	}
+
+	public function onDisable() : void {
+		$this->detectionLogger->shutdown();
 	}
 }
