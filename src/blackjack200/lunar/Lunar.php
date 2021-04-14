@@ -13,7 +13,8 @@ use pocketmine\plugin\PluginBase;
 use Throwable;
 
 class Lunar extends PluginBase {
-	private static self $instance;
+	/** @var self */
+	private static $instance;
 	private string $prefix = '';
 
 	public static function getInstance() : Lunar {
@@ -26,6 +27,11 @@ class Lunar extends PluginBase {
 
 	public function onEnable() : void {
 		self::$instance = $this;
+		if (version_compare('7.4.0', PHP_VERSION) > 0) {
+			$this->getLogger()->error('Required PHP Version >= 7.4.0');
+			$this->getServer()->getPluginManager()->disablePlugin($this);
+			return;
+		}
 		UnknownBlockAABBList::registerDefaults();
 		$this->getServer()->getPluginManager()->registerEvents(new DefaultListener(), $this);
 		$this->saveResource('config.yml', $this->getConfig()->get('Replace'));
