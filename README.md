@@ -1,5 +1,5 @@
 <p align="center">
-<img src="resources/logo.png">
+<img src="icon.png">
 </p>
 
 <p align="center"><font size="+3"><strong>Lunar</strong></font></p>
