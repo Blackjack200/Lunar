@@ -6,7 +6,7 @@
         <img src="https://poggit.pmmp.io/shield.state/Lunar">
     </a>
 </p>
-<p align="center"><font size="+3"><strong>Lunar</strong></font></p>
+<p align="center"><font size="+8"><strong>Lunar</strong></font></p>
 
 AntiCheat for PocketMine-MP API 3.0.0
 
