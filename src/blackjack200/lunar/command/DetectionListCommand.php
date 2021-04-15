@@ -8,6 +8,7 @@ use blackjack200\lunar\configuration\Boolean;
 use blackjack200\lunar\StandardDetectionRegistry;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\utils\TextFormat;
 
 class DetectionListCommand extends Command {
 	public function __construct() {
@@ -19,7 +20,10 @@ class DetectionListCommand extends Command {
 		if ($this->testPermission($sender)) {
 			$str = "§r§7Detections:\n";
 			foreach (StandardDetectionRegistry::getConfigurations() as $name => $configuration) {
-				$str .= sprintf(" §r§f%s §7ENABLE=§f%s\n", $name, Boolean::btos($configuration->isEnable()));
+				$e = $configuration->isEnable();
+				$data = $e ? TextFormat::GREEN : TextFormat::RED;
+				$data .= Boolean::btos($e);
+				$str .= sprintf(" §r§f%s §7ENABLE=§f%s\n", $name, $data);
 			}
 
 			$sender->sendMessage(rtrim($str));
