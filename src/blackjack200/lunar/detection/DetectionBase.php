@@ -149,7 +149,7 @@ abstract class DetectionBase implements Detection {
 			$pos = $user->getMovementInfo()->locationHistory->pop();
 			if ($pos !== null) {
 				$player = $user->getPlayer();
-				$player->teleport($pos, $player->getYaw(), $player->getPitch());
+				$player->teleport($pos, $player->getYaw());
 			}
 		}
 	}

@@ -2,9 +2,11 @@
 
 namespace blackjack200\lunar\listener;
 
+use blackjack200\lunar\detection\action\NukerA;
 use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\DetectionBase;
 use blackjack200\lunar\user\UserManager;
+use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityMotionEvent;
@@ -118,5 +120,9 @@ class DefaultListener implements Listener {
 		if ($player instanceof Player) {
 			UserManager::get($player)->lastHurt = microtime(true);
 		}
+	}
+
+	public function onBlockBreak(BlockBreakEvent $event) : void {
+		UserManager::get($event->getPlayer())->trigger(NukerA::class, $event);
 	}
 }

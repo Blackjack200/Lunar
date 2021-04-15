@@ -13,7 +13,9 @@ class FlyB extends DetectionBase {
 		$info = $this->getUser()->getMovementInfo();
 		if ($packet instanceof PlayerActionPacket &&
 			$packet->action === PlayerActionPacket::ACTION_JUMP &&
-			!$info->onGround
+			!$info->onGround &&
+			!$info->horizonCollision &&
+			$info->timeSinceTeleport() > 1
 		) {
 			$this->addVL(1);
 			$this->revertMovement();

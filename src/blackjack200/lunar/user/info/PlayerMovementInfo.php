@@ -10,18 +10,26 @@ use pocketmine\math\Vector3;
 class PlayerMovementInfo {
 	public bool $lastOnGround = true;
 	public bool $onGround = true;
+
+	public bool $lastHorizonCollision = false;
+	public bool $horizonCollision = false;
+
 	public bool $inVoid = false;
-	public bool $checkFly = true;
-	public int $inAirTick = 0;
 	public bool $onIce = false;
+	public bool $checkFly = true;
+
+	public int $inAirTick = 0;
 	public int $onGroundTick = 0;
+
 	public Vector3 $lastMoveDelta;
 	public Vector3 $moveDelta;
 	public Location $lastLocation;
 	public Location $location;
+
 	public float $lastTeleport = 0;
 	public float $lastMotion = 0;
 	public float $lastJump = 0;
+
 	public LocationHistory $locationHistory;
 
 	public function __construct() {

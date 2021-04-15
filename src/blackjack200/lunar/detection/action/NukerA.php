@@ -6,9 +6,7 @@ namespace blackjack200\lunar\detection\action;
 
 use blackjack200\lunar\detection\DetectionBase;
 use blackjack200\lunar\user\User;
-use pocketmine\network\mcpe\protocol\DataPacket;
-use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
-use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
+use pocketmine\event\block\BlockBreakEvent;
 
 class NukerA extends DetectionBase {
 	protected int $maxBlock;
@@ -19,24 +17,25 @@ class NukerA extends DetectionBase {
 		$this->maxBlock = $this->getConfiguration()->getExtraData()->MaxBlock;
 	}
 
-	public function handleClient(DataPacket $packet) : void {
-		if (($packet instanceof InventoryTransactionPacket) &&
-			$packet->trData instanceof UseItemTransactionData &&
-			$packet->trData->getActionType() === UseItemTransactionData::ACTION_BREAK_BLOCK
-		) {
-			$this->count++;
-			if ($this->count >= $this->maxBlock) {
-				$this->addVL(1);
-				if ($this->overflowVL()) {
-					$this->fail("COUNT={$this->count}");
-				}
-				return;
-			}
+	public function check(...$data) : void {
+		if (!isset($data[0])) {
+			$this->count = 0;
+			$this->VL *= $this->getConfiguration()->getReward();
+		} else {
+			$this->impl($data[0]);
 		}
 	}
 
-	public function check(...$data) : void {
-		$this->count = 0;
-		$this->VL *= $this->getConfiguration()->getReward();
+	private function impl(BlockBreakEvent $event) : void {
+		$this->count++;
+		if ($this->count >= $this->maxBlock) {
+			$this->addVL(1);
+			if ($this->getConfiguration()->isSuppress()) {
+				$event->setCancelled(true);
+			}
+			if ($this->overflowVL()) {
+				$this->fail("COUNT={$this->count}");
+			}
+		}
 	}
 }

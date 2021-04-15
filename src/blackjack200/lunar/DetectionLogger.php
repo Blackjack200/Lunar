@@ -6,6 +6,7 @@ namespace blackjack200\lunar;
 
 use pocketmine\Thread;
 use pocketmine\utils\TextFormat;
+use RuntimeException;
 use Threaded;
 
 class DetectionLogger extends Thread {
@@ -38,7 +39,7 @@ class DetectionLogger extends Thread {
 	public function run() : void {
 		$logResource = fopen($this->logFile, 'ab');
 		if (!is_resource($logResource)) {
-			throw new \RuntimeException('Cannot open log file');
+			throw new RuntimeException('Cannot open log file');
 		}
 		while ($this->running) {
 			$this->writeStream($logResource);

@@ -51,9 +51,13 @@ class MovementProcessor extends Processor {
 					$this->buffer = 0;
 					$info->locationHistory->push($player->asLocation());
 				}
-				$verticalBlocks = AABB::getCollisionBlocks($player->getLevelNonNull(), $player->getBoundingBox()->expandedCopy(0.1, 0.2, 0.1));
+				$AABB = $player->getBoundingBox()->expandedCopy(0.5, 0.2, 0.5);
+				$verticalBlocks = AABB::getCollisionBlocks($player->getLevelNonNull(), $AABB);
 				$info->lastOnGround = $info->onGround;
-				$info->onGround = $player->isOnGround();
+				$info->onGround = count($player->getLevelNonNull()->getCollisionBlocks($AABB, true)) !== 0;
+
+				$this->recalculateHorizonCollision();
+
 				$info->inVoid = $player->getY() < -15;
 				$info->checkFly = !$player->isImmobile() && !$player->hasEffect(Effect::LEVITATION);
 				foreach ($verticalBlocks as $block) {
@@ -94,6 +98,15 @@ class MovementProcessor extends Processor {
 	public function updateMoveDelta(PlayerMovementInfo $movementInfo) : void {
 		$movementInfo->lastMoveDelta = $movementInfo->moveDelta;
 		$movementInfo->moveDelta = $movementInfo->location->subtract($movementInfo->lastLocation)->asVector3();
+	}
+
+	public function recalculateHorizonCollision() : void {
+		$player = $this->getUser()->getPlayer();
+		$info = $this->getUser()->getMovementInfo();
+		$horizonBlocks = $player->getLevelNonNull()->getCollisionBlocks($player->getBoundingBox()->expandedCopy(0.5, 2, 0.5), true);
+		$info->lastHorizonCollision = $info->horizonCollision;
+
+		$info->horizonCollision = count($horizonBlocks) > 0;
 	}
 
 	public function check(...$data) : void {
