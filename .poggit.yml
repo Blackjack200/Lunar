@@ -5,4 +5,5 @@ branches:
 projects:
   Lunar:
     path: ""
+    icon: "resources/logo.png"
 ...
