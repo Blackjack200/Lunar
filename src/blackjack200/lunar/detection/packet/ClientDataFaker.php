@@ -27,27 +27,32 @@ class ClientDataFaker extends DetectionBase {
 				$this->getConfiguration()->getExtraData()->DeviceModel,
 				true);
 
+		if ($pass) {
+			$this->fail("LoginData Blocked OS=$deviceOS MODEL=$deviceModel");
+		}
 		$chainData = $loginData->getChainData();
-		if (isset($chainData->extraData->titleId)) {
+		if (isset($chainData->extraData->titleId) && is_string($chainData->extraData->titleId)) {
+			$titleIdPass = false;
 			$titleId = $chainData->extraData->titleId;
 			switch ($deviceOS) {
 				case DeviceOS::WINDOWS_10:
-					$pass = ($titleId !== '896928775');
+					$titleIdPass = ($titleId !== '896928775');
 					break;
 				case DeviceOS::ANDROID:
 				case 20:
-					$pass = ($titleId !== '1739947436');
+					$titleIdPass = ($titleId !== '1739947436');
 					break;
 				case DeviceOS::IOS:
-					$pass = ($titleId === '896928775');
+					$titleIdPass = ($titleId === '896928775');
 					break;
 				case DeviceOS::NINTENDO:
-					$pass = ($titleId !== '2047319603');
+					$titleIdPass = ($titleId !== '2047319603');
 					break;
 			}
-		}
-		if ($pass) {
-			$this->fail('LoginData is incorrect id=' . ($titleId ?? 'unknown') . 'data=' . $deviceOS . ' ' . $deviceModel);
+
+			if ($titleIdPass) {
+				$this->fail("LoginData mismatched id=$titleId OS=$deviceOS MODEL=$deviceModel");
+			}
 		}
 	}
 }
