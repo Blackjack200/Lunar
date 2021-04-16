@@ -20,6 +20,10 @@ NukerA:
   # Max Block Breaks in 20ms
   MaxBlock: 3
   MaxVL: 5
+FastBreakA:
+  Enable: true
+  Punishment: KICK
+  MaxVL: 5
 AutoClicker:
   Enable: true
   Punishment: BAN

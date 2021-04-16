@@ -2,6 +2,7 @@
 
 namespace blackjack200\lunar\listener;
 
+use blackjack200\lunar\detection\action\FastBreakA;
 use blackjack200\lunar\detection\action\NukerA;
 use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\DetectionBase;
@@ -123,6 +124,8 @@ class DefaultListener implements Listener {
 	}
 
 	public function onBlockBreak(BlockBreakEvent $event) : void {
-		UserManager::get($event->getPlayer())->trigger(NukerA::class, $event);
+		$user = UserManager::get($event->getPlayer());
+		$user->trigger(NukerA::class, $event);
+		$user->trigger(FastBreakA::class, $event);
 	}
 }

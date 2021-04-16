@@ -6,6 +6,7 @@ namespace blackjack200\lunar;
 
 use blackjack200\lunar\configuration\DetectionConfiguration;
 use blackjack200\lunar\detection\action\AutoClicker;
+use blackjack200\lunar\detection\action\FastBreakA;
 use blackjack200\lunar\detection\action\NukerA;
 use blackjack200\lunar\detection\combat\KillAura;
 use blackjack200\lunar\detection\combat\MultiAura;
@@ -33,6 +34,7 @@ final class DetectionRegistry {
 		self::$detections = [
 			'ClientDataFaker' => ClientDataFaker::class,
 			'NukerA' => NukerA::class,
+			'FastBreakA' => FastBreakA::class,
 			'AutoClicker' => AutoClicker::class,
 			'KillAura' => KillAura::class,
 			'MultiAura' => MultiAura::class,
