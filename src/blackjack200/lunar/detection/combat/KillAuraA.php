@@ -10,7 +10,7 @@ use pocketmine\entity\Entity;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 
-class KillAura extends DetectionBase {
+class KillAuraA extends DetectionBase {
 	protected float $radius;
 	protected int $min;
 	protected int $max;

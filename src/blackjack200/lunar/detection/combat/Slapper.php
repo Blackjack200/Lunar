@@ -12,10 +12,10 @@ use pocketmine\nbt\tag\CompoundTag;
 
 class Slapper extends Human {
 	protected $attackCooldown;
-	private KillAura $killAura;
+	private KillAuraA $killAura;
 	private float $last;
 
-	public function __construct(Level $level, CompoundTag $nbt, ?KillAura $killAura = null) {
+	public function __construct(Level $level, CompoundTag $nbt, ?KillAuraA $killAura = null) {
 		parent::__construct($level, $nbt);
 		if ($killAura === null) {
 			$this->close();

@@ -8,7 +8,8 @@ use blackjack200\lunar\configuration\DetectionConfiguration;
 use blackjack200\lunar\detection\action\AutoClicker;
 use blackjack200\lunar\detection\action\FastBreakA;
 use blackjack200\lunar\detection\action\NukerA;
-use blackjack200\lunar\detection\combat\KillAura;
+use blackjack200\lunar\detection\combat\KillAuraA;
+use blackjack200\lunar\detection\combat\KillAuraB;
 use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\combat\ReachA;
 use blackjack200\lunar\detection\DetectionBase;
@@ -37,7 +38,8 @@ final class DetectionRegistry {
 			'NukerA' => NukerA::class,
 			'FastBreakA' => FastBreakA::class,
 			'AutoClicker' => AutoClicker::class,
-			'KillAura' => KillAura::class,
+			'KillAuraA' => KillAuraA::class,
+			'KillAuraB' => KillAuraB::class,
 			'MultiAura' => MultiAura::class,
 			'ReachA' => ReachA::class,
 			'SpeedA' => SpeedA::class,
