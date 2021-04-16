@@ -4,6 +4,8 @@
 namespace blackjack200\lunar\configuration;
 
 
+use blackjack200\lunar\utils\Objects;
+
 class DetectionConfiguration {
 	private int $punishment;
 	private int $maxVL;

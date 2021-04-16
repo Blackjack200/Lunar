@@ -4,8 +4,8 @@
 namespace blackjack200\lunar\command;
 
 
-use blackjack200\lunar\configuration\Boolean;
-use blackjack200\lunar\StandardDetectionRegistry;
+use blackjack200\lunar\DetectionRegistry;
+use blackjack200\lunar\utils\Boolean;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
@@ -19,7 +19,7 @@ class DetectionListCommand extends Command {
 	public function execute(CommandSender $sender, string $commandLabel, array $args) {
 		if ($this->testPermission($sender)) {
 			$str = "§r§7Detections:\n";
-			foreach (StandardDetectionRegistry::getConfigurations() as $name => $configuration) {
+			foreach (DetectionRegistry::getConfigurations() as $name => $configuration) {
 				$e = $configuration->isEnable();
 				$data = $e ? TextFormat::GREEN : TextFormat::RED;
 				$data .= Boolean::btos($e);

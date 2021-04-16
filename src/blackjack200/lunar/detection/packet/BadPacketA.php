@@ -18,7 +18,7 @@ class BadPacketA extends DetectionBase {
 		) {
 			$this->addVL(1);
 			if ($this->overflowVL()) {
-				$this->fail("self-hit");
+				$this->fail('self-hit');
 			}
 		}
 	}

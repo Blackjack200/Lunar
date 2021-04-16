@@ -20,7 +20,7 @@ class AutoClicker extends DetectionBase {
 		if ($CPS >= $this->maxCPS) {
 			$this->addVL(1);
 			if ($this->overflowVL()) {
-				$this->fail("CPS={$CPS}");
+				$this->fail("CPS=$CPS");
 			}
 		} else {
 			$this->VL *= $this->getConfiguration()->getReward();

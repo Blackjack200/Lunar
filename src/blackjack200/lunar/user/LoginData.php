@@ -4,7 +4,7 @@
 namespace blackjack200\lunar\user;
 
 
-use blackjack200\lunar\configuration\Objects;
+use blackjack200\lunar\utils\Objects;
 use Exception;
 use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\utils\Utils;
@@ -13,6 +13,9 @@ use Throwable;
 class LoginData {
 	protected object $clientData, $chainData;
 
+	/**
+	 * @throws Exception
+	 */
 	public function __construct(LoginPacket $packet) {
 		$packet = clone $packet;
 		$this->clientData = Objects::convert($packet->clientData);

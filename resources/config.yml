@@ -62,7 +62,7 @@ SpeedC:
   Reward: 0.1
 #  Fly
 FlyA:
-  Enable: true
+  Enable: false
   Punishment: KICK
   Suppress: true
   MaxVL: 40

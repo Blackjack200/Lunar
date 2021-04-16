@@ -1,7 +1,7 @@
 <?php
 
 
-namespace blackjack200\lunar\configuration;
+namespace blackjack200\lunar\utils;
 
 
 class Boolean {

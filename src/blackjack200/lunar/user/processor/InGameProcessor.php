@@ -29,9 +29,10 @@ class InGameProcessor extends Processor {
 	}
 
 	public function addClick() : void {
-		$this->getUser()->CPS++;
+		$CPS = &$this->getUser()->CPS;
+		$CPS++;
 		if ($this->tag) {
-			$this->getUser()->getPlayer()->sendPopup("CPS=§b{$this->getUser()->CPS}");
+			$this->getUser()->getPlayer()->sendPopup("CPS=§b$CPS");
 		}
 	}
 

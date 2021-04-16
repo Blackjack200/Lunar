@@ -9,7 +9,7 @@ use pocketmine\math\AxisAlignedBB as AABB;
 //MockingBird
 final class UnknownBlockAABBList {
 	/** @var AABB[] */
-	private static $list = [];
+	private static array $list = [];
 
 	public static function registerDefaults() : void {
 		self::registerAABB(new AABB(0.125, 0.0, 0.125, 0.875, 0.875, 0.875), BlockIds::BREWING_STAND_BLOCK);

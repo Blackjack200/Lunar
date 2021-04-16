@@ -4,7 +4,7 @@ namespace blackjack200\lunar\user;
 
 use blackjack200\lunar\detection\Detection;
 use blackjack200\lunar\detection\DetectionTrigger;
-use blackjack200\lunar\StandardDetectionRegistry;
+use blackjack200\lunar\DetectionRegistry;
 use blackjack200\lunar\user\info\PlayerActionInfo;
 use blackjack200\lunar\user\info\PlayerMovementInfo;
 use blackjack200\lunar\user\processor\InGameProcessor;
@@ -38,7 +38,7 @@ class User implements DetectionTrigger {
 		$this->processors[] = new MovementProcessor($this);
 		$this->processors[] = new PlayerActionProcessor($this);
 
-		$this->detections = StandardDetectionRegistry::getDetections($this);
+		$this->detections = DetectionRegistry::getDetections($this);
 	}
 
 	public function timeSinceHurt() : float {

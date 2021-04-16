@@ -25,7 +25,7 @@ class SpeedC extends DetectionBase {
 			$user = $this->getUser();
 			$m = $user->getMovementInfo();
 			$deltaXZ = hypot($m->moveDelta->x, $m->moveDelta->z);
-			$maxSpeed = $this->getSpeed(0.4);
+			$maxSpeed = $this->getSpeed();
 			$t = $this->lastLostSpeed - microtime(true);
 
 			if ($deltaXZ > $maxSpeed &&
@@ -50,9 +50,8 @@ class SpeedC extends DetectionBase {
 		}
 	}
 
-	private function getSpeed(float $speed) : float {
-		$speed *= 1 + (0.2 * $this->getSpeedLevel());
-		return $speed;
+	private function getSpeed() : float {
+		return 0.4 * (1 + (0.2 * $this->getSpeedLevel()));
 	}
 
 	public function getSpeedLevel() : int {

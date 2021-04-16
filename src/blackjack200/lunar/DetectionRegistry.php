@@ -20,7 +20,7 @@ use blackjack200\lunar\detection\packet\BadPacketA;
 use blackjack200\lunar\detection\packet\ClientDataFaker;
 use blackjack200\lunar\user\User;
 
-final class StandardDetectionRegistry {
+final class DetectionRegistry {
 	/** @var DetectionConfiguration[] */
 	private static array $configurations = [];
 	/** @var array<class-string<DetectionBase>> */

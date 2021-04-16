@@ -40,7 +40,7 @@ class Lunar extends PluginBase {
 		$this->prefix = $this->getConfig()->get('Prefix', true);
 		Entity::registerEntity(Slapper::class, true, ['lunar_slapper']);
 		try {
-			StandardDetectionRegistry::initConfig();
+			DetectionRegistry::initConfig();
 		} catch (Throwable $e) {
 			$this->getLogger()->logException($e);
 			$this->getLogger()->warning('Error when Configuration');

@@ -13,7 +13,7 @@ class AABB {
 	/**
 	 * @return Generator<Block>
 	 */
-	public static function getCollisionBlocks(Level $level, AxisAlignedBB $bb, bool $targetFirst = false) : Generator {
+	public static function getCollisionBlocks(Level $level, AxisAlignedBB $bb) : Generator {
 		$minX = (int) ceil($bb->minX - 1);
 		$minY = (int) ceil($bb->minY - 1);
 		$minZ = (int) ceil($bb->minZ - 1);

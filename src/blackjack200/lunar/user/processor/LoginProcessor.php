@@ -14,7 +14,7 @@ class LoginProcessor extends Processor {
 	public function processClient(DataPacket $packet) : void {
 		if ($packet instanceof LoginPacket) {
 			try {
-				//TODO Hack
+				//TODO HACK
 				$this->getUser()->loginData = new LoginData($packet);
 				$this->getUser()->trigger(ClientDataFaker::class);
 			} catch (Throwable $e) {

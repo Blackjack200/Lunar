@@ -8,9 +8,6 @@ use blackjack200\lunar\detection\DetectionBase;
 use blackjack200\lunar\user\User;
 use pocketmine\entity\Entity;
 use pocketmine\math\Vector3;
-use pocketmine\nbt\tag\ByteArrayTag;
-use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 
 class KillAura extends DetectionBase {
@@ -27,15 +24,7 @@ class KillAura extends DetectionBase {
 
 		$player = $this->getUser()->getPlayer();
 		$tag = Entity::createBaseNBT($player);
-		$skin = $player->getSkin();
-		$tag->setTag(new CompoundTag("Skin", [
-			new StringTag("Name", $skin->getSkinId()),
-			new StringTag("PlayFabId", $skin->getPlayFabId() ?? ""),
-			new ByteArrayTag("Data", $skin->getSkinData()),
-			new ByteArrayTag("CapeData", $skin->getCapeData()),
-			new StringTag("GeometryName", $skin->getGeometryName()),
-			new ByteArrayTag("GeometryData", $skin->getGeometryData())
-		]));
+		$tag->setTag($player->namedtag->getTag('Skin'));
 		$this->slapper = new Slapper($player->getLevelNonNull(), $tag, $this);
 		$this->slapper->spawnTo($player);
 	}

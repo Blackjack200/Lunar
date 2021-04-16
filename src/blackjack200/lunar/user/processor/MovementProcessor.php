@@ -46,7 +46,7 @@ class MovementProcessor extends Processor {
 			$this->updateMoveDelta($info);
 
 			$dist = $info->moveDelta->lengthSquared();
-			if ($dist > 0.002) {
+			if ($dist > 0.006) {
 				if ($this->buffer++ > 4) {
 					$this->buffer = 0;
 					$info->locationHistory->push($player->asLocation());

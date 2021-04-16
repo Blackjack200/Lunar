@@ -46,7 +46,7 @@ abstract class DetectionBase implements Detection {
 			$this->alert($message);
 		}
 		if (!$silent) {
-			$this->alert("VL={$this->VL}");
+			$this->alert("VL=$this->VL");
 		}
 	}
 
@@ -63,7 +63,7 @@ abstract class DetectionBase implements Detection {
 	 * @return string
 	 */
 	final protected function formatMessage(string $message) : string {
-		return sprintf("%s %s: %s", Lunar::getInstance()->getPrefix(), $this->name, $message);
+		return sprintf('%s %s: %s', Lunar::getInstance()->getPrefix(), $this->name, $message);
 	}
 
 	public function fail(string $message) : void {
