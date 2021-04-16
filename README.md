@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="icon.png">
+    <img src="icon.svg"/>
 </p>
 
 <p align="center"><font size="+8"><strong>Lunar</strong></font></p>
