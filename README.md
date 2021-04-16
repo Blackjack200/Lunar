@@ -1,7 +1,5 @@
-<p align="center">
-    <img src="icon.svg"/>
-</p>
-
+<p align="center"><img src="icon.svg" height="128"/></p>
+<br>
 <p align="center"><font size="+8"><strong>Lunar</strong></font></p>
 
 AntiCheat for PocketMine-MP API 3.0.0
