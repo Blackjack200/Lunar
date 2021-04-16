@@ -16,6 +16,7 @@ class PlayerMovementInfo {
 
 	public bool $inVoid = false;
 	public bool $onIce = false;
+	//liquid climbing levitation immobile
 	public bool $checkFly = true;
 
 	public int $inAirTick = 0;
