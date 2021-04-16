@@ -37,7 +37,7 @@ class SpeedA extends DetectionBase {
 				$diff > $this->maxDiff &&
 				$info->timeSinceTeleport() >= 0.25 &&
 				$info->timeSinceMotion() >= 0.5 &&
-				!$player->isCreative(true) &&
+				!$player->isCreative() &&
 				!$player->isFlying()
 			) {
 				if ($this->preVL++ > 2) {

@@ -33,7 +33,7 @@ class SpeedC extends DetectionBase {
 				!$user->getMovementInfo()->onIce &&
 				$user->getMovementInfo()->timeSinceTeleport() >= 0.25 &&
 				$user->getMovementInfo()->timeSinceMotion() >= 0.75 &&
-				!$user->getPlayer()->isCreative(true) &&
+				!$user->getPlayer()->isCreative() &&
 				!$user->getPlayer()->isFlying()
 			) {
 				if ($this->preVL++ > 2) {
