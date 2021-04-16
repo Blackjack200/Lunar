@@ -47,6 +47,10 @@ MultiAura:
   Punishment: BAN
   MaxVL: 5
   MaxEntityHit: 4
+ReachA:
+  Enable: true
+  Punishment: KICK
+  MaxVL: 5
 
 # Movement
 #  Speed

@@ -5,6 +5,7 @@ namespace blackjack200\lunar\listener;
 use blackjack200\lunar\detection\action\FastBreakA;
 use blackjack200\lunar\detection\action\NukerA;
 use blackjack200\lunar\detection\combat\MultiAura;
+use blackjack200\lunar\detection\combat\ReachA;
 use blackjack200\lunar\detection\DetectionBase;
 use blackjack200\lunar\user\UserManager;
 use pocketmine\event\block\BlockBreakEvent;
@@ -89,6 +90,7 @@ class DefaultListener implements Listener {
 
 		if ($damager instanceof Player && $victim instanceof Player) {
 			UserManager::get($damager)->trigger(MultiAura::class, $event);
+			UserManager::get($damager)->trigger(ReachA::class, $event);
 		}
 	}
 
