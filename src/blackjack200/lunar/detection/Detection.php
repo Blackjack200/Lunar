@@ -27,6 +27,8 @@ interface Detection {
 
 	public function debug(string $message) : void;
 
+	public function destruct() : void;
+
 	public function close() : void;
 
 	public function getName() : string;

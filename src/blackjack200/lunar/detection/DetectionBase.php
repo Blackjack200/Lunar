@@ -127,16 +127,20 @@ abstract class DetectionBase implements Detection {
 
 	}
 
+	final public function __destruct() {
+		$this->destruct();
+	}
+
+	public function destruct() : void {
+		$this->user = null;
+	}
+
 	public function check(...$data) : void {
 
 	}
 
 	public function close() : void {
-		$this->destruct();
-	}
 
-	protected function destruct() : void {
-		$this->user = null;
 	}
 
 	public function revertMovement() : void {

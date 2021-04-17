@@ -22,6 +22,15 @@ abstract class Processor implements Listener {
 	public function processClient(DataPacket $packet) : void {
 	}
 
+	final public function __destruct() {
+		$this->destruct();
+	}
+
+	public function destruct() : void {
+		//GC Hack
+		$this->user = null;
+	}
+
 	public function getUser() : User {
 		return $this->user;
 	}
@@ -31,11 +40,6 @@ abstract class Processor implements Listener {
 	}
 
 	public function close() : void {
-		$this->destruct();
-	}
 
-	protected function destruct() : void {
-		//GC HACK
-		$this->user = null;
 	}
 }
