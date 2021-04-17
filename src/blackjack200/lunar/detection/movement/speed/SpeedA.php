@@ -34,10 +34,11 @@ class SpeedA extends DetectionBase {
 			$predicted = ($last * 0.91) + ($player->isSprinting() ? 0.026 : 0.02);
 			$diff = $curt - $predicted;
 			if ($predicted > 0.075 &&
+				!$info->inVoid &&
 				$diff > $this->maxDiff &&
 				$info->checkFly &&
-				$info->timeSinceTeleport() >= 0.25 &&
-				$info->timeSinceMotion() >= 0.5 &&
+				$info->timeSinceTeleport() >= 1 &&
+				$info->timeSinceMotion() >= 1 &&
 				!$player->isCreative() &&
 				!$player->isFlying()
 			) {

@@ -50,7 +50,7 @@ class ReachA extends DetectionBase {
 	//reference: https://github.com/Bavfalcon9/Mavoric/blob/03abce64998ea29271d39bbad913fded275e20ff/src/Bavfalcon9/Mavoric/Cheat/Combat/Reach.php#L59-L62
 	public function getAllowedDistance() : float {
 		$player = $this->getUser()->getPlayer();
-		$projected = $player->onGround ? 5 : 6.2;
+		$projected = $player->onGround ? 5.5 : 6.2;
 		return ($player->getPing() * 0.002) + $projected;
 	}
 }
