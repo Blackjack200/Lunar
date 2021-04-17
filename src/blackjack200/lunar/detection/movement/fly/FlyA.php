@@ -23,34 +23,32 @@ class FlyA extends DetectionBase {
 			$user = $this->getUser();
 			$info = $user->getMovementInfo();
 			$player = $user->getPlayer();
+			$airTicksLimit = 8 + ($user->getEffectLevel(Effect::JUMP) * 2);
 			if (
 				!$info->inVoid &&
 				$info->checkFly &&
+				$info->inAirTick > $airTicksLimit &&
 				$info->timeSinceTeleport() > 2 &&
-				$info->timeSinceMotion() > 0.25 &&
+				$info->timeSinceMotion() > 1 &&
 				$user->timeSinceJoin() > 5 &&
 				!$player->isFlying()
 			) {
-				$airTicksLimit = 8 + $user->getEffectLevel(Effect::JUMP);
-				if ($info->inAirTick > $airTicksLimit) {
-					//https://github.com/Tecnio/AntiHaxerman/blob/master/src/main/java/me/tecnio/antihaxerman/check/impl/movement/flight/FlightA.java
-					$deltaY = $info->moveDelta->y;
-					$lastDeltaY = $info->lastMoveDelta->y;
-					$prediction = ($lastDeltaY - 0.08) * 0.9800000190734863;
-					$fixed = abs($prediction) < 0.005 ? -0.08 * 0.9800000190734863 : $prediction;
-					$difference = abs($deltaY - $fixed);
-					$limit = $info->timeSinceMotion() > 0.25 ? 0.001 : $player->getMotion()->y + 0.451;
+				//https://github.com/Tecnio/AntiHaxerman/blob/master/src/main/java/me/tecnio/antihaxerman/check/impl/movement/flight/FlightA.java
+				$deltaY = $info->moveDelta->y;
+				$lastDeltaY = $info->lastMoveDelta->y;
 
-					if ($difference > $limit && $this->preVL++ > 2) {
-						$this->addVL(1);
-						$this->revertMovement();
-						if ($this->overflowVL()) {
-							$this->fail("diff=$difference limit=$limit");
-						}
+				$predicted = ($lastDeltaY - 0.08) * 0.9800000190734863;
+
+				$fixedPredicted = abs($predicted) < 0.005 ? -0.08 * 0.9800000190734863 : $predicted;
+
+				$difference = abs($deltaY - $fixedPredicted);
+
+				if ($difference > 1.0E-4 && $this->preVL++ > 2) {
+					$this->addVL(1);
+					$this->revertMovement();
+					if ($this->overflowVL()) {
+						$this->fail("diff=$difference pred=$fixedPredicted");
 					}
-				} elseif ($info->inAirTick > 5) {
-					$this->preVL *= $this->reward;
-					$this->VL *= $this->reward;
 				}
 			}
 		}

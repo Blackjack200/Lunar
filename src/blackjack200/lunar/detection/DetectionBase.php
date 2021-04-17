@@ -80,7 +80,9 @@ abstract class DetectionBase implements Detection {
 				$this->kick($message);
 				break;
 			case Punishment::WARN():
-				$this->alertTitle(TextFormat::RED . TextFormat::BOLD . $message);
+				$msg = TextFormat::RED . TextFormat::BOLD . $message;
+				$this->alertTitle($msg);
+				$this->alert($msg);
 				$this->reset();
 				break;
 			case Punishment::KICK():

@@ -97,6 +97,10 @@ MotionA:
   Enable: true
   Punishment: ALERT
   MaxVL: 10
+MotionB:
+  Enable: true
+  Punishment: ALERT
+  MaxVL: 10
 # Network
 BadPacketA:
   Enable: true
