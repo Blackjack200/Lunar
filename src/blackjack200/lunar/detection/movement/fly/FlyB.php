@@ -14,7 +14,6 @@ class FlyB extends DetectionBase {
 		if ($packet instanceof PlayerActionPacket &&
 			$packet->action === PlayerActionPacket::ACTION_JUMP &&
 			!$info->onGround &&
-			!$info->horizonCollision &&
 			$info->timeSinceTeleport() > 1
 		) {
 			$this->addVL(1);

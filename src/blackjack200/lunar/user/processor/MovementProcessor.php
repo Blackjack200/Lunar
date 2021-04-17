@@ -14,6 +14,7 @@ use pocketmine\block\Trapdoor;
 use pocketmine\block\Vine;
 use pocketmine\entity\Effect;
 use pocketmine\item\ItemIds;
+use pocketmine\level\Location;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
@@ -40,8 +41,9 @@ class MovementProcessor extends Processor {
 			$user = $this->getUser();
 			$info = $user->getMovementInfo();
 			$player = $user->getPlayer();
+			$location = Location::fromObject($packet->position->subtract(0, 1.62), $player->getLevel(), $packet->yaw, $packet->pitch);
 
-			$this->updateLocation($info);
+			$this->updateLocation($info, $location);
 
 			$this->updateMoveDelta($info);
 
@@ -51,12 +53,10 @@ class MovementProcessor extends Processor {
 					$this->buffer = 0;
 					$info->locationHistory->push($player->asLocation());
 				}
-				$AABB = $player->getBoundingBox()->expandedCopy(0.5, 0.2, 0.5);
-				$verticalBlocks = AABB::getCollisionBlocks($player->getLevelNonNull(), $AABB);
+				$AABB = AABB::fromPosition($location)->expandedCopy(0.5, 0.2, 0.5);
+				$verticalBlocks = AABB::getCollisionBlocks($location->getLevel(), $AABB);
 				$info->lastOnGround = $info->onGround;
 				$info->onGround = count($player->getLevelNonNull()->getCollisionBlocks($AABB, true)) !== 0;
-
-				$this->recalculateHorizonCollision();
 
 				$info->inVoid = $player->getY() < -15;
 				$info->checkFly = !$player->isImmobile() && !$player->hasEffect(Effect::LEVITATION);
@@ -90,23 +90,14 @@ class MovementProcessor extends Processor {
 		}
 	}
 
-	public function updateLocation(PlayerMovementInfo $movementInfo) : void {
+	public function updateLocation(PlayerMovementInfo $movementInfo, Location $location) : void {
 		$movementInfo->lastLocation = $movementInfo->location;
-		$movementInfo->location = $this->getUser()->getPlayer()->asLocation();
+		$movementInfo->location = $location;
 	}
 
 	public function updateMoveDelta(PlayerMovementInfo $movementInfo) : void {
 		$movementInfo->lastMoveDelta = $movementInfo->moveDelta;
 		$movementInfo->moveDelta = $movementInfo->location->subtract($movementInfo->lastLocation)->asVector3();
-	}
-
-	public function recalculateHorizonCollision() : void {
-		$player = $this->getUser()->getPlayer();
-		$info = $this->getUser()->getMovementInfo();
-		$horizonBlocks = $player->getLevelNonNull()->getCollisionBlocks($player->getBoundingBox()->expandedCopy(0.5, 2, 0.5), true);
-		$info->lastHorizonCollision = $info->horizonCollision;
-
-		$info->horizonCollision = count($horizonBlocks) > 0;
 	}
 
 	public function check(...$data) : void {

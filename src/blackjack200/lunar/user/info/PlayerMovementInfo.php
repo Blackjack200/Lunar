@@ -11,9 +11,6 @@ class PlayerMovementInfo {
 	public bool $lastOnGround = true;
 	public bool $onGround = true;
 
-	public bool $lastHorizonCollision = false;
-	public bool $horizonCollision = false;
-
 	public bool $inVoid = false;
 	public bool $onIce = false;
 	//liquid climbing levitation immobile

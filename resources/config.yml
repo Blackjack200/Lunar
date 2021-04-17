@@ -2,7 +2,7 @@
 Prefix: "§7[§fLunar§7]"
 Replace: true
 CPSTag: true
-# Punishment(BAN, KICK, ALERT, IGNORE)
+# Punishment(BAN, ALERT, ALERT, IGNORE)
 ClientDataFaker:
   Enable: true
   Punishment: BAN
@@ -15,13 +15,13 @@ ClientDataFaker:
 # Action
 NukerA:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   # Max Block Breaks in 20ms
   MaxBlock: 3
   MaxVL: 5
 FastBreakA:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   MaxVL: 5
 AutoClicker:
   Enable: true
@@ -34,7 +34,7 @@ AutoClicker:
 KillAuraA:
   Enable: false
   MaxVL: 10
-  Punishment: KICK
+  Punishment: ALERT
   AttackCooldown: 3
   Radius: 3
   Random:
@@ -43,7 +43,7 @@ KillAuraA:
       Max: 3
 KillAuraB:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   MaxVL: 5
   SwingDuration: 1
 MultiAura:
@@ -53,50 +53,49 @@ MultiAura:
   MaxEntityHit: 4
 ReachA:
   Enable: false
-  Punishment: KICK
+  Punishment: ALERT
   MaxVL: 5
 
 # Movement
 #  Speed
 SpeedA:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   Suppress: true
   MaxVL: 10
   Diff: 0.000000000001
   Reward: 0.888
 SpeedC:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   Suppress: true
   MaxVL: 10
   Diff: 0.000000000001
   Reward: 0.1
 #  Fly
 FlyA:
-  Enable: false
-  Punishment: KICK
+  Enable: true
+  Punishment: ALERT
   Suppress: true
-  MaxVL: 40
-  Diff: 0.001
+  MaxVL: 10
   Reward: 0.888
 FlyB:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   Suppress: true
   MaxVL: 10
   Reward: 0.85
 FlyE:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   Suppress: true
   MaxVL: 40
   Reward: 0.88
   Diff: 0.01
 
 MotionA:
-  Enable: false
-  Punishment: KICK
+  Enable: true
+  Punishment: ALERT
   MaxVL: 10
 # Network
 BadPacketA:

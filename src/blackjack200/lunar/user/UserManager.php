@@ -20,7 +20,11 @@ final class UserManager {
 	}
 
 	public static function get(Player $player) : ?User {
-		return self::$users[spl_object_hash($player)] ?? null;
+		$user = self::$users[spl_object_hash($player)] ?? null;
+		if ($user !== null && $user->isClosed()) {
+			return null;
+		}
+		return $user;
 	}
 
 	/** @return User[] */

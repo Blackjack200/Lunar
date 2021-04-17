@@ -14,7 +14,7 @@ use blackjack200\lunar\user\processor\PlayerActionProcessor;
 use blackjack200\lunar\user\processor\Processor;
 use pocketmine\Player;
 
-class User implements DetectionTrigger {
+final class User implements DetectionTrigger {
 	public LoginData $loginData;
 	public int $CPS = 0;
 	public float $lastHurt;
@@ -26,6 +26,7 @@ class User implements DetectionTrigger {
 	private PlayerMovementInfo $moveData;
 	private PlayerActionInfo $actionInfo;
 	private float $joinTime;
+	private bool $closed = false;
 
 	public function __construct(Player $player) {
 		$this->player = $player;
@@ -45,24 +46,19 @@ class User implements DetectionTrigger {
 		return microtime(true) - $this->lastHurt;
 	}
 
-	public function __destruct() {
+	public function close() : void {
+		$this->closed = true;
 		foreach ($this->detections as $detection) {
-			$detection->destruct();
+			$detection->finalize();
 		}
 
 		foreach ($this->processors as $processor) {
-			$processor->destruct();
+			$processor->finalize();
 		}
 	}
 
-	public function close() : void {
-		foreach ($this->detections as $detection) {
-			$detection->close();
-		}
-
-		foreach ($this->processors as $processor) {
-			$processor->close();
-		}
+	public function isClosed() : bool {
+		return $this->closed;
 	}
 
 	public function trigger(string $class, ...$data) : void {

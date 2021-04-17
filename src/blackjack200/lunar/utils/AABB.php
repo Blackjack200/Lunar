@@ -8,6 +8,7 @@ use Generator;
 use pocketmine\block\Block;
 use pocketmine\level\Level;
 use pocketmine\math\AxisAlignedBB;
+use pocketmine\math\Vector3;
 
 class AABB {
 	/**
@@ -34,8 +35,7 @@ class AABB {
 	}
 
 	public static function fromBlock(Block $block) : AxisAlignedBB {
-		return UnknownBlockAABBList::get($block->getId(), $block->getDamage()) ??
-			$block->getBoundingBox() ??
+		return $block->getBoundingBox() ??
 			new AxisAlignedBB($block->getX(),
 				$block->getY(),
 				$block->getZ(),
@@ -43,5 +43,9 @@ class AABB {
 				$block->getY() + 1,
 				$block->getZ() + 1
 			);
+	}
+
+	public static function fromPosition(Vector3 $vec) : AxisAlignedBB {
+		return new AxisAlignedBB($vec->x - 0.3, $vec->y, $vec->z - 0.3, $vec->x + 0.3, $vec->y + 1.8, $vec->z + 0.3);
 	}
 }

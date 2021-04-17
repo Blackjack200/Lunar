@@ -39,7 +39,7 @@ abstract class Processor implements Listener {
 
 	}
 
-	public function close() : void {
+	public function finalize() : void {
 
 	}
 }

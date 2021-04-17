@@ -21,15 +21,11 @@ interface Detection {
 
 	public function alert(string $message) : void;
 
-	public function revertMovement() : void;
-
 	public function fail(string $message) : void;
 
 	public function debug(string $message) : void;
 
-	public function destruct() : void;
-
-	public function close() : void;
+	public function finalize() : void;
 
 	public function getName() : string;
 }

@@ -50,7 +50,8 @@ class KillAuraA extends DetectionBase {
 		}
 	}
 
-	public function close() : void {
+	public function finalize() : void {
 		$this->slapper->close();
+		parent::finalize();
 	}
 }

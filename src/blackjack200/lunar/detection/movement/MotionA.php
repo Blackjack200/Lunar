@@ -21,15 +21,18 @@ class MotionA extends DetectionBase {
 		$info = $this->getUser()->getMovementInfo();
 		if (
 			$packet instanceof MovePlayerPacket &&
-			$info->timeSinceJump() < 0.25 &&
+			$info->timeSinceJump() < 0.052 &&
 			$info->timeSinceTeleport() > 1
 		) {
-			$lastDelta = clone $info->lastMoveDelta;
 			$player = $this->getUser()->getPlayer();
+			$lastDelta = clone $info->lastMoveDelta;
+			$motion = $player->getMotion();
+			$lastDelta->x -= $motion->x;
+			$lastDelta->z -= $motion->z;
 			$lastXZ = hypot($lastDelta->x, $lastDelta->z);
 			if ($player->isSprinting()) {
 				$f = $player->getYaw() * 0.017453292;
-				$lastXZ = hypot($lastDelta->x - (sin($f) * 0.2), $lastDelta->z - (cos($f) * 0.2));
+				$lastXZ = hypot($lastDelta->x - (sin($f) * 0.2), $lastDelta->z + (cos($f) * 0.2));
 			}
 			$curt = hypot($info->moveDelta->x, $info->moveDelta->z);
 			$prediction = $lastXZ * 0.98 + $player->getAttributeMap()->getAttribute(Attribute::MOVEMENT_SPEED)->getValue();

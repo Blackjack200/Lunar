@@ -43,10 +43,11 @@ class DefaultListener implements Listener {
 	}
 
 	public function onPlayerQuit(PlayerQuitEvent $event) : void {
-		$user = UserManager::get($event->getPlayer());
+		$player = $event->getPlayer();
+		$user = UserManager::get($player);
 		$user->close();
-		UserManager::unregister($event->getPlayer());
-		unset($this->dirtyLoginPacket[spl_object_hash($event->getPlayer())]);
+		UserManager::unregister($player);
+		unset($this->dirtyLoginPacket[spl_object_hash($player)]);
 	}
 
 	public function onDataPacketSend(DataPacketSendEvent $event) : void {
