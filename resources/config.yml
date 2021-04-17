@@ -52,7 +52,7 @@ MultiAura:
   MaxVL: 5
   MaxEntityHit: 4
 ReachA:
-  Enable: true
+  Enable: false
   Punishment: KICK
   MaxVL: 5
 
