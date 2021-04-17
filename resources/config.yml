@@ -12,7 +12,6 @@ ClientDataFaker:
     - 7
   DeviceModel:
     - "EZ4H"
-    - "VMOS"
 # Action
 NukerA:
   Enable: true
@@ -46,7 +45,7 @@ KillAuraB:
   Enable: true
   Punishment: KICK
   MaxVL: 5
-  SwingDuration: 0.35
+  SwingDuration: 1
 MultiAura:
   Enable: true
   Punishment: BAN
