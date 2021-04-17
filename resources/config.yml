@@ -1,8 +1,13 @@
 # Lunar Anticheat Configure File
+# Anticheat Alert Message Prefix
 Prefix: "§7[§fLunar§7]"
+# Replace Config file by default
 Replace: true
+# In-Game CPS TAG
 CPSTag: true
 # Punishment(BAN, KICK, ALERT, IGNORE)
+
+# Check for wrong edition provided and DeviceModel
 ClientDataFaker:
   Enable: true
   Punishment: BAN
@@ -12,17 +17,25 @@ ClientDataFaker:
     - 7
   DeviceModel:
     - "EZ4H"
+
+
 # Action
+
+# break too many block in 20ms
 NukerA:
   Enable: true
   Punishment: BAN
   # Max Block Breaks in 20ms
   MaxBlock: 3
   MaxVL: 5
+
+# Break block faster than prediction
 FastBreakA:
   Enable: true
   Punishment: KICK
   MaxVL: 5
+
+# Basic high CPS with a certain limit
 AutoClicker:
   Enable: true
   Punishment: BAN
@@ -30,7 +43,11 @@ AutoClicker:
   MaxCPS: 25
   MaxVL: 5
   Reward: 0.988
+
+
 # Combat
+
+# Check for slapper hit
 KillAuraA:
   Enable: false
   MaxVL: 10
@@ -41,23 +58,31 @@ KillAuraA:
     Y:
       Min: -1
       Max: 3
+
+# Check for attack without swing arm
 KillAuraB:
   Enable: true
   Punishment: KICK
   MaxVL: 5
   SwingDuration: 1
+
+# Check for attack multiple entity with impossible count
 MultiAura:
   Enable: true
   Punishment: BAN
   MaxVL: 5
   MaxEntityHit: 4
+
+# Basic attack distance check
 ReachA:
   Enable: false
   Punishment: ALERT
   MaxVL: 5
 
+
 # Movement
-#  Speed
+
+# Checks for horizontal friction
 SpeedA:
   Enable: true
   Punishment: KICK
@@ -65,6 +90,8 @@ SpeedA:
   MaxVL: 10
   Diff: 0.000000000001
   Reward: 0.888
+
+# Basic verbose speed check
 SpeedC:
   Enable: true
   Punishment: KICK
@@ -72,19 +99,25 @@ SpeedC:
   MaxVL: 10
   Diff: 0.000000000001
   Reward: 0.1
-#  Fly
+
+
+# Check for flight's that don't obey gravity.
 FlyA:
   Enable: true
   Punishment: KICK
   Suppress: true
   MaxVL: 10
   Reward: 0.888
+
+# Basic AirJump check
 FlyB:
   Enable: true
   Punishment: KICK
   Suppress: true
   MaxVL: 10
   Reward: 0.85
+
+# Checks for small vertical movement.
 FlyE:
   Enable: true
   Punishment: KICK
@@ -93,15 +126,22 @@ FlyE:
   Reward: 0.88
   Diff: 0.01
 
+# Check for invalid horizontal acceleration. Like BHop, Speed
 MotionA:
   Enable: true
   Punishment: KICK
   MaxVL: 10
+
+#  Check for invalid vertical acceleration. Like HighJump
 MotionB:
   Enable: true
   Punishment: KICK
   MaxVL: 10
+
+
 # Network
+
+#  Check for invalid self hit action
 BadPacketA:
   Enable: true
   Punishment: BAN
