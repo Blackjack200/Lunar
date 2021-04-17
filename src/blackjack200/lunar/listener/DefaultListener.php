@@ -43,9 +43,10 @@ class DefaultListener implements Listener {
 	}
 
 	public function onPlayerQuit(PlayerQuitEvent $event) : void {
-		$user = UserManager::get($event->getPlayer());
-		$user->close();
+		$player = $event->getPlayer();
+		$user = UserManager::get($player);
 		UserManager::unregister($event->getPlayer());
+		$user->close();
 		unset($this->dirtyLoginPacket[spl_object_hash($event->getPlayer())]);
 	}
 

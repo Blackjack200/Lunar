@@ -45,16 +45,6 @@ class User implements DetectionTrigger {
 		return microtime(true) - $this->lastHurt;
 	}
 
-	public function __destruct() {
-		foreach ($this->detections as $detection) {
-			$detection->destruct();
-		}
-
-		foreach ($this->processors as $processor) {
-			$processor->destruct();
-		}
-	}
-
 	public function close() : void {
 		foreach ($this->detections as $detection) {
 			$detection->close();
