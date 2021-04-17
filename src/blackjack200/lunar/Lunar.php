@@ -14,8 +14,10 @@ use Throwable;
 class Lunar extends PluginBase {
 	/** @var self */
 	private static $instance;
-	private string $prefix = '';
-	private DetectionLogger $detectionLogger;
+	/** @var string */
+	private $prefix = '';
+	/** @var DetectionLogger */
+	private $detectionLogger;
 
 	public static function getInstance() : Lunar {
 		return self::$instance;
