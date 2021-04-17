@@ -5,6 +5,7 @@ namespace blackjack200\lunar\detection\combat;
 
 
 use blackjack200\lunar\detection\DetectionBase;
+use blackjack200\lunar\user\UserManager;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\Player;
@@ -20,19 +21,27 @@ class ReachA extends DetectionBase {
 		}
 		/** @var Player $damager */
 		$damager = $event->getDamager();
-		//should not happened
-		assert($damager === $this->getUser()->getPlayer());
+		/** @var Player $damaged */
+		$damaged = $event->getEntity();
 		$user = $this->getUser();
+		$user2 = UserManager::get($damaged);
+		//should not happened
+		assert($user2 !== null);
+		assert($damager === $this->getUser()->getPlayer());
+
 		if ($damager->isCreative()) {
 			return;
 		}
 		$maxDist = $this->getAllowedDistance();
 		$dist = $damager->distance($event->getEntity());
 		$info = $user->getMovementInfo();
+		$info2 = $user2->getMovementInfo();
 		if (
 			$dist > $maxDist &&
 			$info->timeSinceMotion() > 0.2 &&
 			$info->timeSinceTeleport() > 1 &&
+			$info2->timeSinceMotion() > 0.2 &&
+			$info2->timeSinceTeleport() > 1 &&
 			$this->preVL++ > 3
 		) {
 			$this->addVL(1);
