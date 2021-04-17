@@ -20,15 +20,21 @@ class ReachA extends DetectionBase {
 		}
 		/** @var Player $damager */
 		$damager = $event->getDamager();
+		//should not happened
+		assert($damager === $this->getUser()->getPlayer());
+		$user = $this->getUser();
 		if ($damager->isCreative()) {
 			return;
 		}
-		/** @var Player $damaged */
-		$damaged = $event->getEntity();
-
 		$maxDist = $this->getAllowedDistance();
-		$dist = $damager->distance($damaged);
-		if ($dist > $maxDist && $this->preVL++ > 3) {
+		$dist = $damager->distance($event->getEntity());
+		$info = $user->getMovementInfo();
+		if (
+			$dist > $maxDist &&
+			$info->timeSinceMotion() > 0.2 &&
+			$info->timeSinceTeleport() > 1 &&
+			$this->preVL++ > 3
+		) {
 			$this->addVL(1);
 			$this->preVL = 2;
 			if ($this->getConfiguration()->isSuppress()) {
@@ -43,8 +49,8 @@ class ReachA extends DetectionBase {
 
 	//reference: https://github.com/Bavfalcon9/Mavoric/blob/03abce64998ea29271d39bbad913fded275e20ff/src/Bavfalcon9/Mavoric/Cheat/Combat/Reach.php#L59-L62
 	public function getAllowedDistance() : float {
-		$user = $this->getUser();
-		$projected = $user->getMovementInfo()->onGround ? 4 : 6.2;
-		return ($user->getPlayer()->getPing() * 0.002) + $projected;
+		$player = $this->getUser()->getPlayer();
+		$projected = $player->onGround ? 5 : 6.2;
+		return ($player->getPing() * 0.002) + $projected;
 	}
 }

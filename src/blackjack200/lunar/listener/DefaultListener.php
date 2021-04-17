@@ -89,8 +89,9 @@ class DefaultListener implements Listener {
 		$victim = $event->getEntity();
 
 		if ($damager instanceof Player && $victim instanceof Player) {
-			UserManager::get($damager)->trigger(MultiAura::class, $event);
-			UserManager::get($damager)->trigger(ReachA::class, $event);
+			$user = UserManager::get($damager);
+			$user->trigger(MultiAura::class, $event);
+			$user->trigger(ReachA::class, $event);
 		}
 	}
 
