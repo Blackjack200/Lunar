@@ -8,6 +8,7 @@ use blackjack200\lunar\configuration\DetectionConfiguration;
 use blackjack200\lunar\configuration\Punishment;
 use blackjack200\lunar\Lunar;
 use blackjack200\lunar\user\User;
+use blackjack200\lunar\utils\Discord;
 use blackjack200\lunar\utils\Objects;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\scheduler\ClosureTask;
@@ -23,6 +24,7 @@ abstract class DetectionBase implements Detection {
 	private $configuration;
 	private string $name;
 	private string $fmt;
+	private string $webhookFmt;
 
 	/**
 	 * @param DetectionConfiguration $data
@@ -31,6 +33,7 @@ abstract class DetectionBase implements Detection {
 		$this->user = $user;
 		$this->name = $name;
 		$this->fmt = Lunar::getInstance()->getFormat();
+		$this->webhookFmt = Lunar::getInstance()->getWebHookFormat();
 		$this->configuration = $data;
 	}
 
@@ -46,15 +49,15 @@ abstract class DetectionBase implements Detection {
 	}
 
 	public function alert(string $message) : void {
-		$this->user->getPlayer()->sendMessage($this->format($message));
+		$this->user->getPlayer()->sendMessage($this->format($this->fmt, $message));
 	}
 
-	final protected function format(string $message) : string {
+	final protected function format(string $fmt, string $message, bool $prefix = true) : string {
 		$cfg = $this->getConfiguration();
 		return sprintf(
-			'%s %s',
-			Lunar::getInstance()->getPrefix(),
-			Objects::replace($this->fmt, '[%s]',
+			'%s%s',
+			$prefix ? Lunar::getInstance()->getPrefix() . ' ' : '',
+			Objects::replace($fmt, '[%s]',
 				[
 					'MSG' => $message,
 					'DETECTION_NAME' => $this->name,
@@ -71,6 +74,7 @@ abstract class DetectionBase implements Detection {
 	final public function getConfiguration() : DetectionConfiguration { return $this->configuration; }
 
 	public function fail(string $message) : void {
+		Discord::submit($this->format($this->webhookFmt, TextFormat::clean($message), false));
 		Lunar::getInstance()->getScheduler()->scheduleTask(new ClosureTask(function (int $tick) use ($message) : void {
 			$this->failImpl($message);
 		}));
@@ -104,11 +108,11 @@ abstract class DetectionBase implements Detection {
 	final public function getUser() : User { return $this->user; }
 
 	public function kick(string $message) : void {
-		$this->getUser()->getPlayer()->kick($this->format($message), false);
+		$this->getUser()->getPlayer()->kick($this->format($this->fmt, $message), false);
 	}
 
 	public function alertTitle(string $message) : void {
-		$this->getUser()->getPlayer()->sendTitle('§g', $this->format($message), 2, 3, 5);
+		$this->getUser()->getPlayer()->sendTitle('§g', $this->format($this->fmt, $message), 2, 3, 5);
 	}
 
 	public function reset() : void {
