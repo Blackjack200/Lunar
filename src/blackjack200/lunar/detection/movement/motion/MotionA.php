@@ -1,7 +1,7 @@
 <?php
 
 
-namespace blackjack200\lunar\detection\movement;
+namespace blackjack200\lunar\detection\movement\motion;
 
 
 use blackjack200\lunar\detection\DetectionBase;
