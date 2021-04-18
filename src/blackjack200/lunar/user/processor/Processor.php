@@ -16,11 +16,9 @@ abstract class Processor implements Listener {
 		$this->user = $user;
 	}
 
-	public function processServerBond(DataPacket $packet) : void {
-	}
+	public function processServerBond(DataPacket $packet) : void { }
 
-	public function processClient(DataPacket $packet) : void {
-	}
+	public function processClient(DataPacket $packet) : void { }
 
 	final public function __destruct() {
 		$this->destruct();
@@ -31,15 +29,9 @@ abstract class Processor implements Listener {
 		$this->user = null;
 	}
 
-	public function getUser() : User {
-		return $this->user;
-	}
+	public function getUser() : User { return $this->user; }
 
-	public function check(...$data) : void {
+	public function check(...$data) : void { }
 
-	}
-
-	public function finalize() : void {
-
-	}
+	public function finalize() : void { }
 }

@@ -23,7 +23,7 @@ class FlyA extends DetectionBase {
 			$user = $this->getUser();
 			$info = $user->getMovementInfo();
 			$player = $user->getPlayer();
-			$airTicksLimit = 8 + ($user->getEffectLevel(Effect::JUMP) * 2);
+			$airTicksLimit = 10 + ($user->getEffectLevel(Effect::JUMP) * 2);
 			if (
 				!$info->inVoid &&
 				$info->checkFly &&

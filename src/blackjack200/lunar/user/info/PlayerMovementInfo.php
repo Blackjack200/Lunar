@@ -34,15 +34,9 @@ class PlayerMovementInfo {
 		$this->locationHistory = new LocationHistory(64);
 	}
 
-	public function timeSinceTeleport() : float {
-		return microtime(true) - $this->lastTeleport;
-	}
+	public function timeSinceTeleport() : float { return microtime(true) - $this->lastTeleport; }
 
-	public function timeSinceMotion() : float {
-		return microtime(true) - $this->lastMotion;
-	}
+	public function timeSinceMotion() : float { return microtime(true) - $this->lastMotion; }
 
-	public function timeSinceJump() : float {
-		return microtime(true) - $this->lastJump;
-	}
+	public function timeSinceJump() : float { return microtime(true) - $this->lastJump; }
 }

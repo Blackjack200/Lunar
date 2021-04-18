@@ -6,7 +6,7 @@ namespace blackjack200\lunar\configuration;
 
 use blackjack200\lunar\utils\Objects;
 
-class DetectionConfiguration {
+final class DetectionConfiguration {
 	private int $punishment;
 	private int $maxVL;
 	private float $reward;
@@ -24,31 +24,17 @@ class DetectionConfiguration {
 		$this->extraData = $recursiveObject ? Objects::convert($data) : (object) $data;
 	}
 
-	public function getExtraData() : object {
-		return $this->extraData;
-	}
+	public function getExtraData() : object { return $this->extraData; }
 
-	public function getPunishment() : int {
-		return $this->punishment;
-	}
+	public function getPunishment() : int { return $this->punishment; }
 
-	public function isEnable() : bool {
-		return $this->enable;
-	}
+	public function isEnable() : bool { return $this->enable; }
 
-	public function hasMaxVL() : bool {
-		return $this->maxVL > 0;
-	}
+	public function hasMaxVL() : bool { return $this->maxVL > 0; }
 
-	public function getMaxVL() : float {
-		return $this->maxVL;
-	}
+	public function getMaxVL() : float { return $this->maxVL; }
 
-	public function getReward() : float {
-		return $this->reward;
-	}
+	public function getReward() : float { return $this->reward; }
 
-	public function isSuppress() : bool {
-		return $this->suppress;
-	}
+	public function isSuppress() : bool { return $this->suppress; }
 }

@@ -42,9 +42,7 @@ final class User implements DetectionTrigger {
 		$this->detections = DetectionRegistry::getDetections($this);
 	}
 
-	public function timeSinceHurt() : float {
-		return microtime(true) - $this->lastHurt;
-	}
+	public function timeSinceHurt() : float { return microtime(true) - $this->lastHurt; }
 
 	public function close() : void {
 		$this->closed = true;
@@ -57,9 +55,7 @@ final class User implements DetectionTrigger {
 		}
 	}
 
-	public function isClosed() : bool {
-		return $this->closed;
-	}
+	public function isClosed() : bool { return $this->closed; }
 
 	public function trigger(string $class, ...$data) : void {
 		foreach ($this->detections as $detection) {
@@ -79,29 +75,17 @@ final class User implements DetectionTrigger {
 		}
 	}
 
-	public function getDetections() : array {
-		return $this->detections;
-	}
+	public function getDetections() : array { return $this->detections; }
 
-	public function getProcessors() : array {
-		return $this->processors;
-	}
+	public function getProcessors() : array { return $this->processors; }
 
-	public function getPlayer() : Player {
-		return $this->player;
-	}
+	public function getPlayer() : Player { return $this->player; }
 
-	public function getMovementInfo() : PlayerMovementInfo {
-		return $this->moveData;
-	}
+	public function getMovementInfo() : PlayerMovementInfo { return $this->moveData; }
 
-	public function getActionInfo() : PlayerActionInfo {
-		return $this->actionInfo;
-	}
+	public function getActionInfo() : PlayerActionInfo { return $this->actionInfo; }
 
-	public function timeSinceJoin() : float {
-		return microtime(true) - $this->joinTime;
-	}
+	public function timeSinceJoin() : float { return microtime(true) - $this->joinTime; }
 
 	public function getEffectLevel(int $id) : int {
 		$level = 0;

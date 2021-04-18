@@ -26,11 +26,7 @@ class LoginData {
 		}
 	}
 
-	public function getClientData() : object {
-		return $this->clientData;
-	}
+	public function getClientData() : object { return $this->clientData; }
 
-	public function getChainData() : object {
-		return $this->chainData;
-	}
+	public function getChainData() : object { return $this->chainData; }
 }

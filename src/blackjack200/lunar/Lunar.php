@@ -15,17 +15,19 @@ class Lunar extends PluginBase {
 	/** @var self */
 	private static $instance;
 	/** @var string */
-	private $prefix = '';
+	private $prefix;
+	/** @var string */
+	private $format;
 	/** @var DetectionLogger */
 	private $detectionLogger;
 
-	public static function getInstance() : Lunar {
-		return self::$instance;
-	}
+	public static function getInstance() : Lunar { return self::$instance; }
 
-	public function getPrefix() : string {
-		return $this->prefix;
-	}
+	public function getDetectionLogger() : DetectionLogger { return $this->detectionLogger; }
+
+	public function getPrefix() : string { return $this->prefix; }
+
+	public function getFormat() : string { return $this->format; }
 
 	public function onEnable() : void {
 		self::$instance = $this;
@@ -38,12 +40,12 @@ class Lunar extends PluginBase {
 		$this->saveResource('config.yml', $this->getConfig()->get('Replace'));
 		$this->reloadConfig();
 		$this->prefix = $this->getConfig()->get('Prefix', true);
+		$this->format = $this->getConfig()->get('Format', true);
 		Entity::registerEntity(Slapper::class, true, ['lunar_slapper']);
 		try {
 			DetectionRegistry::initConfig();
 		} catch (Throwable $e) {
 			$this->getLogger()->logException($e);
-			$this->getLogger()->warning('Error when Configuration');
 			$this->getServer()->getPluginManager()->disablePlugin($this);
 			return;
 		}
@@ -54,10 +56,6 @@ class Lunar extends PluginBase {
 		$this->getServer()->getCommandMap()->register($command->getName(), $command);
 		$this->detectionLogger = new DetectionLogger($this->getDataFolder() . 'detections.log');
 		$this->detectionLogger->start();
-	}
-
-	public function getDetectionLogger() : DetectionLogger {
-		return $this->detectionLogger;
 	}
 
 	public function onDisable() : void {

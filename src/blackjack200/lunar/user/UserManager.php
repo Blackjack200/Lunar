@@ -28,7 +28,5 @@ final class UserManager {
 	}
 
 	/** @return User[] */
-	public static function getUsers() : array {
-		return self::$users;
-	}
+	public static function getUsers() : array { return self::$users; }
 }

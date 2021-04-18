@@ -30,8 +30,7 @@ final class DetectionRegistry {
 	/** @var array<class-string<DetectionBase>> */
 	private static array $detections = [];
 
-	private function __construct() {
-	}
+	private function __construct() { }
 
 	public static function initConfig() : void {
 		self::$detections = [

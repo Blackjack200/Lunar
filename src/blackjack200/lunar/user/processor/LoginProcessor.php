@@ -5,6 +5,7 @@ namespace blackjack200\lunar\user\processor;
 
 
 use blackjack200\lunar\detection\packet\ClientDataFaker;
+use blackjack200\lunar\Lunar;
 use blackjack200\lunar\user\LoginData;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\LoginPacket;
@@ -18,7 +19,7 @@ class LoginProcessor extends Processor {
 				$this->getUser()->loginData = new LoginData($packet);
 				$this->getUser()->trigger(ClientDataFaker::class);
 			} catch (Throwable $e) {
-
+				Lunar::getInstance()->getLogger()->info("Player {$this->getUser()->getPlayer()->getName()} is login without chainData.");
 			}
 		}
 	}

@@ -4,9 +4,8 @@
 namespace blackjack200\lunar\configuration;
 
 
-class Punishment {
-	private function __construct() {
-	}
+final class Punishment {
+	private function __construct() { }
 
 	public static function parsePunishment(string $dirty) : int {
 		switch (mb_strtolower($dirty)) {
@@ -24,23 +23,13 @@ class Punishment {
 		return self::KICK();
 	}
 
-	public static function BAN() : int {
-		return 2;
-	}
+	public static function BAN() : int { return 2; }
 
-	public static function KICK() : int {
-		return 3;
-	}
+	public static function KICK() : int { return 3; }
 
-	public static function WARN() : int {
-		return 4;
-	}
+	public static function WARN() : int { return 4; }
 
-	public static function IGNORE() : int {
-		return 5;
-	}
+	public static function IGNORE() : int { return 5; }
 
-	public static function SUPPRESS() : int {
-		return 1;
-	}
+	public static function SUPPRESS() : int { return 1; }
 }

@@ -22,4 +22,18 @@ class Objects {
 		}
 		return $obj;
 	}
+
+	/**
+	 * @param array<string, string> $values
+	 */
+	public static function replace(string $haystack, string $fmt, array $values) : string {
+		return str_replace(
+			array_map(
+				static fn(string $k) : string => sprintf($fmt, $k),
+				array_keys($values)
+			),
+			array_values($values),
+			$haystack
+		);
+	}
 }

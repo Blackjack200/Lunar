@@ -8,6 +8,7 @@ use blackjack200\lunar\configuration\DetectionConfiguration;
 use blackjack200\lunar\configuration\Punishment;
 use blackjack200\lunar\Lunar;
 use blackjack200\lunar\user\User;
+use blackjack200\lunar\utils\Objects;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
@@ -21,6 +22,7 @@ abstract class DetectionBase implements Detection {
 	/** @var mixed */
 	private $configuration;
 	private string $name;
+	private string $fmt;
 
 	/**
 	 * @param DetectionConfiguration $data
@@ -28,15 +30,8 @@ abstract class DetectionBase implements Detection {
 	public function __construct(User $user, string $name, $data) {
 		$this->user = $user;
 		$this->name = $name;
+		$this->fmt = Lunar::getInstance()->getFormat();
 		$this->configuration = $data;
-	}
-
-	public function overflowVL() : bool {
-		return $this->getConfiguration()->hasMaxVL() && $this->VL >= $this->getConfiguration()->getMaxVL();
-	}
-
-	final public function getConfiguration() : DetectionConfiguration {
-		return $this->configuration;
 	}
 
 	/** @param numeric $VL */
@@ -51,20 +46,29 @@ abstract class DetectionBase implements Detection {
 	}
 
 	public function alert(string $message) : void {
-		$this->getUser()->getPlayer()->sendMessage($this->formatMessage($message));
+		$this->user->getPlayer()->sendMessage($this->format($message));
 	}
 
-	final public function getUser() : User {
-		return $this->user;
+	final protected function format(string $message) : string {
+		$cfg = $this->getConfiguration();
+		return sprintf(
+			'%s %s',
+			Lunar::getInstance()->getPrefix(),
+			Objects::replace($this->fmt, '[%s]',
+				[
+					'MSG' => $message,
+					'DETECTION_NAME' => $this->name,
+					'PLAYER_NAME' => $this->user->getPlayer()->getName(),
+					'MAX_VL' => $cfg->getMaxVL(),
+					'VL' => $this->VL,
+					'PRE_VL' => $this->preVL,
+					'PUNISHMENT' => $cfg->getPunishment(),
+				]
+			)
+		);
 	}
 
-	/**
-	 * @param string $message
-	 * @return string
-	 */
-	final protected function formatMessage(string $message) : string {
-		return sprintf('%s %s: %s', Lunar::getInstance()->getPrefix(), $this->name, $message);
-	}
+	final public function getConfiguration() : DetectionConfiguration { return $this->configuration; }
 
 	public function fail(string $message) : void {
 		Lunar::getInstance()->getScheduler()->scheduleTask(new ClosureTask(function (int $tick) use ($message) : void {
@@ -91,21 +95,20 @@ abstract class DetectionBase implements Detection {
 		}
 	}
 
-	/**
-	 * @param string $message
-	 */
 	public function log(string $message) : void {
 		$fmt = sprintf('[%s] NAME=%s DETECTION=%s MSG=%s', time(), $this->getUser()->getPlayer()->getName(), $this->name, $message);
 		Lunar::getInstance()->getLogger()->info($fmt);
 		Lunar::getInstance()->getDetectionLogger()->write($fmt);
 	}
 
+	final public function getUser() : User { return $this->user; }
+
 	public function kick(string $message) : void {
-		$this->getUser()->getPlayer()->kick($this->formatMessage($message), false);
+		$this->getUser()->getPlayer()->kick($this->format($message), false);
 	}
 
 	public function alertTitle(string $message) : void {
-		$this->getUser()->getPlayer()->sendTitle('§g', $this->formatMessage($message), 2, 3, 5);
+		$this->getUser()->getPlayer()->sendTitle('§g', $this->format($message), 2, 3, 5);
 	}
 
 	public function reset() : void {
@@ -113,25 +116,20 @@ abstract class DetectionBase implements Detection {
 		$this->preVL = 0;
 	}
 
-	final public function getName() : string {
-		return $this->name;
+	public function overflowVL() : bool {
+		$cfg = $this->getConfiguration();
+		return $cfg->hasMaxVL() && $this->VL >= $cfg->getMaxVL();
 	}
 
-	public function handleClient(DataPacket $packet) : void {
+	final public function getName() : string { return $this->name; }
 
-	}
+	public function handleClient(DataPacket $packet) : void { }
 
-	public function handleServer(DataPacket $packet) : void {
+	public function handleServer(DataPacket $packet) : void { }
 
-	}
+	public function debug(string $message) : void { }
 
-	public function debug(string $message) : void {
-
-	}
-
-	public function check(...$data) : void {
-
-	}
+	public function check(...$data) : void { }
 
 	public function finalize() : void {
 		$this->user = null;
@@ -139,7 +137,7 @@ abstract class DetectionBase implements Detection {
 
 	public function revertMovement() : void {
 		if ($this->configuration->isSuppress()) {
-			$user = $this->getUser();
+			$user = $this->user;
 			$pos = $user->getMovementInfo()->locationHistory->pop();
 			if ($pos !== null) {
 				$player = $user->getPlayer();

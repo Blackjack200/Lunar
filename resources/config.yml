@@ -1,6 +1,9 @@
 # Lunar Anticheat Configure File
-# Anticheat Alert Message Prefix
+# Alert Message Prefix
 Prefix: "§7[§fLunar§7]"
+# Alert Message format (with prefix)
+#  Available Variable [MSG, DETECTION_NAME, PLAYER_NAME, MAX_VL, VL, PRE_VL, PUNISHMENT]
+Format: "[DETECTION_NAME]: [MSG]"
 # Replace Config file by default
 Replace: true
 # In-Game CPS TAG
