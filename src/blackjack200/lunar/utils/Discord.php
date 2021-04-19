@@ -5,9 +5,8 @@ namespace blackjack200\lunar\utils;
 
 
 use blackjack200\lunar\Lunar;
-use blackjack200\lunar\webhook\discord\DiscordMessage;
-use blackjack200\lunar\webhook\discord\DiscordRequest;
 use Exception;
+use libbot\discord\DiscordMessage;
 
 class Discord {
 	public static function submit(string $message) : void {
@@ -16,8 +15,7 @@ class Discord {
 			try {
 				$msg = new DiscordMessage();
 				$msg->content($message);
-				$req = new DiscordRequest($URL, $msg);
-				Lunar::getInstance()->getClient()->submit($req);
+				Lunar::getInstance()->getBot()->send($msg);
 			} catch (Exception $e) {
 			}
 		}

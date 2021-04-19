@@ -1,0 +1,3 @@
+[submodule "src/libbot"]
+	path = src/libbot
+	url = https://github.com/Blackjack200/libbot.git

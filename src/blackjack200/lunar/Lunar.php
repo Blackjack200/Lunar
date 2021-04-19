@@ -7,7 +7,9 @@ use blackjack200\lunar\detection\combat\Slapper;
 use blackjack200\lunar\listener\DefaultListener;
 use blackjack200\lunar\task\ProcessorSecondTrigger;
 use blackjack200\lunar\task\ProcessorTickTrigger;
-use blackjack200\lunar\webhook\HTTPClient;
+use libbot\BotFactory;
+use libbot\BotInfo;
+use libbot\discord\DiscordBot;
 use pocketmine\entity\Entity;
 use pocketmine\plugin\PluginBase;
 use Throwable;
@@ -21,8 +23,8 @@ class Lunar extends PluginBase {
 	private $format;
 	/** @var DetectionLogger */
 	private $detectionLogger;
-	/** @var HTTPClient */
-	private $client;
+	/** @var DiscordBot */
+	private $bot;
 	/** @var string */
 	private $URL;
 	/** @var string */
@@ -32,7 +34,7 @@ class Lunar extends PluginBase {
 
 	public function getDetectionLogger() : DetectionLogger { return $this->detectionLogger; }
 
-	public function getClient() : HTTPClient { return $this->client; }
+	public function getBot() : DiscordBot { return $this->bot; }
 
 	public function getPrefix() : string { return $this->prefix; }
 
@@ -72,12 +74,14 @@ class Lunar extends PluginBase {
 		$this->detectionLogger = new DetectionLogger($this->getDataFolder() . 'detections.log');
 		$this->detectionLogger->start();
 
-		$this->client = new HTTPClient();
-		$this->client->start();
+		$info = new BotInfo();
+		$info->url = $this->URL;
+		$this->bot = BotFactory::create('discord', $info);
+		$this->bot->start();
 	}
 
 	public function onDisable() : void {
 		$this->detectionLogger->shutdown();
-		$this->client->shutdown();
+		$this->bot->shutdown();
 	}
 }
