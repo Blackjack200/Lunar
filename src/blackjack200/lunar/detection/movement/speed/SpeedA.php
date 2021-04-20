@@ -6,6 +6,7 @@ namespace blackjack200\lunar\detection\movement\speed;
 
 use blackjack200\lunar\detection\DetectionBase;
 use blackjack200\lunar\user\User;
+use pocketmine\entity\Effect;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 
@@ -23,7 +24,7 @@ class SpeedA extends DetectionBase {
 	public function handleClient(DataPacket $packet) : void {
 		$user = $this->getUser();
 		$info = $user->getMovementInfo();
-		if ($packet instanceof MovePlayerPacket && $info->inAirTick > 2) {
+		if ($packet instanceof MovePlayerPacket && $info->inAirTick > 2 && $user->getExpiredInfo()->duration(Effect::SPEED) > 1) {
 			$lastMD = $info->lastMoveDelta;
 			$curtMD = $info->moveDelta;
 			$last = hypot($lastMD->x, $lastMD->z);

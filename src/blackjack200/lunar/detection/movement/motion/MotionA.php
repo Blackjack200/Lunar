@@ -12,12 +12,6 @@ use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 class MotionA extends DetectionBase {
 	public function handleClient(DataPacket $packet) : void {
 		//reference: https://github.com/routerabfrage/badlion-src/blob/93a099e711f1e91f432fcf2aff084cf73d6b2c82/net/minecraft/entity/EntityLivingBase.java#L1060-L1073
-		//   |\
-		//   | \
-		// a |  \ c
-		//   |___\
-		//     b
-		// a**2 + b**2 = c**2
 		$info = $this->getUser()->getMovementInfo();
 		if (
 			$packet instanceof MovePlayerPacket &&

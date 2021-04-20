@@ -5,6 +5,7 @@ namespace blackjack200\lunar\user;
 use blackjack200\lunar\detection\Detection;
 use blackjack200\lunar\detection\DetectionTrigger;
 use blackjack200\lunar\DetectionRegistry;
+use blackjack200\lunar\user\info\ExpiredInfo;
 use blackjack200\lunar\user\info\PlayerActionInfo;
 use blackjack200\lunar\user\info\PlayerMovementInfo;
 use blackjack200\lunar\user\processor\InGameProcessor;
@@ -25,6 +26,7 @@ final class User implements DetectionTrigger {
 	private array $processors = [];
 	private PlayerMovementInfo $moveData;
 	private PlayerActionInfo $actionInfo;
+	private ExpiredInfo $expiredInfo;
 	private float $joinTime;
 	private bool $closed = false;
 
@@ -34,6 +36,7 @@ final class User implements DetectionTrigger {
 		$this->lastHurt = microtime(true);
 		$this->moveData = new PlayerMovementInfo();
 		$this->actionInfo = new PlayerActionInfo();
+		$this->expiredInfo = new ExpiredInfo(32);
 		$this->processors[] = new LoginProcessor($this);
 		$this->processors[] = new InGameProcessor($this);
 		$this->processors[] = new MovementProcessor($this);
@@ -84,6 +87,8 @@ final class User implements DetectionTrigger {
 	public function getMovementInfo() : PlayerMovementInfo { return $this->moveData; }
 
 	public function getActionInfo() : PlayerActionInfo { return $this->actionInfo; }
+
+	public function getExpiredInfo() : ExpiredInfo { return $this->expiredInfo; }
 
 	public function timeSinceJoin() : float { return microtime(true) - $this->joinTime; }
 

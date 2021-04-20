@@ -37,6 +37,12 @@ class InGameProcessor extends Processor {
 	}
 
 	public function check(...$data) : void {
-		$this->getUser()->CPS = 0;
+		$usr = $this->getUser();
+		foreach ($usr->getPlayer()->getEffects() as $effect) {
+			if ($effect->getDuration() === 1) {
+				$usr->getExpiredInfo()->set($effect->getId());
+			}
+		}
+		$usr->CPS = 0;
 	}
 }

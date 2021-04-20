@@ -31,7 +31,8 @@ class FlyA extends DetectionBase {
 				$info->timeSinceTeleport() > 2 &&
 				$info->timeSinceMotion() > 1 &&
 				$user->timeSinceJoin() > 5 &&
-				!$player->isFlying()
+				!$player->isFlying() &&
+				$user->getExpiredInfo()->duration('flight') > 1
 			) {
 				//https://github.com/Tecnio/AntiHaxerman/blob/master/src/main/java/me/tecnio/antihaxerman/check/impl/movement/flight/FlightA.java
 				$deltaY = $info->moveDelta->y;

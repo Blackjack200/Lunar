@@ -18,6 +18,8 @@ class PlayerMovementInfo {
 
 	public int $inAirTick = 0;
 	public int $onGroundTick = 0;
+	public int $flightTick = 0;
+	public int $sprintTick = 0;
 
 	public Vector3 $lastMoveDelta;
 	public Vector3 $moveDelta;

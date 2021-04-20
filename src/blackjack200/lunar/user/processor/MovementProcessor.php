@@ -30,10 +30,23 @@ class MovementProcessor extends Processor {
 		if (self::$emptyVector3 === null) {
 			self::$emptyVector3 = new Vector3();
 		}
-		$this->getUser()->getMovementInfo()->lastLocation = $this->getUser()->getPlayer()->asLocation();
-		$this->getUser()->getMovementInfo()->location = $this->getUser()->getPlayer()->asLocation();
 		$this->getUser()->getMovementInfo()->moveDelta = new Vector3();
-		$this->getUser()->getMovementInfo()->lastMoveDelta = new Vector3();
+		$user = $this->getUser();
+		$info = $user->getMovementInfo();
+		$info->location = $user->getPlayer()->asLocation();
+		$this->updateLocation($info, $info->location);
+		$this->updateMoveDelta($info);
+
+	}
+
+	public function updateLocation(PlayerMovementInfo $movementInfo, Location $location) : void {
+		$movementInfo->lastLocation = $movementInfo->location;
+		$movementInfo->location = $location;
+	}
+
+	public function updateMoveDelta(PlayerMovementInfo $movementInfo) : void {
+		$movementInfo->lastMoveDelta = $movementInfo->moveDelta;
+		$movementInfo->moveDelta = $movementInfo->location->subtract($movementInfo->lastLocation)->asVector3();
 	}
 
 	public function processClient(DataPacket $packet) : void {
@@ -81,7 +94,7 @@ class MovementProcessor extends Processor {
 						$block->canBeFlowedInto()
 					) {
 						$info->checkFly = false;
-						$info->onGround = true;
+						//$info->onGround = true;
 						break;
 					}
 				}
@@ -90,24 +103,31 @@ class MovementProcessor extends Processor {
 		}
 	}
 
-	public function updateLocation(PlayerMovementInfo $movementInfo, Location $location) : void {
-		$movementInfo->lastLocation = $movementInfo->location;
-		$movementInfo->location = $location;
-	}
-
-	public function updateMoveDelta(PlayerMovementInfo $movementInfo) : void {
-		$movementInfo->lastMoveDelta = $movementInfo->moveDelta;
-		$movementInfo->moveDelta = $movementInfo->location->subtract($movementInfo->lastLocation)->asVector3();
-	}
-
 	public function check(...$data) : void {
-		$moveData = $this->getUser()->getMovementInfo();
-		if (!$moveData->onGround) {
-			$moveData->inAirTick++;
-			$moveData->onGroundTick = 0;
-		} else {
-			$moveData->inAirTick = 0;
-			$moveData->onGroundTick++;
+		$user = $this->getUser();
+		$player = $user->getPlayer();
+		if ($player->spawned) {
+			$moveData = $user->getMovementInfo();
+			if (!$moveData->onGround) {
+				$moveData->inAirTick++;
+				$moveData->onGroundTick = 0;
+			} else {
+				$moveData->inAirTick = 0;
+				$moveData->onGroundTick++;
+			}
+			if ($player->isFlying()) {
+				$moveData->flightTick++;
+			} elseif ($moveData->flightTick !== 0) {
+				$moveData->flightTick = 0;
+				$user->getExpiredInfo()->set('flight');
+			}
+
+			if ($player->isSprinting()) {
+				$moveData->sprintTick++;
+			} elseif ($moveData->sprintTick !== 0) {
+				$moveData->sprintTick = 0;
+				$user->getExpiredInfo()->set('sprint');
+			}
 		}
 	}
 }

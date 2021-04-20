@@ -12,12 +12,10 @@ use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 
 class SpeedC extends DetectionBase {
 	protected float $reward;
-	protected float $lastLostSpeed = 0.0;
 
 	public function __construct(User $user, string $name, $data) {
 		parent::__construct($user, $name, $data);
 		$this->reward = $this->getConfiguration()->getReward();
-		$this->lastLostSpeed = microtime(true);
 	}
 
 	public function handleClient(DataPacket $packet) : void {
@@ -26,10 +24,10 @@ class SpeedC extends DetectionBase {
 			$info = $user->getMovementInfo();
 			$deltaXZ = hypot($info->moveDelta->x, $info->moveDelta->z);
 			$maxSpeed = $this->getSpeed();
-			$t = $this->lastLostSpeed - microtime(true);
+			$t = $user->getExpiredInfo()->duration(Effect::SPEED);
 
 			if ($deltaXZ > $maxSpeed &&
-				$t < 0 &&
+				$t < 1 &&
 				!$info->onIce &&
 				$info->checkFly &&
 				!$info->inVoid &&
@@ -59,9 +57,6 @@ class SpeedC extends DetectionBase {
 	public function getSpeedLevel() : int {
 		$effect = $this->getUser()->getPlayer()->getEffect(Effect::SPEED);
 		if ($effect !== null) {
-			if ($effect->getDuration() === 1) {
-				$this->lastLostSpeed = microtime(true) + 2;
-			}
 			return $effect->getEffectLevel();
 		}
 		return 0;

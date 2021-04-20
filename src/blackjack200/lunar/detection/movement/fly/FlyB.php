@@ -19,7 +19,7 @@ class FlyB extends DetectionBase {
 			$this->addVL(1);
 			$this->revertMovement();
 			if ($this->overflowVL()) {
-				$this->fail("off={$info->inAirTick}");
+				$this->fail("off=$info->inAirTick");
 			}
 		}
 	}
