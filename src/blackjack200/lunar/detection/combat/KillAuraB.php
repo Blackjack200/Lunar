@@ -26,7 +26,7 @@ class KillAuraB extends DetectionBase {
 			$this->lastSwing = microtime(true);
 		}
 
-		if ($packet instanceof InventoryTransactionPacket && $packet->trData instanceof UseItemOnEntityTransactionData) {
+		if ($packet instanceof InventoryTransactionPacket && $packet->trData instanceof UseItemOnEntityTransactionData && $packet->trData->getActionType() === UseItemOnEntityTransactionData::ACTION_ATTACK) {
 			$lastSwing = microtime(true) - $this->lastSwing;
 			// seems 4 AnimatePacket per sec
 			if ($lastSwing > $this->duration && $this->preVL++ > 2) {
