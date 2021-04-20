@@ -24,6 +24,8 @@ class FlyE extends DetectionBase {
 			$user = $this->getUser();
 			$info = $user->getMovementInfo();
 			$player = $user->getPlayer();
+			$deltaY = $info->moveDelta->y;
+			$lastDeltaY = $info->lastMoveDelta->y;
 			if (
 				!$info->onGround &&
 				!$info->inVoid &&
@@ -31,12 +33,10 @@ class FlyE extends DetectionBase {
 				$info->timeSinceTeleport() > 2 &&
 				$info->timeSinceMotion() > 0.25 &&
 				$user->timeSinceJoin() > 5 &&
-				!$player->isFlying()
+				!$player->isFlying() &&
+				abs($deltaY) < 3 && abs($lastDeltaY) < 3
 			) {
 				//https://github.com/Tecnio/AntiHaxerman/blob/master/src/main/java/me/tecnio/antihaxerman/check/impl/movement/flight/FlightC.java
-				$deltaY = $info->moveDelta->y;
-				$lastDeltaY = $info->lastMoveDelta->y;
-
 				$difference = abs($deltaY - $lastDeltaY);
 
 				if ($difference < $this->maxDiff && $this->preVL++ > 4) {

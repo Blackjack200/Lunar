@@ -94,7 +94,7 @@ class MovementProcessor extends Processor {
 						$block->canBeFlowedInto()
 					) {
 						$info->checkFly = false;
-						//$info->onGround = true;
+						$info->onGround = true;
 						break;
 					}
 				}
