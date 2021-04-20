@@ -43,7 +43,7 @@ class FastBreakA extends DetectionBase {
 
 				$this->addVL(1);
 				if ($this->overflowVL()) {
-					$this->fail('Try to break ' . $item->getVanillaName() . ' with diff=' . number_format($prediction - $current, 5));
+					$this->fail('Try to break ' . $target->getName() . ' with tool= ' . $item->getVanillaName() . 'diff=' . number_format($prediction - $current, 5));
 				}
 			}
 		}
