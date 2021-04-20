@@ -27,7 +27,7 @@ class SpeedC extends DetectionBase {
 			$t = $user->getExpiredInfo()->duration(Effect::SPEED);
 
 			if ($deltaXZ > $maxSpeed &&
-				$t < 1 &&
+				$t > 1 &&
 				!$info->onIce &&
 				$info->checkFly &&
 				!$info->inVoid &&
