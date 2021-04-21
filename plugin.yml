@@ -3,7 +3,8 @@ version: 0.1.0
 api: 3.0.0
 author: Misaka
 main: blackjack200\lunar\Lunar
-
+extensions:
+  Core: '>=7.4'
 permissions:
   lunar:
     children:
