@@ -51,6 +51,6 @@ class SpeedC extends DetectionBase {
 	}
 
 	private function getSpeed() : float {
-		return 0.4 * (($this->getUser()->getEffectLevel(Effect::SPEED) + 1) * 0.2);
+		return 0.4 * (1 + (0.2 * $this->getUser()->getEffectLevel(Effect::SPEED)));
 	}
 }

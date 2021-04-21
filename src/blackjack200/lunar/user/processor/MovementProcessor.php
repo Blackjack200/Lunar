@@ -7,11 +7,8 @@ namespace blackjack200\lunar\user\processor;
 use blackjack200\lunar\user\info\PlayerMovementInfo;
 use blackjack200\lunar\user\User;
 use blackjack200\lunar\utils\AABB;
+use blackjack200\lunar\utils\Boolean;
 use pocketmine\block\Block;
-use pocketmine\block\Door;
-use pocketmine\block\Ladder;
-use pocketmine\block\Trapdoor;
-use pocketmine\block\Vine;
 use pocketmine\entity\Effect;
 use pocketmine\item\ItemIds;
 use pocketmine\level\Location;
@@ -74,6 +71,7 @@ class MovementProcessor extends Processor {
 				$info->inVoid = $player->getY() < -15;
 				$info->checkFly = !$player->isImmobile() && !$player->hasEffect(Effect::LEVITATION);
 				foreach ($verticalBlocks as $block) {
+					/** @var Block $block */
 					if (!$info->onGround) {
 						$info->onGround = true;
 					}
@@ -86,10 +84,7 @@ class MovementProcessor extends Processor {
 					if (
 						$id === Block::SLIME_BLOCK ||
 						$id === Block::COBWEB ||
-						$block instanceof Door ||
-						$block instanceof Trapdoor ||
-						$block instanceof Vine ||
-						$block instanceof Ladder ||
+						$block->isTransparent() ||
 						$block->canClimb() ||
 						$block->canBeFlowedInto()
 					) {
@@ -98,7 +93,7 @@ class MovementProcessor extends Processor {
 						break;
 					}
 				}
-				//$this->getUser()->getPlayer()->sendPopup('check=' . Boolean::btos($info->checkFly) . ' on=' . Boolean::btos($info->onGround) . ' tick=' . $info->inAirTick);
+				$this->getUser()->getPlayer()->sendPopup('check=' . Boolean::btos($info->checkFly) . ' on=' . Boolean::btos($info->onGround) . ' tick=' . $info->inAirTick);
 			}
 		}
 	}
@@ -107,25 +102,28 @@ class MovementProcessor extends Processor {
 		$user = $this->getUser();
 		$player = $user->getPlayer();
 		if ($player->spawned) {
-			$moveData = $user->getMovementInfo();
-			if (!$moveData->onGround) {
-				$moveData->inAirTick++;
-				$moveData->onGroundTick = 0;
+			$info = $user->getMovementInfo();
+			if (!$info->checkFly) {
+				$user->getExpiredInfo()->set('checkFly');
+			}
+			if (!$info->onGround) {
+				$info->inAirTick++;
+				$info->onGroundTick = 0;
 			} else {
-				$moveData->inAirTick = 0;
-				$moveData->onGroundTick++;
+				$info->inAirTick = 0;
+				$info->onGroundTick++;
 			}
 			if ($player->isFlying()) {
-				$moveData->flightTick++;
-			} elseif ($moveData->flightTick !== 0) {
-				$moveData->flightTick = 0;
+				$info->flightTick++;
+			} elseif ($info->flightTick !== 0) {
+				$info->flightTick = 0;
 				$user->getExpiredInfo()->set('flight');
 			}
 
 			if ($player->isSprinting()) {
-				$moveData->sprintTick++;
-			} elseif ($moveData->sprintTick !== 0) {
-				$moveData->sprintTick = 0;
+				$info->sprintTick++;
+			} elseif ($info->sprintTick !== 0) {
+				$info->sprintTick = 0;
 				$user->getExpiredInfo()->set('sprint');
 			}
 		}

@@ -13,7 +13,7 @@ class PlayerMovementInfo {
 
 	public bool $inVoid = false;
 	public bool $onIce = false;
-	//liquid climbing levitation immobile
+	//collied with transparent, liquid, climbing block and levitation immobile
 	public bool $checkFly = true;
 
 	public int $inAirTick = 0;

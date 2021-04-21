@@ -34,6 +34,7 @@ class FlyE extends DetectionBase {
 				$info->timeSinceMotion() > 0.25 &&
 				$user->timeSinceJoin() > 5 &&
 				!$player->isFlying() &&
+				$user->getExpiredInfo()->duration('checkFly') > 0.25 &&
 				abs($deltaY) < 3 && abs($lastDeltaY) < 3
 			) {
 				//https://github.com/Tecnio/AntiHaxerman/blob/master/src/main/java/me/tecnio/antihaxerman/check/impl/movement/flight/FlightC.java

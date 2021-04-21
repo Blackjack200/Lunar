@@ -19,8 +19,9 @@ class MotionB extends DetectionBase {
 				!$info->inVoid &&
 				$info->checkFly &&
 				$info->timeSinceTeleport() > 2 &&
-				$info->timeSinceMotion() > 0.0055 &&
 				$user->timeSinceJoin() > 5 &&
+				$user->getExpiredInfo()->duration('flight') > 1 &&
+				$user->getExpiredInfo()->duration('checkFly') > 0.25 &&
 				!$player->isFlying()
 			) {
 				$deltaY = $info->moveDelta->y;
@@ -31,7 +32,7 @@ class MotionB extends DetectionBase {
 				$maximum = 0.6 + $modifierJump + $modifierVelocity;
 
 				if ($deltaY > $maximum) {
-					$this->addVL(1);
+					$this->addVL(1, "dy=$deltaY pred_max=$maximum");
 					if ($this->overflowVL()) {
 						$this->fail("dy=$deltaY pred_max=$maximum");
 					}

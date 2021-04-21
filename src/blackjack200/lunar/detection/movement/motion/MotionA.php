@@ -15,6 +15,7 @@ class MotionA extends DetectionBase {
 		$info = $this->getUser()->getMovementInfo();
 		if (
 			$packet instanceof MovePlayerPacket &&
+			$info->checkFly &&
 			$info->timeSinceJump() < 0.052 &&
 			$info->timeSinceTeleport() > 1
 		) {

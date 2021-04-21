@@ -36,7 +36,8 @@ class SpeedA extends DetectionBase {
 			!$player->isCreative() &&
 			!$player->isFlying() &&
 			$expiredInfo->duration(Effect::SPEED) > 1 &&
-			$expiredInfo->duration('flight') > 1
+			$expiredInfo->duration('flight') > 1 &&
+			$user->getExpiredInfo()->duration('checkFly') > 0.25
 		) {
 			$lastMD = $info->lastMoveDelta;
 			$curtMD = $info->moveDelta;
