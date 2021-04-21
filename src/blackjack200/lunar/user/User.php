@@ -56,6 +56,9 @@ final class User implements DetectionTrigger {
 		foreach ($this->processors as $processor) {
 			$processor->finalize();
 		}
+
+		$this->detections = [];
+		$this->processors = [];
 	}
 
 	public function isClosed() : bool { return $this->closed; }
