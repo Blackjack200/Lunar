@@ -7,7 +7,6 @@ namespace blackjack200\lunar\user\processor;
 use blackjack200\lunar\user\info\PlayerMovementInfo;
 use blackjack200\lunar\user\User;
 use blackjack200\lunar\utils\AABB;
-use blackjack200\lunar\utils\Boolean;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
 use pocketmine\item\ItemIds;
@@ -93,7 +92,7 @@ class MovementProcessor extends Processor {
 						break;
 					}
 				}
-				$this->getUser()->getPlayer()->sendPopup('check=' . Boolean::btos($info->checkFly) . ' on=' . Boolean::btos($info->onGround) . ' tick=' . $info->inAirTick);
+				//$this->getUser()->getPlayer()->sendPopup('check=' . Boolean::btos($info->checkFly) . ' on=' . Boolean::btos($info->onGround) . ' tick=' . $info->inAirTick);
 			}
 		}
 	}
