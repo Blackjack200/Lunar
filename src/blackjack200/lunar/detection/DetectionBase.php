@@ -6,9 +6,9 @@ namespace blackjack200\lunar\detection;
 
 use blackjack200\lunar\configuration\DetectionConfiguration;
 use blackjack200\lunar\configuration\Punishment;
+use blackjack200\lunar\GlobalBot;
 use blackjack200\lunar\Lunar;
 use blackjack200\lunar\user\User;
-use blackjack200\lunar\utils\Discord;
 use blackjack200\lunar\utils\Objects;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\scheduler\ClosureTask;
@@ -74,7 +74,7 @@ abstract class DetectionBase implements Detection {
 	final public function getConfiguration() : DetectionConfiguration { return $this->configuration; }
 
 	public function fail(string $message) : void {
-		Discord::submit($this->format($this->webhookFmt, TextFormat::clean($message), false));
+		GlobalBot::send($this->format($this->webhookFmt, TextFormat::clean($message), false));
 		Lunar::getInstance()->getScheduler()->scheduleTask(new ClosureTask(function (int $tick) use ($message) : void {
 			$this->failImpl($message);
 		}));

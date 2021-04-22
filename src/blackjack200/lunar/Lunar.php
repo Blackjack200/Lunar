@@ -9,7 +9,6 @@ use blackjack200\lunar\task\ProcessorSecondTrigger;
 use blackjack200\lunar\task\ProcessorTickTrigger;
 use libbot\BotFactory;
 use libbot\BotInfo;
-use libbot\discord\DiscordBot;
 use pocketmine\entity\Entity;
 use pocketmine\plugin\PluginBase;
 use Throwable;
@@ -23,10 +22,6 @@ class Lunar extends PluginBase {
 	private $format;
 	/** @var DetectionLogger */
 	private $detectionLogger;
-	/** @var DiscordBot */
-	private $bot;
-	/** @var string */
-	private $URL;
 	/** @var string */
 	private $webHookFormat;
 
@@ -34,13 +29,9 @@ class Lunar extends PluginBase {
 
 	public function getDetectionLogger() : DetectionLogger { return $this->detectionLogger; }
 
-	public function getBot() : DiscordBot { return $this->bot; }
-
 	public function getPrefix() : string { return $this->prefix; }
 
 	public function getFormat() : string { return $this->format; }
-
-	public function getURL() : string { return $this->URL; }
 
 	public function getWebHookFormat() : string { return $this->webHookFormat; }
 
@@ -56,7 +47,6 @@ class Lunar extends PluginBase {
 		$this->reloadConfig();
 		$this->prefix = $this->getConfig()->get('Prefix', true);
 		$this->format = $this->getConfig()->get('Format', true);
-		$this->URL = $this->getConfig()->get('Discord', true);
 		$this->webHookFormat = $this->getConfig()->get('WebHookFormat');
 		Entity::registerEntity(Slapper::class, true, ['lunar_slapper']);
 		try {
@@ -74,14 +64,17 @@ class Lunar extends PluginBase {
 		$this->detectionLogger = new DetectionLogger($this->getDataFolder() . 'detections.log');
 		$this->detectionLogger->start();
 
-		$info = new BotInfo();
-		$info->url = $this->URL;
-		$this->bot = BotFactory::create('discord', $info);
-		$this->bot->start();
+		$url = $this->getConfig()->get('Discord', true);
+		if ($url !== '_') {
+			$info = new BotInfo();
+			$info->url = $url;
+			GlobalBot::set(BotFactory::create('discord', $info));
+			GlobalBot::start();
+		}
 	}
 
 	public function onDisable() : void {
 		$this->detectionLogger->shutdown();
-		$this->bot->shutdown();
+		GlobalBot::set(null);
 	}
 }
