@@ -2,8 +2,11 @@
 # Alert Message Prefix
 Prefix: "§7[§fLunar§7]"
 
-# Discord WebHookURL, don't modify it if you don't need
-Discord: _
+# WebHookURL, don't modify it if you don't need
+WebHookEnable: false
+Type: discord
+Constructor:
+  url: _
 
 # Alert Message format (with prefix)
 #  Available Variable [MSG, DETECTION_NAME, PLAYER_NAME, MAX_VL, VL, PRE_VL, PUNISHMENT]

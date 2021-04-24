@@ -43,11 +43,12 @@ class Lunar extends PluginBase {
 			return;
 		}
 		$this->getServer()->getPluginManager()->registerEvents(new DefaultListener(), $this);
-		$this->saveResource('config.yml', $this->getConfig()->get('Replace'));
+		$config = $this->getConfig();
+		$this->saveResource('config.yml', $config->get('Replace'));
 		$this->reloadConfig();
-		$this->prefix = $this->getConfig()->get('Prefix', true);
-		$this->format = $this->getConfig()->get('Format', true);
-		$this->webHookFormat = $this->getConfig()->get('WebHookFormat');
+		$this->prefix = $config->get('Prefix', true);
+		$this->format = $config->get('Format', true);
+		$this->webHookFormat = $config->get('WebHookFormat');
 		Entity::registerEntity(Slapper::class, true, ['lunar_slapper']);
 		try {
 			DetectionRegistry::initConfig();
@@ -64,11 +65,12 @@ class Lunar extends PluginBase {
 		$this->detectionLogger = new DetectionLogger($this->getDataFolder() . 'detections.log');
 		$this->detectionLogger->start();
 
-		$url = $this->getConfig()->get('Discord', true);
-		if ($url !== '_') {
+		if ($config->get('WebHookEnable') !== '_') {
 			$info = new BotInfo();
-			$info->url = $url;
-			GlobalBot::set(BotFactory::create('discord', $info));
+			foreach ($config->get('Constructor') as $k => $v) {
+				$info->$k = $v;
+			}
+			GlobalBot::set(BotFactory::create($config->get('Type'), $info));
 			GlobalBot::start();
 		}
 	}

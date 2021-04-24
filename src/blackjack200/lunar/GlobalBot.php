@@ -25,7 +25,7 @@ class GlobalBot {
 	public static function send(string $message) : void {
 		if (self::$bot !== null) {
 			try {
-				$msg = new DiscordMessage();
+				$msg = self::$bot->newMessage();
 				$msg->content($message);
 				self::$bot->send($msg);
 			} catch (Exception $e) {
