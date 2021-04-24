@@ -15,7 +15,7 @@ final class DetectionConfiguration {
 	private bool $suppress;
 
 	public function __construct(array $data, bool $recursiveObject) {
-		$this->punishment = Punishment::parsePunishment($data['Punishment']);
+		$this->punishment = Punishment::fromString($data['Punishment']);
 		$this->enable = $data['Enable'];
 		$this->maxVL = $data['MaxVL'] ?? -1;
 		$this->reward = $data['Reward'] ?? 1;

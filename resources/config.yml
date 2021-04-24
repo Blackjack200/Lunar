@@ -9,7 +9,7 @@ Constructor:
   url: _
 
 # Alert Message format (with prefix)
-#  Available Variable [MSG, DETECTION_NAME, PLAYER_NAME, MAX_VL, VL, PRE_VL, PUNISHMENT]
+#  Available Variable [MSG, DETECTION_NAME, PLAYER_NAME, MAX_VL, VL, PRE_VL, PUNISHMENT, PUNISHMENT_STRING]
 Format: "[DETECTION_NAME]: [MSG]"
 WebHookFormat: |2-
   ```yaml

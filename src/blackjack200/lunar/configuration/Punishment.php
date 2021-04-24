@@ -7,7 +7,7 @@ namespace blackjack200\lunar\configuration;
 final class Punishment {
 	private function __construct() { }
 
-	public static function parsePunishment(string $dirty) : int {
+	public static function fromString(string $dirty) : int {
 		switch (mb_strtolower($dirty)) {
 			case 'ban':
 				return self::BAN();
@@ -32,4 +32,20 @@ final class Punishment {
 	public static function IGNORE() : int { return 5; }
 
 	public static function SUPPRESS() : int { return 1; }
+
+	public static function toString(int $p) : string {
+		switch ($p) {
+			case self::BAN():
+				return 'ban';
+			case self::KICK():
+				return 'kick';
+			case self::WARN():
+				return 'alert';
+			case self::IGNORE():
+				return 'ignore';
+			case self::SUPPRESS():
+				return 'suppress';
+		}
+		return 'unknown';
+	}
 }

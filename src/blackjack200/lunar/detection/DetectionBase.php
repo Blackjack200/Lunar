@@ -66,6 +66,7 @@ abstract class DetectionBase implements Detection {
 					'VL' => $this->VL,
 					'PRE_VL' => $this->preVL,
 					'PUNISHMENT' => $cfg->getPunishment(),
+					'PUNISHMENT_STRING' => Punishment::toString($cfg->getPunishment())
 				]
 			)
 		);
@@ -136,7 +137,7 @@ abstract class DetectionBase implements Detection {
 	public function check(...$data) : void { }
 
 	public function finalize() : void {
-		$this->user = null;
+
 	}
 
 	public function revertMovement() : void {
