@@ -29,21 +29,24 @@ class FastBreakA extends DetectionBase {
 			$target = $event->getBlock();
 			$item = $event->getItem();
 
-			$prediction = ceil($target->getBreakTime($item) * 20);
-			$prediction *= 1 - (0.2 * $user->getEffectLevel(Effect::HASTE));
-			$prediction *= 1 + (0.3 * $user->getEffectLevel(Effect::MINING_FATIGUE));
-			$prediction--;
+			$expectedTime = ceil($target->getBreakTime($item) * 20);
 
-			$current = ceil(microtime(true) * 20) - $this->breakTime;
+			$expectedTime *= 1 - (0.2 * $user->getEffectLevel(Effect::HASTE));
+			$expectedTime *= 1 + (0.3 * $user->getEffectLevel(Effect::MINING_FATIGUE));
 
-			if ($current < $prediction) {
+			--$expectedTime; //1 tick compensation
+
+			$actualTime = ceil(microtime(true) * 20) - $this->breakTime;
+			$actualTime /= 0.85;
+
+			if ($actualTime < $expectedTime) {
 				if ($this->getConfiguration()->isSuppress()) {
 					$event->setCancelled(true);
 				}
 
 				$this->addVL(1);
 				if ($this->overflowVL()) {
-					$this->fail('Try to break ' . $target->getName() . ' with tool= ' . $item->getVanillaName() . 'diff=' . number_format($prediction - $current, 5));
+					$this->fail('Try to break ' . $target->getName() . ' with tool= ' . $item->getVanillaName() . 'diff=' . number_format($actualTime - $expectedTime, 5));
 				}
 			}
 		}
