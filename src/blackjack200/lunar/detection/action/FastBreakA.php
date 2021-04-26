@@ -14,8 +14,8 @@ use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 class FastBreakA extends DetectionBase {
 	private float $breakTime;
 
-	public function __construct(User $user, string $name, $data) {
-		parent::__construct($user, $name, $data);
+	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
 		$this->breakTime = microtime(true);
 	}
 

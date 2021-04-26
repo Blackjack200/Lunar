@@ -1,0 +1,13 @@
+# Don't modify this configuration file if you don't need
+Enable: false
+Type: discord
+Constructor:
+  url: _
+
+# Alert Message format (with prefix)
+#  Available Variable [MSG, DETECTION_NAME, PLAYER_NAME, MAX_VL, VL, PRE_VL, PUNISHMENT, PUNISHMENT_STRING]
+Format: |2-
+  Player: [PLAYER_NAME]
+  Detection: [DETECTION_NAME]
+  Punishment: [PUNISHMENT_STRING]
+  Message: [MSG]

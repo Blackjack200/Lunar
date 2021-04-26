@@ -13,8 +13,8 @@ use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 class SpeedC extends DetectionBase {
 	protected float $reward;
 
-	public function __construct(User $user, string $name, $data) {
-		parent::__construct($user, $name, $data);
+	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
 		$this->reward = $this->getConfiguration()->getReward();
 	}
 

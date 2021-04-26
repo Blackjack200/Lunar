@@ -16,8 +16,8 @@ class KillAuraA extends DetectionBase {
 	protected int $max;
 	protected Slapper $slapper;
 
-	public function __construct(User $user, string $name, $data) {
-		parent::__construct($user, $name, $data);
+	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
 		$this->radius = (float) $this->getConfiguration()->getExtraData()->Radius;
 		$this->min = (int) $this->getConfiguration()->getExtraData()->Random->Y->Min;
 		$this->max = (int) $this->getConfiguration()->getExtraData()->Random->Y->Max;

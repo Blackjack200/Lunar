@@ -12,8 +12,8 @@ class NukerA extends DetectionBase {
 	protected int $maxBlock;
 	private int $count = 0;
 
-	public function __construct(User $user, string $name, $data) {
-		parent::__construct($user, $name, $data);
+	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
 		$this->maxBlock = $this->getConfiguration()->getExtraData()->MaxBlock;
 	}
 

@@ -13,9 +13,9 @@ class FlyE extends DetectionBase {
 	private float $maxDiff;
 	private float $reward;
 
-	public function __construct(User $user, string $name, $data) {
-		parent::__construct($user, $name, $data);
-		$this->maxDiff = (float) $this->getConfiguration()->getExtraData()->Diff;
+	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
+		$this->maxDiff = (float) $this->getConfiguration()->getExtraData()->MaxDiff;
 		$this->reward = $this->getConfiguration()->getReward();
 	}
 

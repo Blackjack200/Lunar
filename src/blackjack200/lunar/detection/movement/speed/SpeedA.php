@@ -10,14 +10,13 @@ use pocketmine\entity\Effect;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 
-//Flight Speed
 class SpeedA extends DetectionBase {
 	protected float $maxDiff;
 	protected float $reward;
 
-	public function __construct(User $user, string $name, $data) {
-		parent::__construct($user, $name, $data);
-		$this->maxDiff = (float) $this->getConfiguration()->getExtraData()->Diff;
+	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
+		$this->maxDiff = (float) $this->getConfiguration()->getExtraData()->MaxDiff;
 		$this->reward = $this->getConfiguration()->getReward();
 	}
 

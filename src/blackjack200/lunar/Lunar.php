@@ -11,6 +11,7 @@ use libbot\BotFactory;
 use libbot\BotInfo;
 use pocketmine\entity\Entity;
 use pocketmine\plugin\PluginBase;
+use pocketmine\utils\Config;
 use Throwable;
 
 class Lunar extends PluginBase {
@@ -22,8 +23,8 @@ class Lunar extends PluginBase {
 	private $format;
 	/** @var DetectionLogger */
 	private $detectionLogger;
-	/** @var string */
-	private $webHookFormat;
+	/** @var string|null */
+	private $webhookFormat;
 
 	public static function getInstance() : Lunar { return self::$instance; }
 
@@ -33,7 +34,7 @@ class Lunar extends PluginBase {
 
 	public function getFormat() : string { return $this->format; }
 
-	public function getWebHookFormat() : string { return $this->webHookFormat; }
+	public function getWebhookFormat() : ?string { return $this->webhookFormat; }
 
 	public function onEnable() : void {
 		self::$instance = $this;
@@ -45,10 +46,10 @@ class Lunar extends PluginBase {
 		$this->getServer()->getPluginManager()->registerEvents(new DefaultListener(), $this);
 		$config = $this->getConfig();
 		$this->saveResource('config.yml', $config->get('Replace'));
+		$this->saveResource('webhook.yml');
 		$this->reloadConfig();
 		$this->prefix = $config->get('Prefix', true);
 		$this->format = $config->get('Format', true);
-		$this->webHookFormat = $config->get('WebHookFormat');
 		Entity::registerEntity(Slapper::class, true, ['lunar_slapper']);
 		try {
 			DetectionRegistry::initConfig();
@@ -65,12 +66,14 @@ class Lunar extends PluginBase {
 		$this->detectionLogger = new DetectionLogger($this->getDataFolder() . 'detections.log');
 		$this->detectionLogger->start();
 
-		if ($config->get('WebHookEnable') !== '_') {
+		$webhookConfig = new Config($this->getDataFolder() . 'webhook.yml');
+		if ($webhookConfig->get('Enable') !== false) {
+			$this->webhookFormat = $webhookConfig->get('Format');
 			$info = new BotInfo();
-			foreach ($config->get('Constructor') as $k => $v) {
+			foreach ($webhookConfig->get('Constructor') as $k => $v) {
 				$info->$k = $v;
 			}
-			GlobalBot::set(BotFactory::create($config->get('Type'), $info));
+			GlobalBot::set(BotFactory::create($webhookConfig->get('Type'), $info));
 			GlobalBot::start();
 		}
 	}

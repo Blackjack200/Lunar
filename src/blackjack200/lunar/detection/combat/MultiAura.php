@@ -14,8 +14,8 @@ class MultiAura extends DetectionBase {
 	protected array $targets = [];
 	protected $max;
 
-	public function __construct(User $user, string $name, $data) {
-		parent::__construct($user, $name, $data);
+	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
 		$this->time = microtime(true);
 		$this->max = $this->getConfiguration()->getExtraData()->MaxEntityHit;
 	}

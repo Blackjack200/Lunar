@@ -24,16 +24,16 @@ abstract class DetectionBase implements Detection {
 	private $configuration;
 	private string $name;
 	private string $fmt;
-	private string $webhookFmt;
+	private ?string $webhookFmt;
 
 	/**
 	 * @param DetectionConfiguration $data
 	 */
-	public function __construct(User $user, string $name, $data) {
+	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
 		$this->user = $user;
 		$this->name = $name;
-		$this->fmt = Lunar::getInstance()->getFormat();
-		$this->webhookFmt = Lunar::getInstance()->getWebHookFormat();
+		$this->fmt = $fmt;
+		$this->webhookFmt = $webhookFmt;
 		$this->configuration = $data;
 	}
 
@@ -75,7 +75,9 @@ abstract class DetectionBase implements Detection {
 	final public function getConfiguration() : DetectionConfiguration { return $this->configuration; }
 
 	public function fail(string $message) : void {
-		GlobalBot::send($this->format($this->webhookFmt, TextFormat::clean($message), false));
+		if ($this->webhookFmt !== null) {
+			GlobalBot::send($this->format($this->webhookFmt, TextFormat::clean($message), false));
+		}
 		Lunar::getInstance()->getScheduler()->scheduleTask(new ClosureTask(function (int $tick) use ($message) : void {
 			$this->failImpl($message);
 		}));

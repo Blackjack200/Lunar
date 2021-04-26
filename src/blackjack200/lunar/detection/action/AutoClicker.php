@@ -10,8 +10,8 @@ use blackjack200\lunar\user\User;
 class AutoClicker extends DetectionBase {
 	protected $maxCPS;
 
-	public function __construct(User $user, string $name, $data) {
-		parent::__construct($user, $name, $data);
+	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
 		$this->maxCPS = $this->getConfiguration()->getExtraData()->MaxCPS;
 	}
 

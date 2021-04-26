@@ -90,6 +90,8 @@ final class DetectionRegistry {
 			return new $class(
 				$user,
 				$name,
+				Lunar::getInstance()->getFormat(),
+				Lunar::getInstance()->getWebhookFormat(),
 				clone $data
 			);
 		}

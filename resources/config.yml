@@ -1,24 +1,9 @@
 # Lunar Anticheat Configure File
 # Alert Message Prefix
 Prefix: "§7[§fLunar§7]"
-
-# WebHookURL, don't modify it if you don't need
-WebHookEnable: false
-Type: discord
-Constructor:
-  url: _
-
 # Alert Message format (with prefix)
 #  Available Variable [MSG, DETECTION_NAME, PLAYER_NAME, MAX_VL, VL, PRE_VL, PUNISHMENT, PUNISHMENT_STRING]
 Format: "[DETECTION_NAME]: [MSG]"
-WebHookFormat: |2-
-  ```yaml
-  Player: [PLAYER_NAME]
-  Detection: [DETECTION_NAME]
-  Punishment: [PUNISHMENT]
-  VL: [VL]
-  Message: [MSG]
-  ```
 # Replace Config file by default
 Replace: true
 # In-Game CPS TAG
@@ -43,23 +28,23 @@ ClientDataFaker:
 NukerA:
   Enable: true
   Punishment: BAN
+  MaxVL: 5
   # Max Block Breaks in 20ms
   MaxBlock: 3
-  MaxVL: 5
 
 # Break block faster than prediction
 FastBreakA:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   MaxVL: 5
 
 # Basic high CPS with a certain limit
 AutoClicker:
   Enable: true
   Punishment: BAN
+  MaxVL: 5
   # Max CPS
   MaxCPS: 25
-  MaxVL: 5
   Reward: 0.988
 
 
@@ -68,7 +53,7 @@ AutoClicker:
 # Check for slapper hit
 KillAuraA:
   Enable: false
-  MaxVL: 10
+  MaxVL: 5
   Punishment: KICK
   AttackCooldown: 3
   Radius: 3
@@ -82,7 +67,7 @@ KillAuraB:
   Enable: true
   Punishment: KICK
   MaxVL: 5
-  SwingDuration: 1
+  SwingDuration: 0.3
 
 # Check for attack multiple entity with impossible count
 MultiAura:
@@ -104,18 +89,17 @@ ReachA:
 SpeedA:
   Enable: true
   Punishment: KICK
-  Suppress: true
-  MaxVL: 10
-  Diff: 0.000000000001
+  MaxVL: 5
+  Suppress: false
+  MaxDiff: 0.000000000001
   Reward: 0.888
 
 # Basic verbose speed check
 SpeedC:
   Enable: true
   Punishment: KICK
-  Suppress: true
-  MaxVL: 10
-  Diff: 0.000000000001
+  MaxVL: 5
+  Suppress: false
   Reward: 0.1
 
 
@@ -123,38 +107,38 @@ SpeedC:
 FlyA:
   Enable: true
   Punishment: KICK
-  Suppress: true
-  MaxVL: 10
+  MaxVL: 5
+  Suppress: false
   Reward: 0.888
 
 # Basic AirJump check
 FlyB:
   Enable: true
   Punishment: KICK
-  Suppress: true
-  MaxVL: 10
+  MaxVL: 5
+  Suppress: false
   Reward: 0.85
 
 # Checks for small vertical movement.
 FlyE:
   Enable: true
   Punishment: KICK
-  Suppress: true
-  MaxVL: 40
+  MaxVL: 5
+  Suppress: false
+  MaxDiff: 0.01
   Reward: 0.88
-  Diff: 0.01
 
 # Check for invalid horizontal acceleration. Like BHop, Speed
 MotionA:
   Enable: true
   Punishment: KICK
-  MaxVL: 10
+  MaxVL: 5
 
 #  Check for invalid vertical acceleration. Like HighJump
 MotionB:
   Enable: true
   Punishment: KICK
-  MaxVL: 10
+  MaxVL: 5
 
 
 # Network

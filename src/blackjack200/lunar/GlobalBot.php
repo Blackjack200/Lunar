@@ -6,7 +6,6 @@ namespace blackjack200\lunar;
 
 use Exception;
 use libbot\Bot;
-use libbot\discord\DiscordMessage;
 
 class GlobalBot {
 	private static ?Bot $bot = null;

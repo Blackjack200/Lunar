@@ -15,8 +15,8 @@ class KillAuraB extends DetectionBase {
 	private float $lastSwing;
 	private float $duration;
 
-	public function __construct(User $user, string $name, $data) {
-		parent::__construct($user, $name, $data);
+	public function __construct(User $user, string $name, string $fmt, ?string $webhookFmt, $data) {
+		parent::__construct($user, $name, $fmt, $webhookFmt, $data);
 		$this->lastSwing = microtime(true);
 		$this->duration = $this->getConfiguration()->getExtraData()->SwingDuration;
 	}
