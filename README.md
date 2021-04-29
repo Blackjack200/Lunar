@@ -11,7 +11,7 @@ This anticheat is used in production server, but it is very deprecated to use.
 
 ### Commands
 
-`aclist` Shows anticheat detections with enable status
+`aclist` Shows anticheat detections with enable status.
 
 ## Contact US
 
