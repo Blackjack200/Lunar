@@ -11,6 +11,7 @@ use libbot\BotFactory;
 use libbot\BotInfo;
 use pocketmine\entity\Entity;
 use pocketmine\plugin\PluginBase;
+use pocketmine\timings\TimingsHandler;
 use pocketmine\utils\Config;
 use Throwable;
 
@@ -25,8 +26,11 @@ class Lunar extends PluginBase {
 	private $detectionLogger;
 	/** @var string|null */
 	private $webhookFormat;
+	private TimingsHandler $handler;
 
 	public static function getInstance() : Lunar { return self::$instance; }
+
+	public function getHandler() : TimingsHandler { return $this->handler; }
 
 	public function getDetectionLogger() : DetectionLogger { return $this->detectionLogger; }
 
@@ -43,6 +47,7 @@ class Lunar extends PluginBase {
 			$this->getServer()->getPluginManager()->disablePlugin($this);
 			return;
 		}
+		$this->handler = new TimingsHandler('Lunar Detections');
 		$this->getServer()->getPluginManager()->registerEvents(new DefaultListener(), $this);
 		$config = $this->getConfig();
 		$this->saveResource('config.yml', $config->get('Replace'));

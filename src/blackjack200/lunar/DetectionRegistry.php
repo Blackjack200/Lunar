@@ -23,12 +23,15 @@ use blackjack200\lunar\detection\movement\speed\SpeedC;
 use blackjack200\lunar\detection\packet\BadPacketA;
 use blackjack200\lunar\detection\packet\ClientDataFaker;
 use blackjack200\lunar\user\User;
+use pocketmine\timings\TimingsHandler;
 
 final class DetectionRegistry {
 	/** @var DetectionConfiguration[] */
 	private static array $configurations = [];
 	/** @var array<class-string<DetectionBase>> */
 	private static array $detections = [];
+	/** @var TimingsHandler[] */
+	private static array $timings = [];
 
 	private function __construct() { }
 
@@ -60,7 +63,17 @@ final class DetectionRegistry {
 	}
 
 	private static function registerStandardDetectionConfiguration(string $name, bool $object) : void {
-		self::$configurations[$name] = new DetectionConfiguration(Lunar::getInstance()->getConfig()->get($name), $object);
+		$cfg = new DetectionConfiguration(Lunar::getInstance()->getConfig()->get($name), $object, self::registerDetectionTimings($name));
+		self::$configurations[$name] = $cfg;
+	}
+
+	private static function registerDetectionTimings(string $name) : TimingsHandler {
+		if (!isset(self::$timings[$name])) {
+			$handler = new TimingsHandler("Lunar_$name", Lunar::getInstance()->getHandler());
+			self::$timings[$name] = $handler;
+			return $handler;
+		}
+		return self::$timings[$name];
 	}
 
 	public static function getConfigurations() : array {
@@ -96,5 +109,9 @@ final class DetectionRegistry {
 			);
 		}
 		return null;
+	}
+
+	public static function getTimings() : array {
+		return self::$timings;
 	}
 }

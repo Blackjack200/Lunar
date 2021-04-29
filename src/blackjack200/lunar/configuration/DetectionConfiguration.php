@@ -5,6 +5,7 @@ namespace blackjack200\lunar\configuration;
 
 
 use blackjack200\lunar\utils\Objects;
+use pocketmine\timings\TimingsHandler;
 
 final class DetectionConfiguration {
 	private int $punishment;
@@ -13,8 +14,10 @@ final class DetectionConfiguration {
 	private bool $enable;
 	private object $extraData;
 	private bool $suppress;
+	private TimingsHandler $timings;
 
-	public function __construct(array $data, bool $recursiveObject) {
+	public function __construct(array $data, bool $recursiveObject, TimingsHandler $timings) {
+		$this->timings = $timings;
 		$this->punishment = Punishment::fromString($data['Punishment']);
 		$this->enable = $data['Enable'];
 		$this->maxVL = $data['MaxVL'] ?? -1;
@@ -37,4 +40,6 @@ final class DetectionConfiguration {
 	public function getReward() : float { return $this->reward; }
 
 	public function isSuppress() : bool { return $this->suppress; }
+
+	public function getTimings() : TimingsHandler { return $this->timings; }
 }

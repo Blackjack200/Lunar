@@ -11,8 +11,8 @@ use blackjack200\lunar\Lunar;
 use blackjack200\lunar\user\User;
 use blackjack200\lunar\utils\Objects;
 use pocketmine\network\mcpe\protocol\DataPacket;
-use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
+use pocketmine\timings\TimingsHandler;
 use pocketmine\utils\TextFormat;
 
 abstract class DetectionBase implements Detection {
@@ -78,12 +78,10 @@ abstract class DetectionBase implements Detection {
 		if ($this->webhookFmt !== null) {
 			GlobalBot::send($this->format($this->webhookFmt, TextFormat::clean($message), false));
 		}
-		Lunar::getInstance()->getScheduler()->scheduleTask(new ClosureTask(function (int $tick) use ($message) : void {
-			$this->failImpl($message);
-		}));
+		Lunar::getInstance()->getScheduler()->scheduleTask(new KickTask($message, $this));
 	}
 
-	final protected function failImpl(string $message) : void {
+	final public function failImpl(string $message) : void {
 		$this->log($message);
 		switch ($this->getConfiguration()->getPunishment()) {
 			case Punishment::BAN():
@@ -151,5 +149,9 @@ abstract class DetectionBase implements Detection {
 				$player->teleport($pos, $player->getYaw());
 			}
 		}
+	}
+
+	final public function getTimings() : TimingsHandler {
+		return $this->configuration->getTimings();
 	}
 }

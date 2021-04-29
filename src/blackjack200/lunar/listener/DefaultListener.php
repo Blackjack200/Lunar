@@ -7,6 +7,7 @@ use blackjack200\lunar\detection\action\NukerA;
 use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\combat\ReachA;
 use blackjack200\lunar\detection\DetectionBase;
+use blackjack200\lunar\Lunar;
 use blackjack200\lunar\user\UserManager;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -58,11 +59,15 @@ class DefaultListener implements Listener {
 				$processor->processServerBond($packet);
 			}
 
+			Lunar::getInstance()->getHandler()->startTiming();
 			foreach ($user->getDetections() as $detection) {
 				if ($detection instanceof DetectionBase) {
+					$detection->getTimings()->startTiming();
 					$detection->handleServer($packet);
+					$detection->getTimings()->stopTiming();
 				}
 			}
+			Lunar::getInstance()->getHandler()->stopTiming();
 		}
 	}
 
@@ -77,11 +82,15 @@ class DefaultListener implements Listener {
 				$processor->processClient($packet);
 			}
 
+			Lunar::getInstance()->getHandler()->startTiming();
 			foreach ($user->getDetections() as $detection) {
 				if ($detection instanceof DetectionBase) {
+					$detection->getTimings()->startTiming();
 					$detection->handleClient($packet);
+					$detection->getTimings()->stopTiming();
 				}
 			}
+			Lunar::getInstance()->getHandler()->stopTiming();
 		}
 	}
 
