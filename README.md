@@ -13,6 +13,6 @@ This anticheat is used in production server, but it is very deprecated to use.
 
 `aclist` Shows anticheat detections with enable status.
 
-## Contact US
+## Contact Us!
 
 [Discord](https://discord.gg/g9a8TrZu34)
