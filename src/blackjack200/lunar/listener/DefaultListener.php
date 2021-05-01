@@ -18,7 +18,6 @@ use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerJumpEvent;
-use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\event\server\DataPacketSendEvent;
@@ -34,15 +33,10 @@ class DefaultListener implements Listener {
 		Lunar::getInstance()->getScheduler()->scheduleRepeatingTask(new LoginPacketTask($this), 100);
 	}
 
-	public function onPlayerPreJoin(PlayerPreLoginEvent $event) : void {
-		$player = $event->getPlayer();
-		UserManager::register($player);
-	}
-
 	public function onPlayerJoin(PlayerJoinEvent $event) : void {
 		$player = $event->getPlayer();
 		$hash = spl_object_hash($player);
-		$user = UserManager::get($player);
+		$user = UserManager::register($player);
 		foreach ($user->getProcessors() as $processor) {
 			$processor->processClient($this->dirtyLoginPacket[$hash]);
 		}

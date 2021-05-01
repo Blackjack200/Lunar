@@ -11,8 +11,10 @@ final class UserManager {
 	private function __construct() {
 	}
 
-	public static function register(Player $player) : void {
-		self::$users[spl_object_hash($player)] = new User($player);
+	public static function register(Player $player) : User {
+		$usr = new User($player);
+		self::$users[spl_object_hash($player)] = $usr;
+		return $usr;
 	}
 
 	public static function unregister(Player $player) : void {
