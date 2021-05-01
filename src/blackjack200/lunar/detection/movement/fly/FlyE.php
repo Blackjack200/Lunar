@@ -34,6 +34,7 @@ class FlyE extends DetectionBase {
 				$info->timeSinceMotion() > 0.25 &&
 				$user->timeSinceJoin() > 5 &&
 				!$player->isFlying() &&
+				!$player->isCreative() &&
 				$user->getExpiredInfo()->duration('checkFly') > 0.25 &&
 				abs($deltaY) < 3 && abs($lastDeltaY) < 3
 			) {
