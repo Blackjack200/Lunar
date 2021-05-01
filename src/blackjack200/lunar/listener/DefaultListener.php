@@ -7,6 +7,8 @@ use blackjack200\lunar\detection\action\NukerA;
 use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\combat\ReachA;
 use blackjack200\lunar\detection\DetectionBase;
+use blackjack200\lunar\Lunar;
+use blackjack200\lunar\task\LoginPacketTask;
 use blackjack200\lunar\user\UserManager;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -24,8 +26,13 @@ use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\Player;
 
 class DefaultListener implements Listener {
+	//TODO Improve this messy implementation
 	/** @var LoginPacket[] */
-	private array $dirtyLoginPacket = [];
+	public array $dirtyLoginPacket = [];
+
+	public function __construct() {
+		Lunar::getInstance()->getScheduler()->scheduleRepeatingTask(new LoginPacketTask($this), 100);
+	}
 
 	public function onPlayerPreJoin(PlayerPreLoginEvent $event) : void {
 		$player = $event->getPlayer();
