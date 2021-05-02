@@ -75,7 +75,7 @@ final class DetectionRegistry {
 		foreach (self::$detections as $name => $class) {
 			$detection = self::createDetection($user, $name, $class);
 			if ($detection !== null) {
-				$detections[] = $detection;
+				$detections[$class] = $detection;
 			}
 		}
 		return $detections;

@@ -37,10 +37,10 @@ final class User implements DetectionTrigger {
 		$this->moveData = new PlayerMovementInfo();
 		$this->actionInfo = new PlayerActionInfo();
 		$this->expiredInfo = new ExpiredInfo(32);
-		$this->processors[] = new LoginProcessor($this);
-		$this->processors[] = new InGameProcessor($this);
-		$this->processors[] = new MovementProcessor($this);
-		$this->processors[] = new PlayerActionProcessor($this);
+		$this->processors[LoginProcessor::class] = new LoginProcessor($this);
+		$this->processors[InGameProcessor::class] = new InGameProcessor($this);
+		$this->processors[MovementProcessor::class] = new MovementProcessor($this);
+		$this->processors[PlayerActionProcessor::class] = new PlayerActionProcessor($this);
 
 		$this->detections = DetectionRegistry::getDetections($this);
 	}
@@ -64,20 +64,16 @@ final class User implements DetectionTrigger {
 	public function isClosed() : bool { return $this->closed; }
 
 	public function trigger(string $class, ...$data) : void {
-		foreach ($this->detections as $detection) {
-			if ($detection instanceof $class) {
-				$detection->check(...$data);
-				return;
-			}
+		$detection = $this->detections[$class] ?? null;
+		if ($detection !== null) {
+			$detection->check(...$data);
 		}
 	}
 
 	public function triggerProcessor(string $class, ...$data) : void {
-		foreach ($this->processors as $processor) {
-			if ($processor instanceof $class) {
-				$processor->check(...$data);
-				return;
-			}
+		$processor = $this->processors[$class] ?? null;
+		if ($processor !== null) {
+			$processor->check(...$data);
 		}
 	}
 
