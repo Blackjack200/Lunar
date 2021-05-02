@@ -87,7 +87,7 @@ ReachA:
 
 # Checks for horizontal friction
 SpeedA:
-  Enable: true
+  Enable: false
   Punishment: KICK
   MaxVL: 5
   Suppress: false
