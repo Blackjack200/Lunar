@@ -48,53 +48,76 @@ class MovementProcessor extends Processor {
 	public function processClient(DataPacket $packet) : void {
 		if ($packet instanceof MovePlayerPacket) {
 			$user = $this->getUser();
-			$info = $user->getMovementInfo();
 			$player = $user->getPlayer();
-			$location = Location::fromObject($packet->position->subtract(0, 1.62), $player->getLevel(), $packet->yaw, $packet->pitch);
+			if ($this->valid($packet, $player)) {
+				$info = $user->getMovementInfo();
+				$location = Location::fromObject($packet->position->round(4)->subtract(0, 1.62, 0), $player->getLevel(), $packet->yaw, $packet->pitch);
 
-			$this->updateLocation($info, $location);
+				$this->updateLocation($info, $location);
 
-			$this->updateMoveDelta($info);
+				$this->updateMoveDelta($info);
 
-			$dist = $info->moveDelta->lengthSquared();
-			if ($dist > 0.006) {
-				if ($this->buffer++ > 4) {
-					$this->buffer = 0;
-					$info->locationHistory->push($player->asLocation());
+				$dist = $info->moveDelta->distanceSquared($player);
+				if ($dist > 0.006) {
+					if ($this->buffer++ > 4) {
+						$this->buffer = 0;
+						$info->locationHistory->push($player->asLocation());
+					}
+					$AABB = AABB::fromPosition($location)->expandedCopy(0.5, 0.2, 0.5);
+					$verticalBlocks = AABB::getCollisionBlocks($location->getLevel(), $AABB);
+					$info->lastOnGround = $info->onGround;
+					$info->onGround = count($player->getLevelNonNull()->getCollisionBlocks($AABB, true)) !== 0;
+					$info->lastActualOnGround = $info->actualOnGround;
+					$info->actualOnGround = $info->onGround;
+
+					$info->inVoid = $location->y < -15;
+					$info->checkFly = !$player->isImmobile() && !$player->hasEffect(Effect::LEVITATION);
+					foreach ($verticalBlocks as $block) {
+						/** @var Block $block */
+						if (!$info->onGround) {
+							$info->onGround = true;
+						}
+						$id = $block->getId();
+						if (in_array($id, self::ICE, true)) {
+							$info->onIce = true;
+							continue;
+						}
+
+						if (
+							$id === Block::SLIME_BLOCK ||
+							$id === Block::COBWEB ||
+							$block->isTransparent() ||
+							$block->canClimb() ||
+							$block->canBeFlowedInto()
+						) {
+							$info->checkFly = false;
+							$info->onGround = true;
+							break;
+						}
+					}
+					//$this->getUser()->getPlayer()->sendPopup('check=' . Boolean::btos($info->checkFly) . ' on=' . Boolean::btos($info->onGround) . ' tick=' . $info->inAirTick);
 				}
-				$AABB = AABB::fromPosition($location)->expandedCopy(0.5, 0.2, 0.5);
-				$verticalBlocks = AABB::getCollisionBlocks($location->getLevel(), $AABB);
-				$info->lastOnGround = $info->onGround;
-				$info->onGround = count($player->getLevelNonNull()->getCollisionBlocks($AABB, true)) !== 0;
-
-				$info->inVoid = $player->getY() < -15;
-				$info->checkFly = !$player->isImmobile() && !$player->hasEffect(Effect::LEVITATION);
-				foreach ($verticalBlocks as $block) {
-					/** @var Block $block */
-					if (!$info->onGround) {
-						$info->onGround = true;
-					}
-					$id = $block->getId();
-					if (in_array($id, self::ICE, true)) {
-						$info->onIce = true;
-						continue;
-					}
-
-					if (
-						$id === Block::SLIME_BLOCK ||
-						$id === Block::COBWEB ||
-						$block->isTransparent() ||
-						$block->canClimb() ||
-						$block->canBeFlowedInto()
-					) {
-						$info->checkFly = false;
-						$info->onGround = true;
-						break;
-					}
-				}
-				//$this->getUser()->getPlayer()->sendPopup('check=' . Boolean::btos($info->checkFly) . ' on=' . Boolean::btos($info->onGround) . ' tick=' . $info->inAirTick);
 			}
 		}
+	}
+
+	private function valid(MovePlayerPacket $packet, Vector3 $oldPos) : bool {
+		$rawPos = $packet->position;
+		$dist = $rawPos->distanceSquared($oldPos);
+		if (!($dist !== 0.0 && $dist < 100)) {
+			return false;
+		}
+		foreach ([$rawPos->x, $rawPos->y, $rawPos->z, $packet->yaw, $packet->headYaw, $packet->pitch] as $float) {
+			if (is_infinite($float) || is_nan($float)) {
+				return false;
+			}
+		}
+		$packet->yaw = fmod($packet->yaw, 360);
+		$packet->pitch = fmod($packet->pitch, 360);
+		if ($packet->yaw < 0) {
+			$packet->yaw += 360;
+		}
+		return true;
 	}
 
 	public function check(...$data) : void {

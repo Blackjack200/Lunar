@@ -26,7 +26,7 @@ class MotionA extends DetectionBase {
 			$lastDelta->z -= $motion->z;
 			$lastXZ = hypot($lastDelta->x, $lastDelta->z);
 			if ($player->isSprinting()) {
-				$f = $player->getYaw() * 0.017453292;
+				$f = $info->location->yaw * 0.017453292;
 				$lastXZ = hypot($lastDelta->x - (sin($f) * 0.2), $lastDelta->z + (cos($f) * 0.2));
 			}
 			$curt = hypot($info->moveDelta->x, $info->moveDelta->z);
