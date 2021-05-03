@@ -27,13 +27,11 @@ use blackjack200\lunar\user\User;
 final class DetectionRegistry {
 	/** @var DetectionConfiguration[] */
 	private static array $configurations = [];
-	/** @var array<class-string<DetectionBase>> */
-	private static array $detections = [];
 
 	private function __construct() { }
 
 	public static function initConfig() : void {
-		self::$detections = [
+		$detections = [
 			'ClientDataFaker' => ClientDataFaker::class,
 			'NukerA' => NukerA::class,
 			'FastBreakA' => FastBreakA::class,
@@ -49,18 +47,21 @@ final class DetectionRegistry {
 			'FlyE' => FlyE::class,
 			'MotionA' => MotionA::class,
 			'MotionB' => MotionB::class,
+			'BadPacketA' => BadPacketA::class,
 		];
 
-		foreach (self::$detections as $name => $class) {
-			self::registerStandardDetectionConfiguration($name, false);
+		foreach ($detections as $name => $class) {
+			self::register($class, $name, false);
 		}
-
-		self::$detections['BadPacketA'] = BadPacketA::class;
-		self::registerStandardDetectionConfiguration('BadPacketA', true);
 	}
 
-	private static function registerStandardDetectionConfiguration(string $name, bool $object) : void {
-		self::$configurations[$name] = new DetectionConfiguration(Lunar::getInstance()->getConfig()->get($name), $object);
+	private static function register(string $class, string $name, bool $object) : void {
+		self::$configurations[$class] = new DetectionConfiguration(
+			$class,
+			$name,
+			Lunar::getInstance()->getConfig()->get($name),
+			$object
+		);
 	}
 
 	public static function getConfigurations() : array {
@@ -72,29 +73,30 @@ final class DetectionRegistry {
 	 */
 	public static function getDetections(User $user) : array {
 		$detections = [];
-		foreach (self::$detections as $name => $class) {
-			$detection = self::createDetection($user, $name, $class);
+		foreach (self::$configurations as $configuration) {
+			$detection = self::create($user, $configuration);
 			if ($detection !== null) {
-				$detections[$class] = $detection;
+				$detections[$configuration->getClass()] = $detection;
 			}
 		}
 		return $detections;
 	}
 
-	/**
-	 * @param class-string<DetectionBase> $class
-	 */
-	private static function createDetection(User $user, string $name, string $class) : ?DetectionBase {
-		$data = self::$configurations[$name];
-		if ($data instanceof DetectionConfiguration && $data->isEnable()) {
+	private static function create(User $user, DetectionConfiguration $configuration) : ?DetectionBase {
+		if ($configuration->isEnable()) {
+			$class = $configuration->getClass();
 			return new $class(
 				$user,
-				$name,
+				$configuration->getName(),
 				Lunar::getInstance()->getFormat(),
 				Lunar::getInstance()->getWebhookFormat(),
-				clone $data
+				clone $configuration
 			);
 		}
 		return null;
+	}
+
+	public static function unregister(string $class) : void {
+		unset(self::$configurations[$class]);
 	}
 }
