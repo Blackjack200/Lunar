@@ -54,7 +54,7 @@ class PlayerActionProcessor extends Processor {
 		$player = $user->getPlayer();
 		$flying = $player->isFlying();
 		$user->getActionInfo()->isFlying = $flying;
-		if ($flying) {
+		if (!$flying && $user->getActionInfo()->isFlying) {
 			$user->getExpiredInfo()->set('fly');
 		}
 	}

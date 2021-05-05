@@ -82,6 +82,12 @@ ReachA:
   Punishment: ALERT
   MaxVL: 5
 
+# Check for vertical velocity
+VelocityB:
+  Enable: true
+  Punishment: ALERT
+  MaxVL: 5
+
 
 # Movement
 

@@ -14,6 +14,7 @@ use pocketmine\level\Location;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
+use pocketmine\network\mcpe\protocol\SetActorMotionPacket;
 
 class MovementProcessor extends Processor {
 	private const ICE = [ItemIds::ICE, ItemIds::PACKED_ICE, ItemIds::FROSTED_ICE];
@@ -26,13 +27,13 @@ class MovementProcessor extends Processor {
 		if (self::$emptyVector3 === null) {
 			self::$emptyVector3 = new Vector3();
 		}
-		$this->getUser()->getMovementInfo()->moveDelta = new Vector3();
 		$user = $this->getUser();
 		$info = $user->getMovementInfo();
+		$info->velocity = new Vector3();
+		$info->moveDelta = new Vector3();
 		$info->location = $user->getPlayer()->asLocation();
 		$this->updateLocation($info, $info->location);
 		$this->updateMoveDelta($info);
-
 	}
 
 	public function updateLocation(PlayerMovementInfo $movementInfo, Location $location) : void {
@@ -69,6 +70,7 @@ class MovementProcessor extends Processor {
 					$info->onGround = count($player->getLevelNonNull()->getCollisionBlocks($AABB, true)) !== 0;
 					$info->lastActualOnGround = $info->actualOnGround;
 					$info->actualOnGround = $info->onGround;
+					$info->onIce = false;
 
 					$info->inVoid = $location->y < -15;
 					$info->checkFly = !$player->isImmobile() && !$player->hasEffect(Effect::LEVITATION);
@@ -91,7 +93,7 @@ class MovementProcessor extends Processor {
 							$block->canBeFlowedInto()
 						) {
 							$info->checkFly = false;
-							$info->onGround = true;
+							//$info->onGround = true;
 							break;
 						}
 					}

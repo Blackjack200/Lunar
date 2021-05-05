@@ -25,6 +25,7 @@ class PlayerMovementInfo {
 
 	public Vector3 $lastMoveDelta;
 	public Vector3 $moveDelta;
+	public Vector3 $velocity;
 
 	public Location $lastLocation;
 	public Location $location;

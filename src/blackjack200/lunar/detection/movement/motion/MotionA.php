@@ -20,9 +20,8 @@ class MotionA extends DetectionBase {
 			$info->timeSinceJump() < 0.052 &&
 			$info->timeSinceTeleport() > 1
 		) {
-			$player = $user->getPlayer();
 			$lastDelta = clone $info->lastMoveDelta;
-			$motion = $player->getMotion();
+			$motion = $info->velocity;
 			$lastDelta->x -= $motion->x;
 			$lastDelta->z -= $motion->z;
 			$lastXZ = hypot($lastDelta->x, $lastDelta->z);
@@ -31,7 +30,7 @@ class MotionA extends DetectionBase {
 				$lastXZ = hypot($lastDelta->x - (sin($f) * 0.2), $lastDelta->z + (cos($f) * 0.2));
 			}
 			$curt = hypot($info->moveDelta->x, $info->moveDelta->z);
-			$prediction = $lastXZ * 0.98 + $player->getAttributeMap()->getAttribute(Attribute::MOVEMENT_SPEED)->getValue();
+			$prediction = $lastXZ * 0.98 + $user->getPlayer()->getAttributeMap()->getAttribute(Attribute::MOVEMENT_SPEED)->getValue();
 			$diff = $curt - $prediction;
 			if ($diff > 0.01) {
 				$this->addVL(1);

@@ -12,6 +12,7 @@ use blackjack200\lunar\detection\combat\KillAuraA;
 use blackjack200\lunar\detection\combat\KillAuraB;
 use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\combat\ReachA;
+use blackjack200\lunar\detection\combat\velocity\VelocityB;
 use blackjack200\lunar\detection\DetectionBase;
 use blackjack200\lunar\detection\movement\fly\FlyA;
 use blackjack200\lunar\detection\movement\fly\FlyB;
@@ -48,6 +49,7 @@ final class DetectionRegistry {
 			'MotionA' => MotionA::class,
 			'MotionB' => MotionB::class,
 			'BadPacketA' => BadPacketA::class,
+			'VelocityB' => VelocityB::class
 		];
 
 		foreach ($detections as $name => $class) {

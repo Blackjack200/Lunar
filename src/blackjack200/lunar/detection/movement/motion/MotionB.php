@@ -14,7 +14,6 @@ class MotionB extends DetectionBase {
 		if ($packet instanceof MovePlayerPacket) {
 			$user = $this->getUser();
 			$info = $user->getMovementInfo();
-			$player = $user->getPlayer();
 			if (
 				!$info->inVoid &&
 				$info->checkFly &&
@@ -27,7 +26,7 @@ class MotionB extends DetectionBase {
 				$deltaY = $info->moveDelta->y;
 
 				$modifierJump = $user->getEffectLevel(Effect::JUMP) * 0.1;
-				$modifierVelocity = $info->timeSinceMotion() < 0.25 ? $player->getMotion()->y + 0.5 : 0.0;
+				$modifierVelocity = $info->timeSinceMotion() < 0.25 ? $info->velocity->y + 0.5 : 0.0;
 
 				$maximum = 0.6 + $modifierJump + $modifierVelocity;
 

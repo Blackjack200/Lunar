@@ -112,6 +112,7 @@ class DefaultListener implements Listener {
 			$user = UserManager::get($player);
 			if ($user !== null) {
 				$user->getMovementInfo()->lastMotion = microtime(true);
+				$user->getMovementInfo()->velocity = $event->getVector();
 			}
 		}
 	}
