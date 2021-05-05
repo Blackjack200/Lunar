@@ -13,10 +13,12 @@ use blackjack200\lunar\user\processor\LoginProcessor;
 use blackjack200\lunar\user\processor\MovementProcessor;
 use blackjack200\lunar\user\processor\PlayerActionProcessor;
 use blackjack200\lunar\user\processor\Processor;
+use pocketmine\network\mcpe\protocol\StartGamePacket;
 use pocketmine\Player;
 
 final class User implements DetectionTrigger {
 	public LoginData $loginData;
+	public StartGamePacket $startGame;
 	public int $CPS = 0;
 	public float $lastHurt;
 	private Player $player;

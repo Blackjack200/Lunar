@@ -26,13 +26,12 @@ class SpeedC extends DetectionBase {
 			$maxSpeed = $this->getSpeed();
 
 			if ($deltaXZ > $maxSpeed &&
-				!$info->onIce &&
 				$info->checkFly &&
 				!$info->inVoid &&
+				!$user->getActionInfo()->isFlying &&
 				$info->timeSinceTeleport() >= 0.25 &&
 				$info->timeSinceMotion() >= 0.75 &&
 				!$user->getPlayer()->isCreative() &&
-				!$user->getActionInfo()->isFlying &&
 				$user->getExpiredInfo()->duration(Effect::SPEED) > 1 &&
 				$user->getExpiredInfo()->duration('flight') > 1
 			) {
@@ -51,6 +50,11 @@ class SpeedC extends DetectionBase {
 	}
 
 	private function getSpeed() : float {
-		return 0.4 * (1 + (0.2 * $this->getUser()->getEffectLevel(Effect::SPEED)));
+		$user = $this->getUser();
+		$ret = 0.4 * (1 + (0.2 * $this->getUser()->getEffectLevel(Effect::SPEED)));
+		if ($user->getExpiredInfo()->duration('ice') < 1) {
+			$ret = ($ret / 0.6) * 0.98;
+		}
+		return $ret;
 	}
 }

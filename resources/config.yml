@@ -146,6 +146,19 @@ MotionB:
   Punishment: KICK
   MaxVL: 5
 
+#  Check for swimming in air
+AirSwim:
+  Enable: true
+  Punishment: KICK
+  MaxVL: 5
+  Suppress: false
+
+#  Check for movement when the player is immobile
+AntiImmobile:
+  Enable: true
+  Punishment: KICK
+  MaxVL: 5
+  Suppress: false
 
 # Network
 
@@ -153,4 +166,16 @@ MotionB:
 BadPacketA:
   Enable: true
   Punishment: BAN
+  MaxVL: 5
+
+#  Check for invalid movement packet
+BadPacketB:
+  Enable: true
+  Punishment: BAN
+  MaxVL: 5
+
+#  Check for chat when move
+BadPacketC:
+  Enable: false
+  Punishment: KICK
   MaxVL: 5

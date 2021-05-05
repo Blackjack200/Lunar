@@ -14,7 +14,6 @@ use pocketmine\level\Location;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
-use pocketmine\network\mcpe\protocol\SetActorMotionPacket;
 
 class MovementProcessor extends Processor {
 	private const ICE = [ItemIds::ICE, ItemIds::PACKED_ICE, ItemIds::FROSTED_ICE];
@@ -76,11 +75,9 @@ class MovementProcessor extends Processor {
 					$info->checkFly = !$player->isImmobile() && !$player->hasEffect(Effect::LEVITATION);
 					foreach ($verticalBlocks as $block) {
 						/** @var Block $block */
-						if (!$info->onGround) {
-							$info->onGround = true;
-						}
 						$id = $block->getId();
 						if (in_array($id, self::ICE, true)) {
+							$user->getExpiredInfo()->set('ice');
 							$info->onIce = true;
 							continue;
 						}
@@ -93,7 +90,7 @@ class MovementProcessor extends Processor {
 							$block->canBeFlowedInto()
 						) {
 							$info->checkFly = false;
-							//$info->onGround = true;
+							$info->onGround = true;
 							break;
 						}
 					}
@@ -137,14 +134,20 @@ class MovementProcessor extends Processor {
 				$info->inAirTick = 0;
 				$info->onGroundTick++;
 			}
-			if ($player->isFlying()) {
+			if ($player->isImmobile()) {
+				$info->immobileTick++;
+			} else {
+				$info->immobileTick = 0;
+			}
+			$info2 = $user->getActionInfo();
+			if ($info2->isFlying) {
 				$info->flightTick++;
 			} elseif ($info->flightTick !== 0) {
 				$info->flightTick = 0;
 				$user->getExpiredInfo()->set('flight');
 			}
 
-			if ($player->isSprinting()) {
+			if ($info2->isSprinting) {
 				$info->sprintTick++;
 			} elseif ($info->sprintTick !== 0) {
 				$info->sprintTick = 0;

@@ -18,7 +18,8 @@ class MotionA extends DetectionBase {
 			$packet instanceof MovePlayerPacket &&
 			$info->checkFly &&
 			$info->timeSinceJump() < 0.052 &&
-			$info->timeSinceTeleport() > 1
+			$info->timeSinceTeleport() > 1 &&
+			$user->getExpiredInfo()->duration('ice') > 1
 		) {
 			$lastDelta = clone $info->lastMoveDelta;
 			$motion = $info->velocity;

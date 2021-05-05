@@ -11,7 +11,7 @@ use pocketmine\Server;
 use ReflectionClass;
 use ReflectionProperty;
 
-class LoginPacketTask extends Task {
+class CleatDirtyDataTask extends Task {
 	private DefaultListener $listener;
 	private ReflectionProperty $pro;
 
@@ -25,15 +25,21 @@ class LoginPacketTask extends Task {
 
 	public function onRun(int $currentTick) : void {
 		$users = $this->getPlayers();
-		$pks = &$this->listener->dirtyLoginPacket;
+		$loginPackets = &$this->listener->dirtyLoginPacket;
+		$startGamePackets = &$this->listener->dirtyStartGamePacket;
 		$fin = [];
+		$fin2 = [];
 		foreach ($users as $player) {
 			$hash = spl_object_hash($player);
-			if (isset($pks[$hash])) {
-				$fin[$hash] = $pks[$hash];
+			if (isset($loginPackets[$hash])) {
+				$fin[$hash] = $loginPackets[$hash];
+				if (isset($startGamePackets[$hash])) {
+					$fin2[$hash] = $startGamePackets[$hash];
+				}
 			}
 		}
-		$pks = $fin;
+		$loginPackets = $fin;
+		$startGamePackets = $fin2;
 	}
 
 	/**

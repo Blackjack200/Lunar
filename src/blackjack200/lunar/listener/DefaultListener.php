@@ -8,7 +8,7 @@ use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\combat\ReachA;
 use blackjack200\lunar\detection\DetectionBase;
 use blackjack200\lunar\Lunar;
-use blackjack200\lunar\task\LoginPacketTask;
+use blackjack200\lunar\task\CleatDirtyDataTask;
 use blackjack200\lunar\user\UserManager;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -21,25 +21,29 @@ use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\network\mcpe\protocol\LoginPacket;
+use pocketmine\network\mcpe\protocol\StartGamePacket;
 use pocketmine\Player;
 
 class DefaultListener implements Listener {
 	//TODO Improve this messy implementation
 	/** @var LoginPacket[] */
 	public array $dirtyLoginPacket = [];
+	/** @var StartGamePacket[] */
+	public array $dirtyStartGamePacket = [];
 
 	public function __construct() {
-		Lunar::getInstance()->getScheduler()->scheduleRepeatingTask(new LoginPacketTask($this), 100);
+		Lunar::getInstance()->getScheduler()->scheduleRepeatingTask(new CleatDirtyDataTask($this), 100);
 	}
 
 	public function onPlayerJoin(PlayerJoinEvent $event) : void {
 		$player = $event->getPlayer();
 		$hash = spl_object_hash($player);
 		$user = UserManager::register($player);
+		$user->startGame = $this->dirtyStartGamePacket[$hash];
 		foreach ($user->getProcessors() as $processor) {
 			$processor->processClient($this->dirtyLoginPacket[$hash]);
 		}
-		unset($this->dirtyLoginPacket[$hash]);
+		unset($this->dirtyLoginPacket[$hash], $this->dirtyStartGamePacket[$hash]);
 	}
 
 	public function onPlayerQuit(PlayerQuitEvent $event) : void {
@@ -47,13 +51,17 @@ class DefaultListener implements Listener {
 		$user = UserManager::get($player);
 		$user->close();
 		UserManager::unregister($player);
-		unset($this->dirtyLoginPacket[spl_object_hash($player)]);
+		$hash = spl_object_hash($player);
+		unset($this->dirtyLoginPacket[$hash], $this->dirtyStartGamePacket[$hash]);
 	}
 
 	public function onDataPacketSend(DataPacketSendEvent $event) : void {
+		$packet = $event->getPacket();
+		if ($packet instanceof StartGamePacket) {
+			$this->dirtyStartGamePacket[spl_object_hash($event->getPlayer())] = $packet;
+		}
 		$user = UserManager::get($event->getPlayer());
 		if ($user !== null) {
-			$packet = $event->getPacket();
 			foreach ($user->getProcessors() as $processor) {
 				$processor->processServerBond($packet);
 			}
@@ -71,6 +79,7 @@ class DefaultListener implements Listener {
 		if ($packet instanceof LoginPacket) {
 			$this->dirtyLoginPacket[spl_object_hash($event->getPlayer())] = $packet;
 		}
+
 		$user = UserManager::get($event->getPlayer());
 		if ($user !== null) {
 			foreach ($user->getProcessors() as $processor) {

@@ -14,6 +14,8 @@ use blackjack200\lunar\detection\combat\MultiAura;
 use blackjack200\lunar\detection\combat\ReachA;
 use blackjack200\lunar\detection\combat\velocity\VelocityB;
 use blackjack200\lunar\detection\DetectionBase;
+use blackjack200\lunar\detection\movement\AirSwim;
+use blackjack200\lunar\detection\movement\AntiImmobile;
 use blackjack200\lunar\detection\movement\fly\FlyA;
 use blackjack200\lunar\detection\movement\fly\FlyB;
 use blackjack200\lunar\detection\movement\fly\FlyE;
@@ -22,6 +24,8 @@ use blackjack200\lunar\detection\movement\motion\MotionB;
 use blackjack200\lunar\detection\movement\speed\SpeedA;
 use blackjack200\lunar\detection\movement\speed\SpeedC;
 use blackjack200\lunar\detection\packet\BadPacketA;
+use blackjack200\lunar\detection\packet\BadPacketB;
+use blackjack200\lunar\detection\packet\BadPacketC;
 use blackjack200\lunar\detection\packet\ClientDataFaker;
 use blackjack200\lunar\user\User;
 
@@ -33,23 +37,30 @@ final class DetectionRegistry {
 
 	public static function initConfig() : void {
 		$detections = [
-			'ClientDataFaker' => ClientDataFaker::class,
-			'NukerA' => NukerA::class,
-			'FastBreakA' => FastBreakA::class,
 			'AutoClicker' => AutoClicker::class,
-			'KillAuraA' => KillAuraA::class,
-			'KillAuraB' => KillAuraB::class,
+			'FastBreakA' => FastBreakA::class,
+			'NukerA' => NukerA::class,
+
 			'MultiAura' => MultiAura::class,
 			'ReachA' => ReachA::class,
+			'VelocityB' => VelocityB::class,
+			'KillAuraA' => KillAuraA::class,
+			'KillAuraB' => KillAuraB::class,
+
+			'AirSwim' => AirSwim::class,
+			'AntiImmobile' => AntiImmobile::class,
 			'SpeedA' => SpeedA::class,
 			'SpeedC' => SpeedC::class,
+			'MotionA' => MotionA::class,
+			'MotionB' => MotionB::class,
 			'FlyA' => FlyA::class,
 			'FlyB' => FlyB::class,
 			'FlyE' => FlyE::class,
-			'MotionA' => MotionA::class,
-			'MotionB' => MotionB::class,
+
 			'BadPacketA' => BadPacketA::class,
-			'VelocityB' => VelocityB::class
+			'BadPacketB' => BadPacketB::class,
+			'BadPacketC' => BadPacketC::class,
+			'ClientDataFaker' => ClientDataFaker::class,
 		];
 
 		foreach ($detections as $name => $class) {
