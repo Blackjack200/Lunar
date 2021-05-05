@@ -55,6 +55,10 @@ class DefaultListener implements Listener {
 		unset($this->dirtyLoginPacket[$hash], $this->dirtyStartGamePacket[$hash]);
 	}
 
+	/**
+	 * @priority HIGHEST
+	 * @ignoreCancelled false
+	 */
 	public function onDataPacketSend(DataPacketSendEvent $event) : void {
 		$packet = $event->getPacket();
 		if ($packet instanceof StartGamePacket) {
@@ -74,6 +78,10 @@ class DefaultListener implements Listener {
 		}
 	}
 
+	/**
+	 * @priority HIGHEST
+	 * @ignoreCancelled false
+	 */
 	public function onDataPacketReceive(DataPacketReceiveEvent $event) : void {
 		$packet = $event->getPacket();
 		if ($packet instanceof LoginPacket) {

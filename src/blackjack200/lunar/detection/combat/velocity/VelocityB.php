@@ -22,13 +22,16 @@ class VelocityB extends DetectionBase {
 			) {
 				$deltaY = $info->moveDelta->y;
 				$velocityY = $info->velocity->y;
-				$percentage = round(($deltaY * 100.0) / $velocityY);
-				$invalid = $percentage < 100 || $percentage > 100;
-				if ($invalid) {
-					$this->addVL(1, "percentage=$percentage");
-					if ($this->overflowVL()) {
-						$this->fail("percentage=$percentage");
+				try {
+					$percentage = round(($deltaY * 100.0) / $velocityY);
+					$invalid = $percentage < 100 || $percentage > 100;
+					if ($invalid) {
+						$this->addVL(1, "percentage=$percentage");
+						if ($this->overflowVL()) {
+							$this->fail("percentage=$percentage");
+						}
 					}
+				} catch (\ErrorException $ignored) {
 				}
 			}
 		}
