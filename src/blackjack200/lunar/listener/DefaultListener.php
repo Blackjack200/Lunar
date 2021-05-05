@@ -17,7 +17,6 @@ use pocketmine\event\entity\EntityMotionEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\event\player\PlayerJumpEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\event\server\DataPacketSendEvent;
@@ -115,10 +114,6 @@ class DefaultListener implements Listener {
 				$user->getMovementInfo()->lastMotion = microtime(true);
 			}
 		}
-	}
-
-	public function onPlayerJump(PlayerJumpEvent $event) : void {
-		UserManager::get($event->getPlayer())->getMovementInfo()->lastJump = microtime(true);
 	}
 
 	public function onPlayerDamage(EntityDamageEvent $event) : void {

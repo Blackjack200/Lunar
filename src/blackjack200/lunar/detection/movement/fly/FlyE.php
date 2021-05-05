@@ -30,13 +30,14 @@ class FlyE extends DetectionBase {
 				!$info->onGround &&
 				!$info->inVoid &&
 				$info->checkFly &&
+				!$user->getActionInfo()->isFlying &&
 				$info->timeSinceTeleport() > 2 &&
 				$info->timeSinceMotion() > 0.25 &&
 				$user->timeSinceJoin() > 5 &&
-				!$player->isFlying() &&
 				!$player->isCreative() &&
-				$user->getExpiredInfo()->duration('checkFly') > 0.25 &&
-				abs($deltaY) < 3 && abs($lastDeltaY) < 3
+				abs($deltaY) < 3 &&
+				abs($lastDeltaY) < 3 &&
+				$user->getExpiredInfo()->duration('checkFly') > 0.25
 			) {
 				//https://github.com/Tecnio/AntiHaxerman/blob/master/src/main/java/me/tecnio/antihaxerman/check/impl/movement/flight/FlightC.java
 				$difference = abs($deltaY - $lastDeltaY);

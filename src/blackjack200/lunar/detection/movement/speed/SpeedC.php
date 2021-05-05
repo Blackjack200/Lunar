@@ -32,7 +32,7 @@ class SpeedC extends DetectionBase {
 				$info->timeSinceTeleport() >= 0.25 &&
 				$info->timeSinceMotion() >= 0.75 &&
 				!$user->getPlayer()->isCreative() &&
-				!$user->getPlayer()->isFlying() &&
+				!$user->getActionInfo()->isFlying &&
 				$user->getExpiredInfo()->duration(Effect::SPEED) > 1 &&
 				$user->getExpiredInfo()->duration('flight') > 1
 			) {

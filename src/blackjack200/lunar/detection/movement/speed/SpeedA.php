@@ -24,19 +24,19 @@ class SpeedA extends DetectionBase {
 		$user = $this->getUser();
 		$info = $user->getMovementInfo();
 		$expiredInfo = $user->getExpiredInfo();
-		$player = $user->getPlayer();
+		$action = $user->getActionInfo();
 		if (
 			$packet instanceof MovePlayerPacket &&
 			$info->inAirTick > 2 &&
 			!$info->inVoid &&
 			$info->checkFly &&
+			!$action->isFlying &&
 			$info->timeSinceTeleport() >= 1 &&
 			$info->timeSinceMotion() >= 1 &&
-			!$player->isCreative() &&
-			!$player->isFlying() &&
 			$expiredInfo->duration(Effect::SPEED) > 1 &&
 			$expiredInfo->duration('flight') > 1 &&
-			$user->getExpiredInfo()->duration('checkFly') > 0.25
+			$user->getExpiredInfo()->duration('checkFly') > 0.25 &&
+			!$user->getPlayer()->isCreative()
 		) {
 			$lastMD = $info->lastMoveDelta;
 			$curtMD = $info->moveDelta;
@@ -44,7 +44,7 @@ class SpeedA extends DetectionBase {
 			$curt = hypot($curtMD->x, $curtMD->z);
 
 			//reference: https://github.com/GladUrBad/Medusa/blob/7be8d34ae0470f0655b59e213d7619b98a3f43ff/Impl/src/main/java/com/gladurbad/medusa/check/impl/movement/speed/SpeedA.java#L25
-			$predicted = ($last * 0.91) + ($player->isSprinting() ? 0.026 : 0.02);
+			$predicted = ($last * 0.91) + ($action->isSprinting ? 0.026 : 0.02);
 			$diff = $curt - $predicted;
 			if ($predicted > 0.075 &&
 				$diff > $this->maxDiff

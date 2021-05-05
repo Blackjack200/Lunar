@@ -25,14 +25,14 @@ class PlayerMovementInfo {
 
 	public Vector3 $lastMoveDelta;
 	public Vector3 $moveDelta;
+
 	public Location $lastLocation;
 	public Location $location;
+	public LocationHistory $locationHistory;
 
 	public float $lastTeleport = 0;
 	public float $lastMotion = 0;
 	public float $lastJump = 0;
-
-	public LocationHistory $locationHistory;
 
 	public function __construct() {
 		$this->locationHistory = new LocationHistory(64);

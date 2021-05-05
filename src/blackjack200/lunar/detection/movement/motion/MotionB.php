@@ -18,11 +18,11 @@ class MotionB extends DetectionBase {
 			if (
 				!$info->inVoid &&
 				$info->checkFly &&
+				!$user->getActionInfo()->isFlying &&
 				$info->timeSinceTeleport() > 2 &&
 				$user->timeSinceJoin() > 5 &&
 				$user->getExpiredInfo()->duration('flight') > 1 &&
-				$user->getExpiredInfo()->duration('checkFly') > 0.25 &&
-				!$player->isFlying()
+				$user->getExpiredInfo()->duration('checkFly') > 0.25
 			) {
 				$deltaY = $info->moveDelta->y;
 
