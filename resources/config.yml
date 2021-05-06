@@ -84,7 +84,7 @@ ReachA:
 
 # Check for vertical velocity
 VelocityB:
-  Enable: true
+  Enable: false
   Punishment: ALERT
   MaxVL: 5
 
