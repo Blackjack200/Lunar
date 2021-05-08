@@ -22,29 +22,24 @@ class SpeedA extends DetectionBase {
 
 	public function handleClient(DataPacket $packet) : void {
 		$user = $this->getUser();
-		$info = $user->getMovementInfo();
-		$expiredInfo = $user->getExpiredInfo();
-		$action = $user->getActionInfo();
+		$info = $user->getInfo();
 		if (
 			$packet instanceof MovePlayerPacket &&
-			$info->inAirTick > 2 &&
-			!$info->inVoid &&
-			$info->checkFly &&
-			!$action->isFlying &&
-			$info->timeSinceTeleport() >= 1 &&
-			$info->timeSinceMotion() >= 1 &&
-			$expiredInfo->duration(Effect::SPEED) > 1 &&
-			$expiredInfo->duration('flight') > 1 &&
-			$user->getExpiredInfo()->duration('checkFly') > 0.25 &&
+			$info->location->air->duration() > 10 &&
+			!$info->location->inVoid->current() &&
+			!$info->action->isFlying &&
+			$info->teleport->duration() >= 5 &&
+			$info->motion->duration() >= 5 &&
+			$info->expired->duration(Effect::SPEED) > 1 &&
 			!$user->getPlayer()->isCreative()
 		) {
-			$lastMD = $info->lastMoveDelta;
-			$curtMD = $info->moveDelta;
+			$lastMD = $info->location->delta->last();
+			$curtMD = $info->location->delta->current();
 			$last = hypot($lastMD->x, $lastMD->z);
 			$curt = hypot($curtMD->x, $curtMD->z);
 
 			//reference: https://github.com/GladUrBad/Medusa/blob/7be8d34ae0470f0655b59e213d7619b98a3f43ff/Impl/src/main/java/com/gladurbad/medusa/check/impl/movement/speed/SpeedA.java#L25
-			$predicted = ($last * 0.91) + ($action->isSprinting ? 0.026 : 0.02);
+			$predicted = ($last * 0.91) + ($info->action->isSprinting ? 0.026 : 0.02);
 			$diff = $curt - $predicted;
 			if ($predicted > 0.075 &&
 				$diff > $this->maxDiff

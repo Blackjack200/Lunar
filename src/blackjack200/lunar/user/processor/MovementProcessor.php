@@ -4,11 +4,10 @@
 namespace blackjack200\lunar\user\processor;
 
 
-use blackjack200\lunar\user\info\PlayerMovementInfo;
+use blackjack200\lunar\user\info\LocationInfo;
 use blackjack200\lunar\user\User;
 use blackjack200\lunar\utils\AABB;
 use pocketmine\block\Block;
-use pocketmine\entity\Effect;
 use pocketmine\item\ItemIds;
 use pocketmine\level\Location;
 use pocketmine\math\Vector3;
@@ -26,23 +25,6 @@ class MovementProcessor extends Processor {
 		if (self::$emptyVector3 === null) {
 			self::$emptyVector3 = new Vector3();
 		}
-		$user = $this->getUser();
-		$info = $user->getMovementInfo();
-		$info->velocity = new Vector3();
-		$info->moveDelta = new Vector3();
-		$info->location = $user->getPlayer()->asLocation();
-		$this->updateLocation($info, $info->location);
-		$this->updateMoveDelta($info);
-	}
-
-	public function updateLocation(PlayerMovementInfo $movementInfo, Location $location) : void {
-		$movementInfo->lastLocation = $movementInfo->location;
-		$movementInfo->location = $location;
-	}
-
-	public function updateMoveDelta(PlayerMovementInfo $movementInfo) : void {
-		$movementInfo->lastMoveDelta = $movementInfo->moveDelta;
-		$movementInfo->moveDelta = $movementInfo->location->subtract($movementInfo->lastLocation)->asVector3();
 	}
 
 	public function processClient(DataPacket $packet) : void {
@@ -57,41 +39,34 @@ class MovementProcessor extends Processor {
 
 				$this->updateMoveDelta($info);
 
-				$dist = $info->moveDelta->distanceSquared($player);
+				$dist = $info->delta->current()->distanceSquared($player);
 				if ($dist > 0.006) {
 					if ($this->buffer++ > 4) {
 						$this->buffer = 0;
-						$info->locationHistory->push($player->asLocation());
+						$info->history->push($player->asLocation());
 					}
 					$AABB = AABB::fromPosition($location)->expandedCopy(0.5, 0.2, 0.5);
 					$verticalBlocks = AABB::getCollisionBlocks($location->getLevel(), $AABB);
-					$info->lastOnGround = $info->onGround;
-					$info->onGround = count($player->getLevelNonNull()->getCollisionBlocks($AABB, true)) !== 0;
-					$info->lastActualOnGround = $info->actualOnGround;
-					$info->actualOnGround = $info->onGround;
-					$info->onIce = false;
+					$inVoid = $location->y < -15;
+					$info->onGround->push(count($player->getLevelNonNull()->getCollisionBlocks($AABB, true)) !== 0 || $inVoid);
+					$info->onIce->push(false);
 
-					$info->inVoid = $location->y < -15;
-					$info->checkFly = !$player->isImmobile() && !$player->hasEffect(Effect::LEVITATION);
+					$info->inVoid->push($inVoid);
+					//$info->checkFly = !$player->isImmobile() && !$player->hasEffect(Effect::LEVITATION);
 					foreach ($verticalBlocks as $block) {
 						/** @var Block $block */
 						$id = $block->getId();
 						if (in_array($id, self::ICE, true)) {
 							$user->getExpiredInfo()->set('ice');
-							$info->onIce = true;
+							$info->onIce->push(true);
 							continue;
 						}
 
-						if (
-							$id === Block::SLIME_BLOCK ||
-							$id === Block::COBWEB ||
-							$block->isTransparent() ||
-							$block->canClimb() ||
-							$block->canBeFlowedInto()
-						) {
-							$info->checkFly = false;
-							$info->onGround = true;
-							break;
+						if ($block->canClimb()) {
+							$info->onClimbable->push(true);
+						}
+						if ($id === Block::COBWEB) {
+							$info->inCobweb->push(true);
 						}
 					}
 					//$this->getUser()->getPlayer()->sendPopup('check=' . Boolean::btos($info->checkFly) . ' on=' . Boolean::btos($info->onGround) . ' tick=' . $info->inAirTick);
@@ -119,39 +94,47 @@ class MovementProcessor extends Processor {
 		return true;
 	}
 
+	public function updateLocation(LocationInfo $info, Location $location) : void {
+		$info->location->push($location);
+	}
+
+	public function updateMoveDelta(LocationInfo $info) : void {
+		$info->delta->push($info->location->current()->subtract($info->location->last())->asVector3());
+	}
+
 	public function check(...$data) : void {
 		$user = $this->getUser();
 		$player = $user->getPlayer();
 		if ($player->spawned) {
 			$info = $user->getMovementInfo();
-			if (!$info->checkFly) {
-				$user->getExpiredInfo()->set('checkFly');
-			}
-			if (!$info->onGround) {
-				$info->inAirTick++;
-				$info->onGroundTick = 0;
+			if (!$info->onGround->current()) {
+				$info->air->add();
 			} else {
-				$info->inAirTick = 0;
-				$info->onGroundTick++;
-			}
-			if ($player->isImmobile()) {
-				$info->immobileTick++;
-			} else {
-				$info->immobileTick = 0;
-			}
-			$info2 = $user->getActionInfo();
-			if ($info2->isFlying) {
-				$info->flightTick++;
-			} elseif ($info->flightTick !== 0) {
-				$info->flightTick = 0;
-				$user->getExpiredInfo()->set('flight');
+				$info->air->reset();
 			}
 
-			if ($info2->isSprinting) {
-				$info->sprintTick++;
-			} elseif ($info->sprintTick !== 0) {
-				$info->sprintTick = 0;
-				$user->getExpiredInfo()->set('sprint');
+			if ($info->onIce->current()) {
+				$info->ice->add();
+			} else {
+				$info->ice->reset();
+			}
+
+			if ($info->onClimbable->current()) {
+				$info->climbable->add();
+			} else {
+				$info->climbable->reset();
+			}
+
+			if ($info->inCobweb->current()) {
+				$info->cobweb->add();
+			} else {
+				$info->cobweb->reset();
+			}
+
+			if ($info->inLiquid->current()) {
+				$info->liquid->add();
+			} else {
+				$info->liquid->reset();
 			}
 		}
 	}

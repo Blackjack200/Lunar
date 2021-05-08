@@ -5,14 +5,14 @@ namespace blackjack200\lunar\user;
 use blackjack200\lunar\detection\Detection;
 use blackjack200\lunar\detection\DetectionTrigger;
 use blackjack200\lunar\DetectionRegistry;
-use blackjack200\lunar\user\info\ExpiredInfo;
-use blackjack200\lunar\user\info\PlayerActionInfo;
-use blackjack200\lunar\user\info\PlayerMovementInfo;
+use blackjack200\lunar\user\info\ActionInfo;
+use blackjack200\lunar\user\info\LocationInfo;
 use blackjack200\lunar\user\processor\InGameProcessor;
 use blackjack200\lunar\user\processor\LoginProcessor;
 use blackjack200\lunar\user\processor\MovementProcessor;
 use blackjack200\lunar\user\processor\PlayerActionProcessor;
 use blackjack200\lunar\user\processor\Processor;
+use blackjack200\lunar\utils\ExpiredCollection;
 use pocketmine\network\mcpe\protocol\StartGamePacket;
 use pocketmine\Player;
 
@@ -26,9 +26,7 @@ final class User implements DetectionTrigger {
 	private array $detections;
 	/** @var Processor[] */
 	private array $processors = [];
-	private PlayerMovementInfo $moveData;
-	private PlayerActionInfo $actionInfo;
-	private ExpiredInfo $expiredInfo;
+	private PlayerInfo $info;
 	private float $joinTime;
 	private bool $closed = false;
 
@@ -36,9 +34,7 @@ final class User implements DetectionTrigger {
 		$this->player = $player;
 		$this->joinTime = microtime(true);
 		$this->lastHurt = microtime(true);
-		$this->moveData = new PlayerMovementInfo();
-		$this->actionInfo = new PlayerActionInfo();
-		$this->expiredInfo = new ExpiredInfo(32);
+		$this->info = new PlayerInfo();
 		$this->processors[LoginProcessor::class] = new LoginProcessor($this);
 		$this->processors[InGameProcessor::class] = new InGameProcessor($this);
 		$this->processors[MovementProcessor::class] = new MovementProcessor($this);
@@ -85,11 +81,11 @@ final class User implements DetectionTrigger {
 
 	public function getPlayer() : Player { return $this->player; }
 
-	public function getMovementInfo() : PlayerMovementInfo { return $this->moveData; }
+	public function getMovementInfo() : LocationInfo { return $this->info->location; }
 
-	public function getActionInfo() : PlayerActionInfo { return $this->actionInfo; }
+	public function getActionInfo() : ActionInfo { return $this->info->action; }
 
-	public function getExpiredInfo() : ExpiredInfo { return $this->expiredInfo; }
+	public function getExpiredInfo() : ExpiredCollection { return $this->info->expired; }
 
 	public function timeSinceJoin() : float { return microtime(true) - $this->joinTime; }
 
@@ -101,4 +97,6 @@ final class User implements DetectionTrigger {
 		}
 		return $level;
 	}
+
+	public function getInfo() : PlayerInfo { return $this->info; }
 }

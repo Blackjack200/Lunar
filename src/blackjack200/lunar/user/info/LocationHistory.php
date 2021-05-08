@@ -6,7 +6,7 @@ namespace blackjack200\lunar\user\info;
 
 use Ds\Vector;
 use pocketmine\level\Location;
-use Throwable;
+use UnderflowException;
 
 final class LocationHistory {
 	/** @var Vector<Location> */
@@ -18,10 +18,10 @@ final class LocationHistory {
 		$this->size = $size;
 		$this->vector = new Vector();
 		$this->vector->allocate($size);
-		$this->reset();
+		$this->rewind();
 	}
 
-	public function reset() : void {
+	public function rewind() : void {
 		$this->vector->clear();
 		$this->curt = 0;
 	}
@@ -34,14 +34,14 @@ final class LocationHistory {
 		$ret = null;
 		try {
 			$ret = $this->vector->pop();
-		} catch (Throwable $ignored) {
+		} catch (UnderflowException $ignored) {
 		}
 		return $ret;
 	}
 
 	public function push(Location $location) : void {
 		if (count($this->vector) > $this->size) {
-			$this->reset();
+			$this->rewind();
 		}
 		$this->vector->push($location);
 		$this->curt++;

@@ -13,11 +13,10 @@ class MotionA extends DetectionBase {
 	public function handleClient(DataPacket $packet) : void {
 		//reference: https://github.com/routerabfrage/badlion-src/blob/93a099e711f1e91f432fcf2aff084cf73d6b2c82/net/minecraft/entity/EntityLivingBase.java#L1060-L1073
 		$user = $this->getUser();
-		$info = $user->getMovementInfo();
+		$info = $user->getInfo();
 		if (
 			$packet instanceof MovePlayerPacket &&
-			$info->checkFly &&
-			$info->timeSinceJump() < 0.052 &&
+			$info->jump < 2 &&
 			$info->timeSinceTeleport() > 1 &&
 			$user->getExpiredInfo()->duration('ice') > 1
 		) {

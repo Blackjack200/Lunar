@@ -43,7 +43,7 @@ class PlayerActionProcessor extends Processor {
 					$info2->set('swim');
 					break;
 				case PlayerActionPacket::ACTION_JUMP:
-					$user->getMovementInfo()->lastJump = microtime(true);
+					$user->getInfo()->jump->reset();
 					break;
 			}
 		}

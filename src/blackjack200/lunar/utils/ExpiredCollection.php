@@ -1,12 +1,13 @@
 <?php
 
 
-namespace blackjack200\lunar\user\info;
+namespace blackjack200\lunar\utils;
 
 
 use Ds\Map;
+use pocketmine\Server;
 
-final class ExpiredInfo {
+final class ExpiredCollection {
 	private Map $data;
 
 	public function __construct(int $size) {
@@ -16,16 +17,16 @@ final class ExpiredInfo {
 
 	public function set($k) : void {
 		$this->lazy($k);
-		$this->data->put($k, microtime(true));
+		$this->data->put($k, Server::getInstance()->getTick());
 	}
 
 	private function lazy($k) : void {
 		if (!$this->data->hasKey($k)) {
-			$this->data->put($k, microtime(true));
+			$this->data->put($k, Server::getInstance()->getTick());
 		}
 	}
 
-	public function duration($k) : float {
+	public function duration($k) : int {
 		$this->lazy($k);
 		return microtime(true) - $this->data->get($k);
 	}
