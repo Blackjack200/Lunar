@@ -25,7 +25,11 @@ class MotionB extends DetectionBase {
 			) {
 				$deltaY = $info->moveDelta->y;
 
-				$modifierJump = $user->getEffectLevel(Effect::JUMP) * 0.1;
+				$lvl = $user->getEffectLevel(Effect::JUMP);
+				$modifierJump = 0;
+				if ($lvl !== 0) {
+					$modifierJump = ($lvl + 1) * 0.1;
+				}
 				$modifierVelocity = $info->timeSinceMotion() < 0.25 ? $info->velocity->y + 0.5 : 0.0;
 
 				$maximum = 0.6 + $modifierJump + $modifierVelocity;

@@ -13,7 +13,7 @@ class AirSwim extends DetectionBase {
 		if ($packet instanceof MovePlayerPacket) {
 			$user = $this->getUser();
 			$info = $user->getMovementInfo();
-			if ($info->inAirTick > 10 && $user->getActionInfo()->isSwimming) {
+			if ($info->inAirTick > 20 && $user->getActionInfo()->isSwimming) {
 				$msg = "off=$info->inAirTick";
 				$this->addVL(1, $msg);
 				if ($this->overflowVL()) {

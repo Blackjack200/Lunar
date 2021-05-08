@@ -19,7 +19,6 @@ use blackjack200\lunar\detection\movement\AntiImmobile;
 use blackjack200\lunar\detection\movement\fly\FlyA;
 use blackjack200\lunar\detection\movement\fly\FlyB;
 use blackjack200\lunar\detection\movement\fly\FlyE;
-use blackjack200\lunar\detection\movement\motion\MotionA;
 use blackjack200\lunar\detection\movement\motion\MotionB;
 use blackjack200\lunar\detection\movement\speed\SpeedA;
 use blackjack200\lunar\detection\movement\speed\SpeedC;
@@ -51,7 +50,6 @@ final class DetectionRegistry {
 			'AntiImmobile' => AntiImmobile::class,
 			'SpeedA' => SpeedA::class,
 			'SpeedC' => SpeedC::class,
-			'MotionA' => MotionA::class,
 			'MotionB' => MotionB::class,
 			'FlyA' => FlyA::class,
 			'FlyB' => FlyB::class,

@@ -134,12 +134,6 @@ FlyE:
   MaxDiff: 0.01
   Reward: 0.88
 
-# Check for invalid horizontal acceleration. Like BHop, Speed
-MotionA:
-  Enable: false
-  Punishment: KICK
-  MaxVL: 5
-
 #  Check for invalid vertical acceleration. Like HighJump
 MotionB:
   Enable: true
@@ -155,7 +149,7 @@ AirSwim:
 
 #  Check for movement when the player is immobile
 AntiImmobile:
-  Enable: false
+  Enable: true
   Punishment: KICK
   MaxVL: 5
   Suppress: false

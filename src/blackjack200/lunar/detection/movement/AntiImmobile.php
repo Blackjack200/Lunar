@@ -26,9 +26,10 @@ class AntiImmobile extends DetectionBase {
 			$info = $user->getMovementInfo();
 			$dist = $info->moveDelta->distanceSquared(self::$zero);
 			if (
-				$info->immobileTick > 2 &&
-				$dist > 0 &&
-				$info->timeSinceTeleport() > 0.07
+				$info->immobileTick > 5 &&
+				$dist > 1E-10 &&
+				$info->timeSinceTeleport() > 2 &&
+				$info->timeSinceMotion() > 2
 			) {
 				$msg = "dist=$dist";
 				$this->addVL(1, $msg);
