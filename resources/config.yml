@@ -155,7 +155,7 @@ AirSwim:
 
 #  Check for movement when the player is immobile
 AntiImmobile:
-  Enable: true
+  Enable: false
   Punishment: KICK
   MaxVL: 5
   Suppress: false
