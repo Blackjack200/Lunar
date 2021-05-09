@@ -142,7 +142,7 @@ MotionB:
 
 #  Check for swimming in air
 AirSwim:
-  Enable: true
+  Enable: false
   Punishment: KICK
   MaxVL: 5
   Suppress: false
@@ -150,7 +150,7 @@ AirSwim:
 #  Check for movement when the player is immobile
 AntiImmobile:
   Enable: true
-  Punishment: KICK
+  Punishment: ALERT
   MaxVL: 5
   Suppress: false
 
