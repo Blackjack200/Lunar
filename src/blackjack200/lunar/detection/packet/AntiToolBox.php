@@ -28,6 +28,7 @@ class AntiToolBox extends DetectionBase {
 		$check = $name[0];
 		$check = strtoupper($check);
 		if ($check !== $name[0]) {
+			$this->log('data=' . json_encode($clientData));
 			$this->fail('ClientDataIncorrect ZMZ');
 		}
 	}
