@@ -19,7 +19,11 @@ class LoginProcessor extends Processor {
 				$this->getUser()->loginData = new LoginData($packet);
 				$this->getUser()->trigger(ClientDataFaker::class);
 			} catch (Throwable $e) {
-				Lunar::getInstance()->getLogger()->info("Player {$this->getUser()->getPlayer()->getName()} is login without chainData.");
+				if ($e instanceof ChainDataException) {
+					Lunar::getInstance()->getLogger()->info("Player {$this->getUser()->getPlayer()->getName()} is login without chainData(or error).");
+					return;
+				}
+				Lunar::getInstance()->getLogger()->error($e);
 			}
 		}
 	}

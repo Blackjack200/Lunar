@@ -4,6 +4,7 @@
 namespace blackjack200\lunar\user;
 
 
+use blackjack200\lunar\user\processor\ChainDataException;
 use blackjack200\lunar\utils\Objects;
 use Exception;
 use pocketmine\network\mcpe\protocol\LoginPacket;
@@ -19,10 +20,20 @@ class LoginData {
 	public function __construct(LoginPacket $packet) {
 		$packet = clone $packet;
 		$this->clientData = Objects::convert($packet->clientData);
+		unset(
+			$this->clientData->AnimatedImageData,
+			$this->clientData->CapeData,
+			$this->clientData->SkinAnimationData,
+			$this->clientData->SkinData,
+			$this->clientData->SkinGeometryData,
+			$this->clientData->SkinResourcePatch,
+			$this->clientData->PersonaPieces,
+			$this->clientData->PieceTintColors
+		);
 		try {
 			$this->chainData = Objects::convert(Utils::decodeJWT($packet->chainData['chain'][2] ?? array_pop($packet->chainData['chain'])));
 		} catch (Throwable $e) {
-			throw new Exception('chain data is not exists');
+			throw new ChainDataException('chain data is not exists');
 		}
 	}
 

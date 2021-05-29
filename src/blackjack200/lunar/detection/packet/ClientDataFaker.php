@@ -29,6 +29,7 @@ class ClientDataFaker extends DetectionBase {
 
 		if ($pass) {
 			$this->fail("LoginData Blocked OS=$deviceOS MODEL=$deviceModel");
+			return;
 		}
 		$chainData = $loginData->getChainData();
 		if (isset($chainData->extraData->titleId) && is_string($chainData->extraData->titleId)) {
@@ -52,7 +53,9 @@ class ClientDataFaker extends DetectionBase {
 
 			if ($titleIdPass) {
 				$this->fail("LoginData mismatched id=$titleId OS=$deviceOS MODEL=$deviceModel");
+				return;
 			}
 		}
+		$this->getUser()->trigger(AntiToolBox::class);
 	}
 }

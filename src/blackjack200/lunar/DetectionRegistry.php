@@ -22,6 +22,7 @@ use blackjack200\lunar\detection\movement\fly\FlyE;
 use blackjack200\lunar\detection\movement\motion\MotionB;
 use blackjack200\lunar\detection\movement\speed\SpeedA;
 use blackjack200\lunar\detection\movement\speed\SpeedC;
+use blackjack200\lunar\detection\packet\AntiToolBox;
 use blackjack200\lunar\detection\packet\BadPacketA;
 use blackjack200\lunar\detection\packet\BadPacketB;
 use blackjack200\lunar\detection\packet\BadPacketC;
@@ -37,6 +38,7 @@ final class DetectionRegistry {
 	public static function initConfig() : void {
 		$detections = [
 			'AutoClicker' => AutoClicker::class,
+			'AntiToolBox' => AntiToolBox::class,
 			'FastBreakA' => FastBreakA::class,
 			'NukerA' => NukerA::class,
 

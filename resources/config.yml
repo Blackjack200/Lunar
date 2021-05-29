@@ -21,6 +21,10 @@ ClientDataFaker:
   DeviceModel:
     - "EZ4H"
 
+# Check for toolbox and DeviceModel
+AntiToolBox:
+  Enable: true
+  Punishment: BAN
 
 # Action
 
