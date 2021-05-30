@@ -115,7 +115,7 @@ SpeedC:
 
 # Check for flight's that don't obey gravity.
 FlyA:
-  Enable: true
+  Enable: false
   Punishment: KICK
   MaxVL: 10
   Suppress: false
