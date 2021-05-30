@@ -24,7 +24,7 @@ ClientDataFaker:
 # Check for toolbox and DeviceModel
 AntiToolBox:
   Enable: true
-  Punishment: BAN
+  Punishment: KICK
 
 # Action
 

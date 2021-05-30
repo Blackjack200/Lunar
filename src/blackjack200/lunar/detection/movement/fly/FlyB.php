@@ -16,10 +16,13 @@ class FlyB extends DetectionBase {
 			!$info->inVoid && !$info->onGround &&
 			$info->timeSinceTeleport() > 1
 		) {
-			$this->addVL(1);
-			$this->revertMovement();
-			if ($this->overflowVL()) {
-				$this->fail("off=$info->inAirTick");
+			if ($this->preVL++ > 2) {
+				$this->preVL = 0;
+				$this->addVL(1);
+				$this->revertMovement();
+				if ($this->overflowVL()) {
+					$this->fail("off=$info->inAirTick");
+				}
 			}
 		}
 	}
