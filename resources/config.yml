@@ -82,7 +82,7 @@ MultiAura:
 
 # Basic attack distance check
 ReachA:
-  Enable: false
+  Enable: true
   Punishment: ALERT
   MaxVL: 10
 
@@ -140,7 +140,7 @@ FlyE:
 
 #  Check for invalid vertical acceleration. Like HighJump
 MotionB:
-  Enable: true
+  Enable: false
   Punishment: KICK
   MaxVL: 10
 

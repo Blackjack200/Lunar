@@ -39,9 +39,9 @@ class ReachA extends DetectionBase {
 		if (
 			$dist > $maxDist &&
 			$info->timeSinceMotion() > 0.2 &&
-			$info->timeSinceTeleport() > 1 &&
+			$info->timeSinceTeleport() > 2 &&
 			$info2->timeSinceMotion() > 0.2 &&
-			$info2->timeSinceTeleport() > 1 &&
+			$info2->timeSinceTeleport() > 2 &&
 			$this->preVL++ > 3
 		) {
 			$this->addVL(1);
@@ -53,6 +53,8 @@ class ReachA extends DetectionBase {
 			if ($this->overflowVL()) {
 				$this->fail("max=$maxDist dist=$dist");
 			}
+		} else {
+			$this->preVL = 0;
 		}
 	}
 
@@ -60,6 +62,6 @@ class ReachA extends DetectionBase {
 	public function getAllowedDistance() : float {
 		$player = $this->getUser()->getPlayer();
 		$projected = $player->onGround ? 5.5 : 6.2;
-		return ($player->getPing() * 0.002) + $projected;
+		return ($player->getPing() * 0.005) + $projected;
 	}
 }
